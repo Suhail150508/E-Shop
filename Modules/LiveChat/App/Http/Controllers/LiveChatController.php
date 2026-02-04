@@ -12,6 +12,42 @@ use Modules\LiveChat\App\Models\Message;
 
 class LiveChatController extends Controller
 {
+    protected function isPayloadTooLarge(Request $request): bool
+    {
+        // Check against post_max_size in php.ini
+        $contentLength = $request->server('CONTENT_LENGTH') ?: $request->getContentLength();
+        $postMax = $this->convertPHPSizeToBytes(ini_get('post_max_size'));
+
+        if ($contentLength && $postMax && $contentLength > $postMax) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function convertPHPSizeToBytes($size)
+    {
+        if (is_numeric($size)) {
+            return (int) $size;
+        }
+
+        $unit = strtolower(substr($size, -1));
+        $bytes = (int) substr($size, 0, -1);
+
+        switch ($unit) {
+            case 'g':
+                $bytes *= 1024;
+                // fallthrough
+            case 'm':
+                $bytes *= 1024;
+                // fallthrough
+            case 'k':
+                $bytes *= 1024;
+        }
+
+        return $bytes;
+    }
+
     public function index()
     {
         if (! Auth::check()) {
@@ -67,10 +103,15 @@ class LiveChatController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        // Early detect oversized payloads (beyond PHP limits) to return JSON error rather than silent failure
+        if ($this->isPayloadTooLarge($request)) {
+            return response()->json(['error' => 'Uploaded file exceeds the server allowed size (post_max_size).'], 413);
+        }
+
         $request->validate([
             'conversation_id' => 'required|exists:live_chat_conversations,id',
             'message' => 'nullable|string',
-            'attachment' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf,doc,docx|max:2048',
+            'attachment' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf,doc,docx,webp|max:2048',
         ]);
 
         if (! $request->message && ! $request->hasFile('attachment')) {
@@ -84,7 +125,7 @@ class LiveChatController extends Controller
         $attachmentPath = null;
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
-            $filename = 'chat-' . Auth::id() . '-' . date('Y-m-d-h-i-s') . '-' . rand(999, 9999) . '.' . $file->getClientOriginalExtension();
+            $filename = 'chat-' . Auth::id() . '-' . date('Y-m-d-H-i-s') . '-' . rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
             $attachmentPath = $file->storeAs('livechat/attachments', $filename, 'public');
         }
 
@@ -132,6 +173,10 @@ class LiveChatController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        if ($this->isPayloadTooLarge($request)) {
+            return response()->json(['error' => 'Uploaded file exceeds the server allowed size (post_max_size).'], 413);
+        }
+
         $request->validate([
             'image' => 'required|image|max:2048',
         ]);
@@ -139,7 +184,7 @@ class LiveChatController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
-            $imageName = 'chat-' . Auth::id() . '-' . date('Y-m-d-h-i-s') . '-' . rand(999, 9999) . '.' . $extension;
+            $imageName = 'chat-' . Auth::id() . '-' . date('Y-m-d-H-i-s') . '-' . rand(999, 9999) . '.' . $extension;
             $destinationPath = public_path('uploads/custom-images');
             $image->move($destinationPath, $imageName);
 

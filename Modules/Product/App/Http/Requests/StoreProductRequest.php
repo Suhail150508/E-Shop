@@ -33,8 +33,9 @@ class StoreProductRequest extends FormRequest
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'meta_keywords' => 'nullable|string|max:255',
+            // Allow any color strings (configurable by the app). Limit length to avoid excessively long values.
             'colors' => 'nullable|array',
-            'colors.*' => 'string|in:Red,Blue,Green,White,Black',
+            'colors.*' => 'string|max:50',
             'tags' => 'nullable|array',
             'tags.*' => 'string',
         ];

@@ -4,6 +4,7 @@ namespace Modules\LiveChat\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Modules\LiveChat\App\Events\MessageSent;
 use Modules\LiveChat\App\Models\Conversation;
 use Modules\LiveChat\App\Models\Message;
@@ -44,7 +45,8 @@ class AdminLiveChatController extends Controller
         $attachmentPath = null;
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
-            $filename = time().'_'.$file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '_' . Str::random(8) . '.' . $extension;
             $attachmentPath = $file->storeAs('livechat/attachments', $filename, 'public');
         }
 

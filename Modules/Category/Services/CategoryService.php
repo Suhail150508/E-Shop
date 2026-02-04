@@ -44,7 +44,10 @@ class CategoryService
     public function create(array $data): Category
     {
         $data['is_active'] = isset($data['is_active']) ? (bool) $data['is_active'] : false;
-        $data['slug'] = Str::slug($data['name']);
+
+        if (isset($data['name'])) {
+            $data['slug'] = $this->generateUniqueSlug(Category::class, $data['name']);
+        }
 
         if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
             $data['image'] = $data['image']->store('categories', 'public');
@@ -64,7 +67,7 @@ class CategoryService
         $data['is_active'] = isset($data['is_active']) ? (bool) $data['is_active'] : $category->is_active;
 
         if (isset($data['name'])) {
-            $data['slug'] = Str::slug($data['name']);
+            $data['slug'] = $this->generateUniqueSlug(Category::class, $data['name'], 'slug', $category->id);
         }
 
         if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
@@ -92,7 +95,7 @@ class CategoryService
         if ($category->image) {
             Storage::disk('public')->delete($category->image);
         }
-        
+
         $category->delete();
         $this->clearCache();
     }
@@ -210,5 +213,38 @@ class CategoryService
     {
         Cache::forget('categories_tree');
         Cache::forget('featured_categories');
+    }
+
+    /**
+     * Generate a unique slug for a model based on a value.
+     *
+     * @param string $modelClass Fully-qualified model class
+     * @param string $value Value to slugify
+     * @param string $field Column to check (default: 'slug')
+     * @param int|null $ignoreId Optional ID to ignore (for updates)
+     * @return string
+     */
+    protected function generateUniqueSlug(string $modelClass, string $value, string $field = 'slug', ?int $ignoreId = null): string
+    {
+        $base = Str::slug($value);
+        $slug = $base;
+        $i = 1;
+
+        // Build query and check existence, optionally excluding an ID (for updates)
+        while (true) {
+            $model = new $modelClass;
+            $query = $model->where($field, $slug);
+            if ($ignoreId) {
+                $query->where('id', '!=', $ignoreId);
+            }
+
+            if (! $query->exists()) {
+                break;
+            }
+
+            $slug = $base.'-'. $i++;
+        }
+
+        return $slug;
     }
 }

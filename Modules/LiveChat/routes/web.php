@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Modules\LiveChat\App\Http\Controllers\AdminLiveChatController;
 use Modules\LiveChat\App\Http\Controllers\LiveChatController;
 
-Route::prefix('livechat')->name('livechat.')->group(function () {
+Route::prefix('livechat')->name('livechat.')->middleware('auth')->group(function () {
     // Frontend Routes
-    Route::get('/dashboard', [LiveChatController::class, 'index'])->name('index')->middleware('auth');
+    Route::get('/dashboard', [LiveChatController::class, 'index'])->name('index');
     Route::post('/start', [LiveChatController::class, 'startChat'])->name('start');
     Route::post('/send', [LiveChatController::class, 'sendMessage'])->name('send');
     Route::get('/messages', [LiveChatController::class, 'getMessages'])->name('messages');

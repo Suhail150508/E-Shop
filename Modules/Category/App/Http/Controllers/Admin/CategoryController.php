@@ -8,6 +8,7 @@ use Modules\Category\App\Http\Requests\StoreCategoryRequest;
 use Modules\Category\App\Http\Requests\UpdateCategoryRequest;
 use Modules\Category\App\Models\Category;
 use Modules\Category\Services\CategoryService;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -30,7 +31,7 @@ class CategoryController extends Controller
             'search' => $request->get('search'),
             'status' => $request->get('status'),
         ];
-        
+
         $categories = $this->categoryService->getAll($filters);
 
         return view('category::admin.categories.index', compact('categories'));
@@ -106,7 +107,8 @@ class CategoryController extends Controller
             return redirect()->route('admin.categories.index')
                 ->with('success', __('Category deleted successfully.'));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            Log::error('Error deleting category ID '.$category->id.': '.$e->getMessage());
+            return redirect()->back()->with('error', __('An error occurred while deleting the category. Please try again or contact support.'));
         }
     }
 

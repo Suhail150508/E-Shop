@@ -37,6 +37,10 @@
                     <i class="bi bi-send"></i>
                 </button>
             </form>
+            <div id="chat-error" class="alert alert-danger d-none mt-2" role="alert" style="display:none"></div>
+            <div id="upload-progress" class="progress mt-2 d-none" style="height:6px;">
+                <div id="upload-progress-bar" class="progress-bar" role="progressbar" style="width:0%"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -172,7 +176,7 @@
         display: block;
         text-align: right;
     }
-    
+
     .message img {
         max-width: 100%;
         border-radius: 8px;
@@ -182,16 +186,13 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const widget = document.getElementById('live-chat-widget');
         const toggleBtn = document.getElementById('live-chat-toggle');
         const chatWindow = document.getElementById('chat-window');
         const closeBtn = document.getElementById('chat-close');
         const sendForm = document.getElementById('send-message-form');
         const messagesArea = document.getElementById('chat-messages');
-        const inputArea = document.getElementById('chat-input-area');
-        
+
         let conversationId = null;
-        let lastMessageId = 0;
 
 
         // Auto init chat
@@ -223,7 +224,7 @@
                     }
                 });
                 const data = await response.json();
-                
+
                 if (data.status === 'success') {
                     conversationId = data.conversation_id;
                     renderMessages(data.messages);
@@ -240,13 +241,21 @@
             const input = sendForm.querySelector('input[name="message"]');
             const fileInput = sendForm.querySelector('input[name="attachment"]');
             const message = input.value.trim();
-            
+
             if (!message && !fileInput.files.length) return;
+
+            clearError();
 
             const formData = new FormData();
             formData.append('conversation_id', conversationId);
             formData.append('message', message);
             if (fileInput.files.length) {
+                const file = fileInput.files[0];
+                const maxBytes = 2 * 1024 * 1024; // 2MB
+                if (file.size > maxBytes) {
+                    showError('Selected file exceeds the maximum allowed size of 2 MB.');
+                    return;
+                }
                 formData.append('attachment', fileInput.files[0]);
             }
 
@@ -264,32 +273,39 @@
             }
 
             try {
-                const response = await fetch('{{ route("livechat.send") }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: formData
-                });
-                
-                const data = await response.json();
-                if (data.status === 'success') {
-                    input.value = ''; // Ensure cleared
-                    fileInput.value = ''; // Clear file input
-                    // If it was a file message, append it now (since we didn't optimistically)
-                    if (data.message.attachment) {
-                        appendMessage(data.message);
+                let responseData;
+                if (formData.get('attachment')) {
+                    responseData = await uploadWithProgress('{{ route("livechat.send") }}', formData, (pct) => showProgress(pct));
+                } else {
+                    const response = await fetch('{{ route("livechat.send") }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: formData
+                    });
+                    responseData = await response.json();
+                }
+
+                if (responseData.status === 'success') {
+                    if (responseData.message && responseData.message.attachment) {
+                        appendMessage(responseData.message);
                         scrollToBottom();
                     }
+                } else if (responseData.error) {
+                    showError(responseData.error);
                 }
             } catch (e) {
                 console.error(e);
+                showError('Upload failed. Please try again.');
+            } finally {
+                hideProgress();
             }
         });
 
         function startListening() {
             if (!conversationId) return;
-            
+
             if (window.Echo) {
                 window.Echo.private(`chat.${conversationId}`)
                     .listen('.message.sent', (e) => {
@@ -314,7 +330,7 @@
             try {
                 const response = await fetch('{{ route("livechat.messages") }}');
                 const data = await response.json();
-                
+
                 if (data.messages) {
                     renderMessages(data.messages);
                 }
@@ -332,15 +348,32 @@
         function appendMessage(msg) {
             const div = document.createElement('div');
             div.className = `message ${msg.sender_type}`;
-            
-            let content = '';
-            if (msg.message) content += `<div class="text">${msg.message}</div>`;
-            if (msg.attachment) {
-                content += `<div class="attachment"><a href="/storage/${msg.attachment}" target="_blank"><img src="/storage/${msg.attachment}" alt="Attachment"></a></div>`;
+
+            // Message text as a text node
+            if (msg.message) {
+                const text = document.createElement('div');
+                text.className = 'text';
+                text.textContent = msg.message;
+                div.appendChild(text);
             }
-            content += `<span class="message-time">${new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>`;
-            
-            div.innerHTML = content;
+            if (msg.attachment) {
+                const attach = document.createElement('div');
+                attach.className = 'attachment';
+                const url = (typeof msg.attachment === 'string' && msg.attachment.startsWith('http')) ? msg.attachment : `/storage/${msg.attachment}`;
+                const a = document.createElement('a');
+                a.href = url;
+                a.target = '_blank';
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Attachment';
+                a.appendChild(img);
+                attach.appendChild(a);
+                div.appendChild(attach);
+            }
+            const time = document.createElement('span');
+            time.className = 'message-time';
+            time.textContent = new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            div.appendChild(time);
             messagesArea.appendChild(div);
         }
 
@@ -349,6 +382,69 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
+        function showError(msg) {
+            const err = document.getElementById('chat-error');
+            err.textContent = msg;
+            err.classList.remove('d-none');
+            err.style.display = 'block';
+        }
+
+        function clearError() {
+            const err = document.getElementById('chat-error');
+            err.textContent = '';
+            err.classList.add('d-none');
+            err.style.display = 'none';
+        }
+
+        function showProgress(pct) {
+            const progress = document.getElementById('upload-progress');
+            const bar = document.getElementById('upload-progress-bar');
+            progress.classList.remove('d-none');
+            bar.style.width = Math.floor(pct) + '%';
+        }
+
+        function hideProgress() {
+            const progress = document.getElementById('upload-progress');
+            const bar = document.getElementById('upload-progress-bar');
+            progress.classList.add('d-none');
+            bar.style.width = '0%';
+        }
+
+        function uploadWithProgress(url, formData, onProgress) {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const percent = (e.loaded / e.total) * 100;
+                        onProgress(percent);
+                    }
+                });
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        try {
+                            const resp = JSON.parse(xhr.responseText);
+                            if (xhr.status >= 200 && xhr.status < 300) {
+                                resolve(resp);
+                            } else {
+                                resolve(resp);
+                            }
+                        } catch (e) {
+                            reject(e);
+                        }
+                    }
+                };
+
+                xhr.onerror = function () {
+                    reject(new Error('Upload failed'));
+                };
+
+                xhr.send(formData);
+            });
+        }
 
     });
 </script>
