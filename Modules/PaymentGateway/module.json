@@ -1,0 +1,8 @@
+{
+    "name": "PaymentGateway",
+    "alias": "paymentgateway",
+    "description": "Payment Gateway Module",
+    "version": "1.0.0",
+    "author": "",
+    "keywords": ["payment", "gateway"]
+}

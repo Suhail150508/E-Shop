@@ -1,0 +1,135 @@
+/* =========================================
+   PRODUCT DETAILS PAGE STYLES
+   ========================================= */
+
+/* Layout & Spacing */
+.product-page-wrapper {
+    background-color: #f8f9fa;
+    padding-top: 120px; /* Mobile default */
+    padding-bottom: 3rem;
+}
+
+@media (min-width: 992px) {
+    .product-page-wrapper {
+        padding-top: 180px; /* Desktop (Adjust based on header height) */
+    }
+    .border-end-lg {
+        border-right: 1px solid #f0f0f0 !important;
+    }
+}
+
+/* Nav Tabs */
+.nav-link-custom {
+    color: #6c757d;
+    border: none;
+    background: transparent;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link-custom:hover {
+    color: var(--primary-color, #0d6efd);
+}
+
+.nav-link-custom.active {
+    color: var(--primary-color, #0d6efd);
+}
+
+.nav-link-custom.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color, #0d6efd);
+}
+
+/* Image Gallery & Controls */
+.main-image-wrapper {
+    min-height: 400px; /* Desktop default */
+}
+
+.main-product-image {
+    max-height: 500px;
+    object-fit: contain;
+}
+
+.btn-zoom-toggle {
+    width: 45px;
+    height: 45px;
+}
+
+.thumb-btn {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.thumb-img {
+    object-fit: cover;
+}
+
+/* Product Info Components */
+.color-option-label {
+    cursor: pointer;
+    min-width: 45px;
+}
+
+.color-swatch {
+    width: 25px;
+    height: 25px;
+}
+
+.color-swatch-sm {
+    width: 20px;
+    height: 20px;
+}
+
+.qty-control-wrapper {
+    width: 140px;
+}
+
+.btn-wishlist {
+    width: 54px;
+    height: 54px;
+}
+
+.btn-share {
+    width: 32px;
+    height: 32px;
+}
+
+.meta-label {
+    font-size: 0.75rem;
+}
+
+/* Mobile Optimization */
+@media (max-width: 991px) {
+    .main-image-wrapper {
+        min-height: 300px !important;
+    }
+    .product-page-wrapper {
+        padding-top: 100px;
+    }
+    .display-6 {
+        font-size: 1.75rem;
+    }
+    .display-5 {
+        font-size: 2rem;
+    }
+}
+
+/* Color Selector */
+.btn-check:checked + .btn {
+    border-color: var(--primary-color, #0d6efd) !important;
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.btn-check:checked + .btn .text-dark {
+    color: var(--primary-color, #0d6efd) !important;
+}

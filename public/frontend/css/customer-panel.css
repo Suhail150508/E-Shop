@@ -1,0 +1,222 @@
+/* Customer Panel Layout */
+.account-layout {
+    min-height: 80vh;
+    padding-top: 8rem;
+    padding-bottom: 5rem;
+}
+
+.account-layout .btn-white {
+    background-color: var(--white);
+    color: var(--charcoal);
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+.account-layout .btn-white:hover {
+    background-color: var(--cream);
+    color: var(--rust);
+    border-color: var(--rust);
+}
+
+@media (min-width: 992px) {
+    .sticky-sidebar {
+        position: sticky;
+        top: 160px;
+        z-index: 10;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .account-layout {
+        padding-top: 6rem;
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dashboard */
+.dashboard-stat-icon {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(209, 122, 92, 0.1);
+    color: var(--rust);
+}
+
+.text-rust {
+    color: var(--rust);
+}
+
+.dashboard-stat-icon-sage {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(156, 175, 136, 0.1);
+    color: var(--sage);
+}
+.text-sage {
+    color: var(--sage);
+}
+
+.dashboard-stat-icon-gold {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(212, 175, 55, 0.1);
+    color: var(--gold);
+}
+.text-gold {
+    color: var(--gold);
+}
+
+.dashboard-stat-icon-terracotta {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(232, 153, 126, 0.1);
+    color: var(--terracotta);
+}
+.text-terracotta {
+    color: var(--terracotta);
+}
+
+.action-btn-circle {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Sidebar */
+.sidebar-avatar {
+    width: 80px;
+    height: 80px;
+    background-color: var(--rust);
+    border: 4px solid var(--cream);
+}
+
+.custom-sidebar-nav .nav-link {
+    color: #6c757d;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.custom-sidebar-nav .nav-link:hover {
+    background-color: var(--cream);
+    color: var(--rust);
+}
+
+.custom-sidebar-nav .nav-link.active {
+    background-color: var(--rust);
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(209, 122, 92, 0.3);
+}
+
+.custom-sidebar-nav .nav-link.active i {
+    color: white !important;
+}
+
+.custom-sidebar-nav .nav-link i {
+    width: 20px;
+    text-align: center;
+    transition: color 0.2s ease;
+}
+
+.nav-link-disabled {
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}
+
+/* Password */
+.password-card {
+    max-width: 600px;
+}
+
+/* Wishlist */
+.wishlist-remove-btn {
+    width: 32px;
+    height: 32px;
+}
+
+.wishlist-img {
+    height: 150px;
+    object-fit: contain;
+}
+
+.wishlist-img-placeholder {
+    height: 150px;
+}
+
+.wishlist-product-title {
+    font-size: 0.95rem;
+}
+
+.wishlist-stock-status {
+    font-size: 0.8rem;
+}
+
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 2.8em;
+    line-height: 1.4em;
+}
+
+.product-card {
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1)!important;
+}
+
+/* Addresses */
+.address-font-xs {
+    font-size: 0.65rem !important;
+}
+
+.address-icon-width {
+    width: 16px;
+}
+
+.address-map-container {
+    height: 300px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Intl Tel Input Overrides */
+.iti {
+    width: 100%;
+    display: block;
+}
+
+.iti__flag {
+    background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/img/flags.png");
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .iti__flag {
+        background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/img/flags@2x.png");
+    }
+}
+
+.iti__country-list {
+    z-index: 100 !important;
+    max-width: 300px;
+    white-space: normal;
+}

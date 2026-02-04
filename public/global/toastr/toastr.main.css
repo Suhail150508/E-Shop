@@ -1,0 +1,57 @@
+/* Custom Toastr Styles */
+#toast-container > .toast-success {
+    background-color: #047857 !important; /* Emerald 700 - Deep Green */
+    opacity: 1 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+#toast-container > .toast-error {
+    background-color: #B91C1C !important; /* Red 700 - Deep Red */
+    opacity: 1 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+#toast-container > .toast-info {
+    background-color: #1D4ED8 !important; /* Blue 700 - Deep Blue */
+    opacity: 1 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+#toast-container > .toast-warning {
+    background-color: #B45309 !important; /* Amber 700 - Deep Amber */
+    opacity: 1 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Typography */
+.toast-title {
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    margin-bottom: 0.25rem !important;
+}
+
+.toast-message {
+    font-size: 0.9rem !important;
+}
+
+/* Progress Bar */
+.toast-progress {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    height: 3px !important;
+}
+
+/* Close Button */
+.toast-close-button {
+    font-weight: 300 !important;
+    font-size: 1.25rem !important;
+    opacity: 0.8 !important;
+    text-shadow: none !important;
+}
+
+.toast-close-button:hover {
+    opacity: 1 !important;
+}

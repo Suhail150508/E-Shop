@@ -1,0 +1,11 @@
+{
+    "name": "LiveChat",
+    "alias": "livechat",
+    "description": "Real-time chat module for customers and admin",
+    "version": "1.0.0",
+    "author": "",
+    "keywords": ["chat", "support", "realtime"],
+    "providers": [
+        "Modules\\LiveChat\\App\\Providers\\LiveChatServiceProvider"
+    ]
+}

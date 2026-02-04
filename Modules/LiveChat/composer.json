@@ -1,0 +1,24 @@
+{
+    "name": "modules/livechat",
+    "type": "laravel-module",
+    "description": "Live Chat Module",
+    "authors": [
+        {
+            "name": "Developer",
+            "email": "dev@example.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\LiveChat\\App\\Providers\\LiveChatServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\LiveChat\\": "App/"
+        }
+    }
+}

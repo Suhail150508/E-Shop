@@ -1,0 +1,142 @@
+<?php
+
+namespace Modules\Product\App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use App\Models\Color;
+use App\Models\Unit;
+use Illuminate\Http\Request;
+use Modules\Category\Services\CategoryService;
+use Modules\Product\App\Http\Requests\StoreProductRequest;
+use Modules\Product\App\Http\Requests\UpdateProductRequest;
+use Modules\Product\App\Models\Product;
+use Modules\Product\Services\ProductService;
+
+class ProductController extends Controller
+{
+    protected $productService;
+
+    protected $categoryService;
+
+    public function __construct(ProductService $productService, CategoryService $categoryService)
+    {
+        $this->productService = $productService;
+        $this->categoryService = $categoryService;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View
+     */
+    public function index(Request $request)
+    {
+        $filters = [
+            'search' => $request->get('search'),
+            'status' => $request->get('status'),
+            'category_id' => $request->get('category_id'),
+            'brand_id' => $request->get('brand_id'),
+        ];
+
+        $products = $this->productService->getAll($filters);
+        $categories = $this->categoryService->getFlattenedOptions();
+        $brands = Brand::where('is_active', true)->orderBy('name')->pluck('name', 'id');
+
+        return view('product::admin.products.index', compact('products', 'categories', 'brands'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        $categories = $this->categoryService->getFlattenedOptions();
+        $brands = Brand::where('is_active', true)->orderBy('name')->pluck('name', 'id');
+        $units = Unit::where('is_active', true)->orderBy('name')->pluck('name', 'id');
+        $colors = Color::where('is_active', true)->orderBy('name')->get();
+
+        return view('product::admin.products.create', compact('categories', 'brands', 'units', 'colors'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param StoreProductRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(StoreProductRequest $request)
+    {
+        $this->productService->create($request->validated());
+
+        return redirect()->route('admin.products.index')
+            ->with('success', __('Product created successfully.'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Product $product
+     * @return \Illuminate\View\View
+     */
+    public function edit(Product $product)
+    {
+        $categories = $this->categoryService->getFlattenedOptions();
+        $brands = Brand::where('is_active', true)->orderBy('name')->pluck('name', 'id');
+        $units = Unit::where('is_active', true)->orderBy('name')->pluck('name', 'id');
+        $colors = Color::where('is_active', true)->orderBy('name')->get();
+
+        return view('product::admin.products.edit', compact('product', 'categories', 'brands', 'units', 'colors'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param UpdateProductRequest $request
+     * @param Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(UpdateProductRequest $request, Product $product)
+    {
+        $this->productService->update($product, $request->validated());
+
+        return redirect()->route('admin.products.index')
+            ->with('success', __('Product updated successfully.'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Product $product)
+    {
+        $this->productService->delete($product);
+
+        return redirect()->route('admin.products.index')
+            ->with('success', __('Product deleted successfully.'));
+    }
+
+    /**
+     * Bulk delete products.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (!is_array($ids) || count($ids) === 0) {
+            return response()->json(['error' => __('No items selected.')], 400);
+        }
+
+        $this->productService->bulkDelete($ids);
+
+        return response()->json(['success' => __('Selected products deleted successfully.')]);
+    }
+}

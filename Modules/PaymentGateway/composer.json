@@ -1,0 +1,24 @@
+{
+    "name": "modules/paymentgateway",
+    "type": "laravel-module",
+    "description": "Payment Gateway Module",
+    "authors": [
+        {
+            "name": "Developer",
+            "email": "dev@example.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\PaymentGateway\\App\\Providers\\PaymentGatewayServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\PaymentGateway\\": "App/"
+        }
+    }
+}
