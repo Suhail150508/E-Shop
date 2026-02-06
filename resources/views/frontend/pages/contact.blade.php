@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-@include('frontend.partials.breadcrumb', ['title' => $page->title ?? __('common.contact'), 'bgImage' => $page->image ?? 'https://images.unsplash.com/photo-1423666639041-f142fcb93461?ixlib=rb-1.2.1&auto=format&fit=crop&w=1951&q=80'])
+@include('frontend.partials.breadcrumb', ['title' => optional($page)->title ?? __('common.contact'), 'bgImage' => optional($page)->image ?? 'https://images.unsplash.com/photo-1423666639041-f142fcb93461?ixlib=rb-1.2.1&auto=format&fit=crop&w=1951&q=80'])
 
 <div class="container py-5">
     <div class="row justify-content-center">

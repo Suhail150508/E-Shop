@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="input-group">
-                        <input type="text" name="search" class="form-control border-0 bg-light rounded-start-3 py-2 fs-14" placeholder="{{ __('Search by name') }}" value="{{ request('search') }}">
+                        <input type="text" name="search" class="form-control border-0 bg-light rounded-start-3 py-2 fs-14" placeholder="{{ __('Search by name') }}" value="{{ old('search', request('search')) }}">
                         <button type="submit" class="btn btn-primary rounded-end-3 px-3">
                             <i class="fas fa-search"></i>
                         </button>

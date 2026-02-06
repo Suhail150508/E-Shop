@@ -18,11 +18,17 @@ class PaymentController extends Controller
 
     public function success(string $gateway, Order $order, Request $request)
     {
+        if ($request->user() && (int) $order->user_id !== (int) $request->user()->id) {
+            abort(403, __('common.unauthorized_order_access'));
+        }
         return $this->payments->success($gateway, $order, $request);
     }
 
     public function cancel(string $gateway, Order $order, Request $request)
     {
+        if ($request->user() && (int) $order->user_id !== (int) $request->user()->id) {
+            abort(403, __('common.unauthorized_order_access'));
+        }
         return $this->payments->cancel($gateway, $order, $request);
     }
 

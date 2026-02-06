@@ -97,7 +97,7 @@
                                 <label class="btn btn-outline-secondary d-flex align-items-center justify-content-center p-2 w-100 payment-option h-100" for="payment_razorpay">
                                     <div class="d-flex flex-column align-items-center">
                                         <i class="fas fa-money-bill-wave fa-2x mb-1"></i>
-                                        <span class="fw-bold small">Razorpay</span>
+                                        <span class="fw-bold small">{{ __('Razorpay') }}</span>
                                     </div>
                                 </label>
                             </div>
@@ -110,7 +110,7 @@
                                 <label class="btn btn-outline-secondary d-flex align-items-center justify-content-center p-2 w-100 payment-option h-100" for="payment_paystack">
                                     <div class="d-flex flex-column align-items-center">
                                         <i class="fas fa-layer-group fa-2x mb-1"></i>
-                                        <span class="fw-bold small">Paystack</span>
+                                        <span class="fw-bold small">{{ __('Paystack') }}</span>
                                     </div>
                                 </label>
                             </div>
@@ -135,7 +135,7 @@
                     <div class="mb-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h6 class="small fw-bold text-muted mb-0">{{ __('Package 1 of 1') }}</h6>
-                            <small class="text-muted">{{ __('Shipped by: Fresh Grocer') }}</small>
+                            <small class="text-muted">{{ __('Shipped by store') }}</small>
                         </div>
                         <div class="bg-light p-3 rounded">
                             <div class="d-flex justify-content-between small text-muted mb-2">
@@ -145,7 +145,7 @@
                             
                             <div class="d-flex align-items-center mt-3">
                                 <div>
-                                    <h6 class="mb-0 small fw-bold text-truncate" style="max-width: 150px;">{{ $cartItems->first()['name'] ?? 'Item' }}</h6>
+                                    <h6 class="mb-0 small fw-bold text-truncate" style="max-width: 150px;">{{ $cartItems->first()['name'] ?? __('Item') }}</h6>
                                     <small class="text-muted">{{ $cartItems->sum('quantity') }} {{ __('Items') }}</small>
                                 </div>
                                 <div class="ms-auto fw-bold">{{ format_price($subtotal) }}</div>
@@ -210,7 +210,10 @@
                     <div class="form-check mb-4">
                         <input class="form-check-input" type="checkbox" name="terms" id="termsCheck" form="payment-form" required>
                         <label class="form-check-label small text-muted" for="termsCheck">
-                            {!! __('I confirm I\'ve read and accept the <a href="#">Terms And Conditions</a> & <a href="#">Privacy Policy</a>') !!}
+                            {!! __('common.terms_accept', [
+                                'terms_link' => '<a href="'.e(route('pages.terms')).'">'.e(__('common.terms_and_conditions')).'</a>',
+                                'privacy_link' => '<a href="'.e(route('pages.privacy')).'">'.e(__('common.privacy_policy')).'</a>',
+                            ]) !!}
                         </label>
                     </div>
                     

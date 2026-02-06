@@ -53,9 +53,9 @@
                                                 <p class="mb-0 text-muted small">
                                                     {{ $address->line1 }}<br>
                                                     @if($address->line2) {{ $address->line2 }}<br> @endif
-                                                    {{ $address->city }}, {{ $address->state }} {{ $address->postal_code }}<br>
-                                                    {{ $address->country }}<br>
-                                                    {{ $address->phone }}
+                                                    {{ trim(implode(', ', array_filter([$address->city, $address->state, $address->postal_code]))) ?: __('N/A') }}<br>
+                                                    {{ $address->country ?? __('N/A') }}<br>
+                                                    {{ $address->phone ?? '' }}
                                                 </p>
                                             </div>
                                         </label>

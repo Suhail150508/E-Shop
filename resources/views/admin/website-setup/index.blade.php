@@ -1,6 +1,6 @@
  @extends('layouts.admin')
 
-@section('page_title', 'Website Setup')
+@section('page_title', __('Website Setup'))
 
 @section('content')
 <div class="card border-0 shadow-sm">
@@ -30,22 +30,22 @@
                 
                 <!-- HOME PAGE TAB -->
                 <div class="tab-pane fade show active" id="home" role="tabpanel">
-                    <h5 class="mb-3 text-primary">Hero Section</h5>
+                    <h5 class="mb-3 text-primary">{{ __('Hero Section') }}</h5>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
-                            <label class="form-label">Hero Title</label>
-                            <input type="text" class="form-control" name="home_hero_title" value="{{ $settings['home_hero_title'] ?? '' }}" placeholder="Enter hero title">
+                            <label class="form-label">{{ __('Hero Title') }}</label>
+                            <input type="text" class="form-control" name="home_hero_title" value="{{ $settings['home_hero_title'] ?? '' }}" placeholder="{{ __('Enter hero title') }}">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Hero Subtitle</label>
-                            <input type="text" class="form-control" name="home_hero_subtitle" value="{{ $settings['home_hero_subtitle'] ?? '' }}" placeholder="Enter hero subtitle">
+                            <label class="form-label">{{ __('Hero Subtitle') }}</label>
+                            <input type="text" class="form-control" name="home_hero_subtitle" value="{{ $settings['home_hero_subtitle'] ?? '' }}" placeholder="{{ __('Enter hero subtitle') }}">
                         </div>
                     </div>
 
-                    <h5 class="mb-3 text-primary">Hero Gallery (3 Columns x 3 Images)</h5>
+                    <h5 class="mb-3 text-primary">{{ __('Hero Gallery') }} (3 {{ __('Columns') }} x 3 {{ __('Images') }})</h5>
                     <div class="row">
                         @php
-                            $positions = ['Left Column', 'Center Column', 'Right Column'];
+                            $positions = [__('Left Column'), __('Center Column'), __('Right Column')];
                             $defaultGallery = $home_hero_gallery ?? [];
                         @endphp
                         
@@ -56,7 +56,7 @@
                                         <h6 class="fw-bold mb-3">{{ $posName }}</h6>
                                         @for($i = 0; $i < 3; $i++)
                                             <div class="mb-3 p-2 bg-white rounded shadow-sm">
-                                                <label class="small fw-bold">Image {{ $i + 1 }}</label>
+                                                <label class="small fw-bold">{{ __('Image') }} {{ $i + 1 }}</label>
                                                 
                                                 <div class="mb-2">
                                                     @if(isset($defaultGallery[$posIndex][$i]['image']))

@@ -32,11 +32,12 @@ class WalletController extends Controller
     {
         $query = User::where('role', 'customer');
 
-        if ($request->has('search')) {
-            $search = $request->get('search');
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $search = is_string($search) ? str_replace(['%', '_'], ['\\%', '\\_'], $search) : '';
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+                $q->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%');
             });
         }
 
@@ -57,11 +58,12 @@ class WalletController extends Controller
     {
         $query = WalletTransaction::with('user');
 
-        if ($request->has('search')) {
-            $search = $request->get('search');
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $search = is_string($search) ? str_replace(['%', '_'], ['\\%', '\\_'], $search) : '';
             $query->whereHas('user', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+                $q->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%');
             });
         }
 
@@ -108,29 +110,36 @@ class WalletController extends Controller
             return back()->with('error', __('This transaction is not pending.'));
         }
 
-        // If it's a deposit (credit), we need to update the associated order if exists
+        // If it's a deposit (credit) with an associated order, let OrderService handle it
         if ($transaction->type === 'credit' && $transaction->payment_transaction_id) {
             $order = Order::where('order_number', $transaction->payment_transaction_id)->first();
 
             if ($order && $order->status === Order::STATUS_PENDING) {
-                // This will handle wallet credit via OrderService logic
-                $this->orderService->changeStatus($order, Order::STATUS_PROCESSING, \Auth::id());
-                // The wallet transaction status update is handled in OrderService now,
-                // but if we want to be sure, we can check.
-                // Actually, OrderService updates it to 'approved'.
-
+                $this->orderService->changeStatus($order, Order::STATUS_PROCESSING, auth()->id());
                 return back()->with('success', __('Transaction approved successfully.'));
             }
         }
 
-        // Fallback for manual transactions without order or other types
-        $transaction->update(['status' => 'approved']);
-
-        if ($transaction->type === 'credit') {
-            $transaction->user->increment('wallet_balance', $transaction->amount);
-        } elseif ($transaction->type === 'debit') {
-            // Usually debit is already deducted, but if it was pending deduction:
-            $transaction->user->decrement('wallet_balance', $transaction->amount);
+        // Manual approval: apply balance change inside a transaction to avoid double-credit
+        try {
+            \Illuminate\Support\Facades\DB::transaction(function () use ($transaction) {
+                $locked = WalletTransaction::where('id', $transaction->id)->lockForUpdate()->first();
+                if (! $locked || $locked->status !== 'pending') {
+                    throw new \RuntimeException(__('common.transaction_already_processed'));
+                }
+                $locked->update(['status' => 'approved']);
+                $user = $locked->user;
+                if ($locked->type === 'credit') {
+                    $user->increment('wallet_balance', $locked->amount);
+                } elseif ($locked->type === 'debit') {
+                    $user->decrement('wallet_balance', $locked->amount);
+                }
+            });
+        } catch (\RuntimeException $e) {
+            return back()->with('error', $e->getMessage());
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Wallet transaction approval failed', ['transaction_id' => $transaction->id, 'error' => $e->getMessage()]);
+            return back()->with('error', __('common.error_approving_transaction'));
         }
 
         return back()->with('success', __('Transaction approved successfully.'));

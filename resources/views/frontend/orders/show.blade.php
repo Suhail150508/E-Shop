@@ -253,12 +253,12 @@
                             @php
                                 $status = $order->status;
                                 $steps = [
-                                    'pending' => ['label' => 'Pending', 'icon' => 'fa-clipboard-list'],
-                                    'confirmed' => ['label' => 'Confirmed', 'icon' => 'fa-check-circle'],
-                                    'processing' => ['label' => 'Processing', 'icon' => 'fa-boxes-packing'],
-                                    'pickup' => ['label' => 'Pick-Up', 'icon' => 'fa-truck-pickup'],
-                                    'shipped' => ['label' => 'Shipped', 'icon' => 'fa-truck-fast'],
-                                    'delivered' => ['label' => 'Delivered', 'icon' => 'fa-box-open']
+                                    'pending' => ['label' => __('Pending'), 'icon' => 'fa-clipboard-list'],
+                                    'confirmed' => ['label' => __('Confirmed'), 'icon' => 'fa-check-circle'],
+                                    'processing' => ['label' => __('Processing'), 'icon' => 'fa-boxes-packing'],
+                                    'pickup' => ['label' => __('Pick-Up'), 'icon' => 'fa-truck-pickup'],
+                                    'shipped' => ['label' => __('Shipped'), 'icon' => 'fa-truck-fast'],
+                                    'delivered' => ['label' => __('Delivered'), 'icon' => 'fa-box-open']
                                 ];
                                 
                                 // Logic to determine current step index based on order status

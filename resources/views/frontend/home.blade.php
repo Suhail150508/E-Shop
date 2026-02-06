@@ -32,28 +32,23 @@
                 <div class="col-lg-6">
                     <div class="hero-gallery position-relative">
                         @php
-                            // Fetch dynamic images or fallback to static
-                            $heroImages = json_decode(setting('home_hero_gallery'), true);
-                            
-                            if (empty($heroImages)) {
+                            $heroImages = json_decode(setting('home_hero_gallery') ?? '[]', true);
+                            if (empty($heroImages) || !is_array($heroImages)) {
                                 $heroImages = [
-                                    // Position 1 (left) - 3 images
                                     [
-                                        ['image' => 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=90', 'name' => 'Elegant Evening Gown', 'badge' => 'NEW'],
-                                        ['image' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=90', 'name' => 'Velvet Blazer', 'badge' => 'TREND'],
-                                        ['image' => 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=800&q=90', 'name' => 'Designer Outfit', 'badge' => 'PREMIUM']
+                                        ['image' => 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=90', 'name' => __('Elegant Evening Gown'), 'badge' => __('common.new')],
+                                        ['image' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=90', 'name' => __('Velvet Blazer'), 'badge' => __('Trend')],
+                                        ['image' => 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=800&q=90', 'name' => __('Designer Outfit'), 'badge' => __('Premium')],
                                     ],
-                                    // Position 2 (center) - 3 images
                                     [
-                                        ['image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=90', 'name' => 'Floral Maxi Dress', 'badge' => 'SALE'],
-                                        ['image' => 'https://images.unsplash.com/photo-1550614000-4b9519e49a27?auto=format&fit=crop&w=800&q=90', 'name' => 'Summer Dress', 'badge' => 'POPULAR'],
-                                        ['image' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=90', 'name' => 'Casual Wear', 'badge' => 'NEW']
+                                        ['image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=90', 'name' => __('Floral Maxi Dress'), 'badge' => __('common.sale_badge')],
+                                        ['image' => 'https://images.unsplash.com/photo-1550614000-4b9519e49a27?auto=format&fit=crop&w=800&q=90', 'name' => __('Summer Dress'), 'badge' => __('Popular')],
+                                        ['image' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=90', 'name' => __('Casual Wear'), 'badge' => __('common.new')],
                                     ],
-                                    // Position 3 (right) - 3 images
                                     [
-                                        ['image' => 'https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&w=800&q=90', 'name' => 'Vintage Collection', 'badge' => 'HOT'],
-                                        ['image' => 'https://images.unsplash.com/photo-1554412933-514a83d2f3c8?auto=format&fit=crop&w=800&q=90', 'name' => 'Chic Top', 'badge' => 'LIMITED'],
-                                        ['image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=90', 'name' => 'Fashion Collection', 'badge' => 'HOT']
+                                        ['image' => 'https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&w=800&q=90', 'name' => __('Vintage Collection'), 'badge' => __('common.hot')],
+                                        ['image' => 'https://images.unsplash.com/photo-1554412933-514a83d2f3c8?auto=format&fit=crop&w=800&q=90', 'name' => __('Chic Top'), 'badge' => __('Limited')],
+                                        ['image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=90', 'name' => __('Fashion Collection'), 'badge' => __('common.hot')],
                                     ]
                                 ];
                             }
@@ -64,7 +59,7 @@
                                 <div class="image-wrapper">
                                     @foreach($images as $imgIndex => $item)
                                         <img src="{{ getImageOrPlaceholder($item['image'] ?? null, '500x450') }}" 
-                                             alt="{{ $item['name'] ?? 'Gallery Image' }}" 
+                                             alt="{{ $item['name'] ?? __('common.gallery_image') }}" 
                                              class="gallery-img {{ $imgIndex === 0 ? 'active' : '' }}"
                                              data-image-index="{{ $imgIndex }}"
                                              data-badge="{{ $item['badge'] ?? '' }}"
@@ -156,29 +151,29 @@
                         <div class="col-md-6 col-lg-3">
                             <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none d-block">
                                 <div class="category-icon"><i class="fas fa-hat-wizard"></i></div>
-                                <h3 class="category-name">Accessories</h3>
-                                <p class="category-count">Explore</p>
+                                <h3 class="category-name">{{ __('Accessories') }}</h3>
+                                <p class="category-count">{{ __('common.explore') }}</p>
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none d-block">
                                 <div class="category-icon"><i class="fas fa-laptop"></i></div>
-                                <h3 class="category-name">Electronics</h3>
-                                <p class="category-count">Explore</p>
+                                <h3 class="category-name">{{ __('Electronics') }}</h3>
+                                <p class="category-count">{{ __('common.explore') }}</p>
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none d-block">
                                 <div class="category-icon"><i class="fas fa-gem"></i></div>
-                                <h3 class="category-name">Jewelry</h3>
-                                <p class="category-count">Explore</p>
+                                <h3 class="category-name">{{ __('Jewelry') }}</h3>
+                                <p class="category-count">{{ __('common.explore') }}</p>
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none d-block">
                                 <div class="category-icon"><i class="fas fa-dumbbell"></i></div>
-                                <h3 class="category-name">Sports Fashion</h3>
-                                <p class="category-count">Explore</p>
+                                <h3 class="category-name">{{ __('Sports Fashion') }}</h3>
+                                <p class="category-count">{{ __('common.explore') }}</p>
                             </a>
                         </div>
                     </div>
@@ -234,21 +229,21 @@
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
                     <div class="position-relative fade-in">
-                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" alt="Fashion Collection" class="img-fluid rounded-4 shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" alt="{{ __('Fashion Collection') }}" class="img-fluid rounded-4 shadow-lg">
                         <div class="position-absolute bottom-0 end-0 bg-white p-3 rounded-3 shadow mb-4 me-4">
                             <div class="d-flex align-items-center gap-3">
                                 <div class="text-warning"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
-                                <div><h6 class="mb-0 fw-bold">4.9/5</h6><small class="text-muted">15K+ Reviews</small></div>
+                                <div><h6 class="mb-0 fw-bold">4.9/5</h6><small class="text-muted">{{ __('common.reviews_count', ['count' => '15K+']) }}</small></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="fade-in ps-lg-4">
-                        <span class="section-badge section-badge-outline">TESTIMONIALS</span>
-                        <h2 class="banner-dark-title mb-4 mt-2">Crafted with Care, <br>Designed for You</h2>
+                        <span class="section-badge section-badge-outline">{{ __('common.testimonials') }}</span>
+                        <h2 class="banner-dark-title mb-4 mt-2">{{ __('common.crafted_with_care') }}</h2>
                         <p class="banner-dark-text mb-4">
-                            Every piece in our collection tells a story of craftsmanship, sustainability, and timeless design. We believe in creating fashion that enhances your personal style.
+                            {{ __('common.testimonials_paragraph') }}
                         </p>
                         <div class="testimonial-avatars d-flex gap-3 mb-4">
                             <div class="testimonial-avatar">
@@ -260,7 +255,7 @@
                                 <small class="d-block mt-1 fw-semibold">Sarah J.</small>
                             </div>
                         </div>
-                        <a href="{{ route('shop.index') }}" class="btn btn-primary btn-lg rounded-pill px-5">Shop Now <i class="fas fa-arrow-right ms-2"></i></a>
+                        <a href="{{ route('shop.index') }}" class="btn btn-primary btn-lg rounded-pill px-5">{{ __('common.shop_now') }} <i class="fas fa-arrow-right ms-2"></i></a>
                     </div>
                 </div>
             </div>
@@ -287,7 +282,7 @@
                     @endforeach
                 @else
                     <div class="col-12 text-center py-5">
-                        <p class="text-muted">{{ __('No products found.') }}</p>
+                        <p class="text-muted">{{ __('common.no_products_found') }}</p>
                     </div>
                 @endif
             </div>

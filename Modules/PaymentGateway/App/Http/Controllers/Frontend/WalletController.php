@@ -67,7 +67,8 @@ class WalletController extends Controller
 
             return $this->payments->pay($order, $paymentMethod);
         } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
+            \Illuminate\Support\Facades\Log::warning('Wallet deposit failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);
+            return back()->with('error', __('Unable to process deposit. Please try again or contact support.'));
         }
     }
 }

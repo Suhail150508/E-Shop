@@ -44,7 +44,8 @@ class OrderController extends Controller
             $query->where('payment_status', $paymentStatus);
         }
 
-        if ($customer) {
+        if ($request->filled('customer')) {
+            $customer = str_replace(['%', '_'], ['\\%', '\\_'], $request->input('customer'));
             $query->where(function ($q) use ($customer) {
                 $q->whereHas('user', function ($userQuery) use ($customer) {
                     $userQuery->where('name', 'like', '%'.$customer.'%')

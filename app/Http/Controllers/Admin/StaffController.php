@@ -41,7 +41,7 @@ class StaffController extends Controller
             'email_verified_at' => now(),
         ]);
 
-        return redirect()->route('admin.staff.index')->with('success', 'Staff member created successfully.');
+        return redirect()->route('admin.staff.index')->with('success', __('Staff member created successfully.'));
     }
 
     public function edit(User $staff)
@@ -76,7 +76,7 @@ class StaffController extends Controller
 
         $staff->update($data);
 
-        return redirect()->route('admin.staff.index')->with('success', 'Staff member updated successfully.');
+        return redirect()->route('admin.staff.index')->with('success', __('Staff member updated successfully.'));
     }
 
     public function destroy(User $staff)
@@ -87,6 +87,6 @@ class StaffController extends Controller
 
         $staff->delete();
 
-        return redirect()->route('admin.staff.index')->with('success', 'Staff member deleted successfully.');
+        return redirect()->route('admin.staff.index')->with('success', __('Staff member deleted successfully.'));
     }
 }

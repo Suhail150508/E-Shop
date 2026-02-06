@@ -139,7 +139,14 @@ class LiveChatController extends Controller
 
         $conversation->update(['is_read_by_admin' => false]);
 
-        MessageSent::dispatch($message);
+        try {
+            MessageSent::dispatch($message);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('LiveChat: broadcast failed (message still saved)', [
+                'message_id' => $message->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         return response()->json([
             'status' => 'success',

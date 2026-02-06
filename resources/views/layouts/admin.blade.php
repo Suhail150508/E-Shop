@@ -45,27 +45,25 @@
                 <i class="fas fa-shopping-bag"></i>
             </div>
             <div class="brand-text">
-                <span>Single Vendor</span>
-                <small>Shop</small>
+                <span>{{ config('app.name') }}</span>
             </div>
         </a>
 
         <div class="sidebar-search-wrapper">
             <div class="sidebar-search">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" id="menuSearch" placeholder="Search menu..." class="search-input">
+                <input type="text" id="menuSearch" placeholder="{{ __('Search menu...') }}" class="search-input">
             </div>
         </div>
 
         <nav class="sidebar-menu">
-                <div class="menu-header">Main</div>
+                <div class="menu-header">{{ __('Main') }}</div>
                 <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-
                     <i class="fas fa-th-large"></i>
-                    <span>Dashboard</span>
+                    <span>{{ __('Dashboard') }}</span>
                 </a>
 
-                <div class="menu-header">PRODUCT MANAGEMENT</div>
+                <div class="menu-header">{{ __('Product Management') }}</div>
 
                 {{-- Product Management --}}
                 @php
@@ -79,223 +77,208 @@
                 @endphp
                 <a class="nav-link {{ $isProductActive ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" href="#productMenu" role="button" aria-expanded="{{ $isProductActive ? 'true' : 'false' }}" aria-controls="productMenu">
                     <i class="fas fa-box"></i>
-                    <span>Product Manage</span>
+                    <span>{{ __('Product Manage') }}</span>
                     <i class="fas fa-chevron-right arrow ms-auto"></i>
                 </a>
                 <div class="collapse {{ $isProductActive ? 'show' : '' }}" id="productMenu">
                     <div class="sub-menu">
                         <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
-                            <span>Products</span>
+                            <span>{{ __('Products') }}</span>
                         </a>
                         <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                            <span>Categories</span>
+                            <span>{{ __('Categories') }}</span>
                         </a>
                         <a href="{{ route('admin.subcategories.index') }}" class="nav-link {{ request()->routeIs('admin.subcategories.*') ? 'active' : '' }}">
-                            <span>Sub Categories</span>
+                            <span>{{ __('Sub Categories') }}</span>
                         </a>
                         <a href="{{ route('admin.brands.index') }}" class="nav-link {{ request()->routeIs('admin.brands.*') ? 'active' : '' }}">
-                            <span>Brands</span>
+                            <span>{{ __('Brands') }}</span>
                         </a>
                         <a href="{{ route('admin.units.index') }}" class="nav-link {{ request()->routeIs('admin.units.*') ? 'active' : '' }}">
-                            <span>Units</span>
+                            <span>{{ __('Units') }}</span>
                         </a>
-                           <a href="{{ route('admin.colors.index') }}" class="nav-link {{ request()->routeIs('admin.colors.*') ? 'active' : '' }}">
-                                <span>Colors</span>
-                            </a>
+                        <a href="{{ route('admin.colors.index') }}" class="nav-link {{ request()->routeIs('admin.colors.*') ? 'active' : '' }}">
+                            <span>{{ __('Colors') }}</span>
+                        </a>
                     </div>
                 </div>
 
-                <div class="menu-header">ORDER MANAGEMENT</div>
-                {{-- Order Management --}}
+                <div class="menu-header">{{ __('Order Management') }}</div>
                 @php
-                    $isOrderActive = request()->routeIs('admin.orders.*') || 
-                                   request()->routeIs('admin.coupons.*');
+                    $isOrderActive = request()->routeIs('admin.orders.*') || request()->routeIs('admin.coupons.*') || request()->routeIs('admin.refund-requests.*') || request()->routeIs('admin.refund-reasons.*');
                 @endphp
                 <a class="nav-link {{ $isOrderActive ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" href="#orderMenu" role="button" aria-expanded="{{ $isOrderActive ? 'true' : 'false' }}" aria-controls="orderMenu">
                     <i class="fas fa-shopping-cart"></i>
-                    <span>Order Manage</span>
+                    <span>{{ __('Order Manage') }}</span>
                     <i class="fas fa-chevron-right arrow ms-auto"></i>
                 </a>
                 <div class="collapse {{ $isOrderActive ? 'show' : '' }}" id="orderMenu">
                     <div class="sub-menu">
                         <a href="{{ route('admin.orders.index') }}" class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
-                            <span>Orders</span>
+                            <span>{{ __('Orders') }}</span>
                         </a>
                         <a href="{{ route('admin.refund-requests.index') }}" class="nav-link {{ request()->routeIs('admin.refund-requests.*') ? 'active' : '' }}">
-                            <span>Refund Requests</span>
+                            <span>{{ __('Refund Requests') }}</span>
                         </a>
                         <a href="{{ route('admin.refund-reasons.index') }}" class="nav-link {{ request()->routeIs('admin.refund-reasons.*') ? 'active' : '' }}">
-                            <span>Refund Reasons</span>
+                            <span>{{ __('Refund Reasons') }}</span>
                         </a>
                         <a href="{{ route('admin.coupons.index') }}" class="nav-link {{ request()->routeIs('admin.coupons.*') ? 'active' : '' }}">
-                            <span>Coupons</span>
-                        </a>
-                        <a href="#" class="nav-link">
-                            <span>Invoices</span>
+                            <span>{{ __('Coupons') }}</span>
                         </a>
                     </div>
                 </div>
 
-                {{-- User Management --}}
-                <div class="menu-header">USERS MANAGEMENT</div>
+                <div class="menu-header">{{ __('Users Management') }}</div>
                 @php
-                    $isCustomerActive = request()->routeIs('admin.customers.*') || 
-                                      request()->routeIs('admin.contact.*') || 
-                                      request()->routeIs('admin.newsletter.*');
+                    $isCustomerActive = request()->routeIs('admin.customers.*') || request()->routeIs('admin.contact.*') || request()->routeIs('admin.newsletter.*');
                 @endphp
                 <a class="nav-link {{ $isCustomerActive ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" href="#customerMenu" role="button" aria-expanded="{{ $isCustomerActive ? 'true' : 'false' }}" aria-controls="customerMenu">
                     <i class="fas fa-users"></i>
-                    <span>Customers</span>
+                    <span>{{ __('Customers') }}</span>
                     <i class="fas fa-chevron-right arrow ms-auto"></i>
                 </a>
                 <div class="collapse {{ $isCustomerActive ? 'show' : '' }}" id="customerMenu">
                     <div class="sub-menu">
                         <a href="{{ route('admin.customers.index') }}" class="nav-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
-                            <span>Customers List</span>
+                            <span>{{ __('Customers List') }}</span>
                         </a>
                         <a href="{{ route('admin.contact.index') }}" class="nav-link {{ request()->routeIs('admin.contact.*') ? 'active' : '' }}">
-                            <span>Contact Messages</span>
+                            <span>{{ __('Contact Messages') }}</span>
                         </a>
                         <a href="{{ route('admin.newsletter.index') }}" class="nav-link {{ request()->routeIs('admin.newsletter.*') ? 'active' : '' }}">
-                            <span>Subscriber List</span>
+                            <span>{{ __('Subscriber List') }}</span>
                         </a>
                     </div>
                 </div>
 
-                 {{-- Support Management --}}
                 @php
-                    $isSupportActive = request()->routeIs('admin.support-tickets.*') || 
-                                     request()->routeIs('admin.support-departments.*');
+                    $isSupportActive = request()->routeIs('admin.support-tickets.*') || request()->routeIs('admin.support-departments.*');
                 @endphp
+                <div class="menu-header">{{ __('Support Ticket') }}</div>
                 <a class="nav-link {{ $isSupportActive ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" href="#supportMenu" role="button" aria-expanded="{{ $isSupportActive ? 'true' : 'false' }}" aria-controls="supportMenu">
                     <i class="fas fa-headset"></i>
-                    <span>Support Ticket</span>
+                    <span>{{ __('Support Ticket') }}</span>
                     <i class="fas fa-chevron-right arrow ms-auto"></i>
                 </a>
                 <div class="collapse {{ $isSupportActive ? 'show' : '' }}" id="supportMenu">
                     <div class="sub-menu">
                         <a href="{{ route('admin.support-tickets.index') }}" class="nav-link {{ request()->routeIs('admin.support-tickets.*') ? 'active' : '' }}">
-                            <span>All Tickets</span>
+                            <span>{{ __('All Tickets') }}</span>
                         </a>
                         <a href="{{ route('admin.support-departments.index') }}" class="nav-link {{ request()->routeIs('admin.support-departments.*') ? 'active' : '' }}">
-                            <span>Departments</span>
+                            <span>{{ __('Departments') }}</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="menu-header">WALLET MANAGEMENT</div>
-                {{-- Wallet Management --}}
+                @if(Route::has('admin.wallet.index'))
+                <div class="menu-header">{{ __('Wallet Management') }}</div>
                 @php
                     $isWalletActive = request()->routeIs('admin.wallet.*');
                 @endphp
                 <a class="nav-link {{ $isWalletActive ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" href="#walletMenu" role="button" aria-expanded="{{ $isWalletActive ? 'true' : 'false' }}" aria-controls="walletMenu">
                     <i class="fas fa-wallet"></i>
-                    <span>Wallet Manage</span>
+                    <span>{{ __('Wallet Manage') }}</span>
                     <i class="fas fa-chevron-right arrow ms-auto"></i>
                 </a>
                 <div class="collapse {{ $isWalletActive ? 'show' : '' }}" id="walletMenu">
                     <div class="sub-menu">
                         <a href="{{ route('admin.wallet.index') }}" class="nav-link {{ request()->routeIs('admin.wallet.index') ? 'active' : '' }}">
-                            <span>Wallet Lists</span>
+                            <span>{{ __('Wallet Lists') }}</span>
                         </a>
                         <a href="{{ route('admin.wallet.transactions') }}" class="nav-link {{ request()->routeIs('admin.wallet.transactions') ? 'active' : '' }}">
-                            <span>Transactions</span>
+                            <span>{{ __('Transactions') }}</span>
                         </a>
                         <a href="{{ route('admin.wallet.settings') }}" class="nav-link {{ request()->routeIs('admin.wallet.settings') ? 'active' : '' }}">
-                            <span>Settings</span>
+                            <span>{{ __('Settings') }}</span>
                         </a>
                     </div>
                 </div>
+                @endif
 
-                <div class="menu-header">Live Chat</div>
+                @if(Route::has('admin.livechat.index'))
+                <div class="menu-header">{{ __('Live Chat') }}</div>
                 <a href="{{ route('admin.livechat.index') }}" class="nav-link {{ request()->routeIs('admin.livechat.*') ? 'active' : '' }}">
                     <i class="fas fa-comments"></i>
-                    <span>Live Chat</span>
+                    <span>{{ __('Live Chat') }}</span>
                 </a>
-                  {{-- User Management --}}
-                <div class="menu-header"> STAFF MANAGEMENT</div>
+                @endif
+
+                <div class="menu-header">{{ __('Staff Management') }}</div>
                 <a href="{{ route('admin.staff.index') }}" class="nav-link {{ request()->routeIs('admin.staff.*') ? 'active' : '' }}">
                     <i class="fas fa-users"></i>
-                    <span>Staffs</span>
+                    <span>{{ __('Staffs') }}</span>
                 </a>
 
-                <div class="menu-header">SETTINGS</div>
-                
-                {{-- Appearance --}}
+                <div class="menu-header">{{ __('Settings') }}</div>
                 @php
-                    $isAppearanceActive = request()->routeIs('admin.website-setup.*') || 
-                                        request()->routeIs('admin.menus.*');
+                    $isAppearanceActive = request()->routeIs('admin.website-setup.*') || request()->routeIs('admin.menus.*');
                 @endphp
                 <a class="nav-link {{ $isAppearanceActive ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" href="#appearanceMenu" role="button" aria-expanded="{{ $isAppearanceActive ? 'true' : 'false' }}" aria-controls="appearanceMenu">
                     <i class="fas fa-desktop"></i>
-                    <span>Appearance</span>
+                    <span>{{ __('Appearance') }}</span>
                     <i class="fas fa-chevron-right arrow ms-auto"></i>
                 </a>
                 <div class="collapse {{ $isAppearanceActive ? 'show' : '' }}" id="appearanceMenu">
                     <div class="sub-menu">
                         <a href="{{ route('admin.website-setup.index') }}" class="nav-link {{ request()->routeIs('admin.website-setup.*') ? 'active' : '' }}">
-                            <span>Website Setup</span>
+                            <span>{{ __('Website Setup') }}</span>
                         </a>
                         <a href="{{ route('admin.menus.index') }}" class="nav-link {{ request()->routeIs('admin.menus.*') ? 'active' : '' }}">
-                            <span>Menus</span>
+                            <span>{{ __('Menus') }}</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="menu-header">Reviews</div>
+                <div class="menu-header">{{ __('Reviews') }}</div>
                 <a href="{{ route('admin.reviews.index') }}" class="nav-link {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
-                    <i class="fas fa-comments"></i>
-                    <span>Reviews</span>
+                    <i class="fas fa-star"></i>
+                    <span>{{ __('Reviews') }}</span>
                 </a>
 
-                <div class="menu-header">System Settings</div>
-                {{-- System Settings --}}
+                <div class="menu-header">{{ __('System Settings') }}</div>
                 @php
-                    $isSettingsActive = request()->routeIs('admin.pages.*') || 
-                    request()->routeIs('admin.currency.*') || 
-                    request()->routeIs('admin.language.*') || 
-                    request()->routeIs('admin.payment-methods.*') ||
-                    request()->routeIs('admin.email-configuration.*') ||
-                    request()->routeIs('admin.settings.*');
+                    $isSettingsActive = request()->routeIs('admin.pages.*') || request()->routeIs('admin.currency.*') || request()->routeIs('admin.language.*') || request()->routeIs('admin.payment-methods.*') || request()->routeIs('admin.email-configuration.*') || request()->routeIs('admin.settings.*');
                 @endphp
                 <a class="nav-link {{ $isSettingsActive ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" href="#settingsMenu" role="button" aria-expanded="{{ $isSettingsActive ? 'true' : 'false' }}" aria-controls="settingsMenu">
                     <i class="fas fa-cog"></i>
-                    <span>System Settings</span>
+                    <span>{{ __('System Settings') }}</span>
                     <i class="fas fa-chevron-right arrow ms-auto"></i>
                 </a>
                 <div class="collapse {{ $isSettingsActive ? 'show' : '' }}" id="settingsMenu">
                     <div class="sub-menu">
                         <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
-                            <span>General Settings</span>
+                            <span>{{ __('General Settings') }}</span>
                         </a>
                         <a href="{{ route('admin.pages.index') }}" class="nav-link {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
-                            <span>Pages</span>
+                            <span>{{ __('Pages') }}</span>
                         </a>
                         <a href="{{ route('admin.currency.index') }}" class="nav-link {{ request()->routeIs('admin.currency.*') ? 'active' : '' }}">
-                            <span>Multi Currency</span>
+                            <span>{{ __('Multi Currency') }}</span>
                         </a>
                         <a href="{{ route('admin.language.index') }}" class="nav-link {{ request()->routeIs('admin.language.*') ? 'active' : '' }}">
-                            <span>Multi Language</span>
+                            <span>{{ __('Multi Language') }}</span>
                         </a>
                         <a href="{{ route('admin.payment-methods.index') }}" class="nav-link {{ request()->routeIs('admin.payment-methods.*') ? 'active' : '' }}">
-                            <span>Payment Methods</span>
+                            <span>{{ __('Payment Methods') }}</span>
                         </a>
                         <a href="{{ route('admin.email-configuration.index') }}" class="nav-link {{ request()->routeIs('admin.email-configuration.index') ? 'active' : '' }}">
-                            <span>Email Config</span>
+                            <span>{{ __('Email Config') }}</span>
                         </a>
                         <a href="{{ route('admin.email-configuration.templates') }}" class="nav-link {{ request()->routeIs('admin.email-configuration.templates*') ? 'active' : '' }}">
-                            <span>Email Templates</span>
+                            <span>{{ __('Email Templates') }}</span>
                         </a>
                     </div>
                 </div>
-            <div class="menu-header">Sign Out</div>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="nav-link w-100 text-start bg-transparent" style="border: none; border-left: 3px solid transparent;">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Sign out</span>
-                </button>
-            </form>
+                <div class="menu-header">{{ __('Sign Out') }}</div>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="nav-link w-100 text-start bg-transparent border-0">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>{{ __('Sign out') }}</span>
+                    </button>
+                </form>
         </nav>
     </aside>
 
@@ -308,13 +291,13 @@
                     <i class="fas fa-bars"></i>
                 </div>
                 <div class="d-none d-md-block">
-                    <h5 class="mb-0 fw-semibold">@yield('page_title', 'Dashboard')</h5>
+                    <h5 class="mb-0 fw-semibold">@yield('page_title', __('Dashboard'))</h5>
                 </div>
             </div>
 
             <div class="header-right">
                 <a href="{{ route('home') }}" target="_blank" class="btn btn-light btn-sm d-none d-md-flex align-items-center gap-2">
-                    <i class="fas fa-external-link-alt"></i> Visit Site
+                    <i class="fas fa-external-link-alt"></i> {{ __('Visit Site') }}
                 </a>
 
                 <div class="dropdown notification-dropdown">
@@ -324,13 +307,13 @@
                     </div>
                     <div class="dropdown-menu dropdown-menu-end p-0 shadow-lg border-0" style="width: 320px; max-height: 400px; overflow-y: auto;">
                         <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light">
-                            <h6 class="m-0 fw-bold">Notifications</h6>
-                            <button class="btn btn-sm btn-link text-decoration-none p-0" onclick="markAllRead()">Mark all read</button>
+                            <h6 class="m-0 fw-bold">{{ __('Notifications') }}</h6>
+                            <button type="button" class="btn btn-sm btn-link text-decoration-none p-0" onclick="markAllRead()">{{ __('Mark all read') }}</button>
                         </div>
                         <div id="notification-list">
                             <div class="text-center p-4 text-muted" id="no-notifications">
                                 <i class="bi bi-bell-slash fs-4 mb-2 d-block"></i>
-                                No new notifications
+                                {{ __('No new notifications') }}
                             </div>
                         </div>
                     </div>
@@ -338,20 +321,19 @@
 
                 <div class="dropdown user-dropdown">
                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                        <img src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff" alt="Admin" class="user-avatar">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Admin') }}&background=4f46e5&color=fff" alt="{{ __('Admin') }}" class="user-avatar">
                         <div class="d-none d-md-block text-start">
-                            <div class="small fw-bold">Super Admin</div>
-                            <div class="small text-muted" style="font-size: 0.7rem; line-height: 1;">Administrator</div>
+                            <div class="small fw-bold">{{ auth()->user()->name ?? __('Admin') }}</div>
+                            <div class="small text-muted" style="font-size: 0.7rem; line-height: 1;">{{ __('Administrator') }}</div>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg">
-                        <li><a class="dropdown-item" href="#"><i class="far fa-user me-2"></i> Profile</a></li>
-                        <li><a class="dropdown-item" href="{{ route('admin.settings.index') }}"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.settings.index') }}"><i class="fas fa-cog me-2"></i> {{ __('Settings') }}</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
-                                <button class="dropdown-item text-danger" type="submit"><i class="fas fa-sign-out-alt me-2"></i> Logout</button>
+                                <button class="dropdown-item text-danger w-100 text-start" type="submit"><i class="fas fa-sign-out-alt me-2"></i> {{ __('Logout') }}</button>
                             </form>
                         </li>
                     </ul>
@@ -536,29 +518,24 @@
                 }
             }
 
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text == null ? '' : String(text);
+                return div.innerHTML;
+            }
             function addNotificationItem(notification, prepend = false) {
                 if (noNotifications) noNotifications.classList.add('d-none');
-                
-                const data = notification.data || notification; 
-                const message = data.message || 'New Notification';
-                const link = data.link || '#';
+                const data = notification.data || notification;
+                const message = escapeHtml(data.message || '{{ __("New Notification") }}');
+                const link = (data.link && data.link !== '#') ? data.link : '#';
                 const date = notification.created_at ? new Date(notification.created_at).toLocaleString() : new Date().toLocaleString();
-                
                 const item = document.createElement('a');
-                item.href = link; 
+                item.href = link;
                 item.className = 'dropdown-item p-3 border-bottom notification-item unread';
                 item.dataset.id = notification.id;
-                item.innerHTML = `
-                    <div class="d-flex align-items-start">
-                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-3">
-                            <i class="bi bi-bag-check-fill"></i>
-                        </div>
-                        <div>
-                            <p class="mb-1 small fw-bold text-dark">${message}</p>
-                            <small class="text-muted">${date}</small>
-                        </div>
-                    </div>
-                `;
+                item.innerHTML = '<div class="d-flex align-items-start">' +
+                    '<div class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-3"><i class="bi bi-bag-check-fill"></i></div>' +
+                    '<div><p class="mb-1 small fw-bold text-dark">' + message + '</p><small class="text-muted">' + escapeHtml(date) + '</small></div></div>';
                 
                 item.addEventListener('click', function(e) {
                     e.preventDefault();

@@ -213,6 +213,7 @@ class CategoryService
     {
         Cache::forget('categories_tree');
         Cache::forget('featured_categories');
+        Cache::forget('featured_categories_8');
     }
 
     /**

@@ -66,7 +66,8 @@ class WalletPaymentService implements PaymentService
                 ->route('customer.orders.show', $order)
                 ->with('success', __('Order paid successfully using wallet.'));
         } catch (\Exception $e) {
-            return back()->with('error', __('Payment failed: ').$e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Wallet payment failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
+            return back()->with('error', __('Payment failed. Please try again or contact support.'));
         }
     }
 

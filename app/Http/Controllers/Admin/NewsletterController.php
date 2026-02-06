@@ -12,8 +12,9 @@ class NewsletterController extends Controller
     {
         $query = Newsletter::query();
 
-        if ($request->search) {
-            $query->where('email', 'like', "%{$request->search}%");
+        if ($request->filled('search')) {
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $request->input('search'));
+            $query->where('email', 'like', '%'.$search.'%');
         }
 
         $subscribers = $query->latest()->paginate(10);
@@ -26,6 +27,6 @@ class NewsletterController extends Controller
         $subscriber = Newsletter::findOrFail($id);
         $subscriber->delete();
 
-        return back()->with('success', 'Subscriber deleted successfully.');
+        return back()->with('success', __('Subscriber deleted successfully.'));
     }
 }

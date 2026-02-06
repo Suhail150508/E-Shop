@@ -19,4 +19,11 @@ class Currency extends Model
         'is_default' => 'boolean',
         'status' => 'boolean',
     ];
+
+    public static function getDefaultSymbol(): string
+    {
+        $currency = static::where('is_default', true)->where('status', true)->first();
+
+        return $currency ? (string) $currency->symbol : '$';
+    }
 }

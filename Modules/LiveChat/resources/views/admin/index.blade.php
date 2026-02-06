@@ -6,21 +6,25 @@
         <!-- Sidebar -->
         <div class="col-md-4 col-lg-3 h-100 border-end bg-white p-0 d-flex flex-column">
             <div class="p-3 border-bottom bg-light">
-                <h5 class="mb-0">Conversations</h5>
+                <h5 class="mb-0">{{ __('Conversations') }}</h5>
             </div>
             <div class="flex-grow-1 overflow-auto" id="conversation-list">
                 @foreach($conversations as $conversation)
-                <div class="conversation-item p-3 border-bottom cursor-pointer {{ $loop->first ? 'active' : '' }}" 
+                @php
+                    $lastMsg = $conversation->messages->last();
+                    $preview = $lastMsg ? ($lastMsg->message ? \Illuminate\Support\Str::limit($lastMsg->message, 30) : __('Attachment')) : __('common.no_messages_yet');
+                @endphp
+                <div class="conversation-item p-3 border-bottom cursor-pointer {{ $loop->first ? 'active' : '' }}"
                      onclick="loadConversation({{ $conversation->id }}, this)"
                      data-id="{{ $conversation->id }}">
                     <div class="d-flex justify-content-between align-items-start mb-1">
-                        <strong class="text-truncate">{{ $conversation->customer_name ?? 'Guest' }}</strong>
+                        <strong class="text-truncate">{{ $conversation->customer_name ?? __('Guest') }}</strong>
                         @if(!$conversation->is_read_by_admin)
-                            <span class="badge bg-danger rounded-pill unread-badge">New</span>
+                            <span class="badge bg-danger rounded-pill unread-badge">{{ __('New') }}</span>
                         @endif
                     </div>
-                    <small class="text-muted d-block text-truncate">{{ $conversation->messages->last()->message ?? 'Attachment' }}</small>
-                    <small class="text-muted" style="font-size: 0.75rem;">{{ $conversation->updated_at->diffForHumans() }}</small>
+                    <small class="text-muted d-block text-truncate">{{ $preview }}</small>
+                    <small class="text-muted" style="font-size: 0.75rem;">{{ $conversation->updated_at?->diffForHumans() }}</small>
                 </div>
                 @endforeach
             </div>
@@ -30,7 +34,7 @@
         <div class="col-md-8 col-lg-9 h-100 d-flex flex-column p-0 bg-white">
             @if($conversations->count() > 0)
                 <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-white shadow-sm" style="z-index: 10;">
-                    <h6 class="mb-0" id="chat-user-name">{{ $conversations->first()->customer_name ?? 'Guest' }}</h6>
+                    <h6 class="mb-0" id="chat-user-name">{{ $conversations->first()->customer_name ?? __('Guest') }}</h6>
                     <small class="text-muted" id="chat-user-email">{{ $conversations->first()->customer_email ?? '' }}</small>
                 </div>
 
@@ -48,7 +52,7 @@
                                 <span class="visually-hidden">New alerts</span>
                             </span>
                         </label>
-                        <input type="text" class="form-control" name="message" placeholder="Type a reply..." autocomplete="off">
+                        <input type="text" class="form-control" name="message" placeholder="{{ __('Type a reply...') }}" autocomplete="off">
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-send"></i>
                         </button>
@@ -58,7 +62,7 @@
                 <div class="h-100 d-flex align-items-center justify-content-center text-muted">
                     <div class="text-center">
                         <i class="bi bi-chat-dots mb-3" style="font-size: 3rem;"></i>
-                        <p>No active conversations.</p>
+                        <p>{{ __('common.no_active_conversations') }}</p>
                     </div>
                 </div>
             @endif
@@ -137,25 +141,22 @@
                         body: formData
                     });
                     
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const data = await response.json();
-                    if (data.status === 'success') {
+                    const data = await response.json().catch(() => ({}));
+                    if (response.ok && data.status === 'success') {
+                        const hadAttachment = fileInput.files.length > 0;
                         fileInput.value = '';
                         resetAttachmentUI();
-                        if (data.message && fileInput.files.length > 0) {
-                             appendMessage(data.message);
-                             scrollToBottom();
+                        if (hadAttachment && data.message) {
+                            appendMessage(data.message);
+                            scrollToBottom();
                         }
                     } else {
-                        console.error('Server returned error:', data);
-                        toastr.error('Failed to send message');
+                        const errMsg = data.error || data.message || (response.status === 500 ? '{{ __("common.server_error_try_again") }}' : '{{ __("common.error_sending_message_try_again") }}');
+                        toastr.error(errMsg);
                     }
                 } catch (error) {
                     console.error('Reply error:', error);
-                    toastr.error('Error sending message: ' + error.message);
+                    toastr.error('{{ __("common.error_sending_message_try_again") }}');
                 }
             });
         }
@@ -219,7 +220,7 @@
             
             const data = await response.json();
             
-            document.getElementById('chat-user-name').textContent = data.conversation.customer_name || 'Guest';
+            document.getElementById('chat-user-name').textContent = data.conversation.customer_name || '{{ __("Guest") }}';
             document.getElementById('chat-user-email').textContent = data.conversation.customer_email || '';
             
             const messagesArea = document.getElementById('admin-chat-messages');
@@ -256,25 +257,29 @@
             scrollToBottom();
         } catch (error) {
             console.error('Load conversation error:', error);
-            toastr.error('Failed to load conversation');
+            toastr.error('{{ __("common.failed_to_load_conversation") }}');
         }
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     function appendMessage(msg) {
         const div = document.createElement('div');
-        div.className = `message-bubble ${msg.sender_type}`;
-        
+        div.className = 'message-bubble ' + (msg.sender_type || 'customer');
         let content = '';
-        if (msg.message) content += `<div class="mb-1">${msg.message}</div>`;
-        if (msg.attachment) {
-            content += `<div class="mt-2"><a href="/storage/${msg.attachment}" target="_blank">
-                <img src="/storage/${msg.attachment}" alt="Attachment" class="img-fluid rounded" style="max-width: 200px; max-height: 200px;">
-            </a></div>`;
+        if (msg.message) {
+            content += '<div class="mb-1">' + escapeHtml(msg.message) + '</div>';
         }
-        
-        const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        div.innerHTML = `${content}<small class="d-block text-end opacity-75" style="font-size: 0.7em;">${time}</small>`;
-        
+        if (msg.attachment) {
+            const attPath = (msg.attachment.indexOf('/') === 0 ? '' : '/storage/') + msg.attachment;
+            content += '<div class="mt-2"><a href="' + attPath + '" target="_blank" rel="noopener noreferrer"><img src="' + attPath + '" alt="{{ __("Attachment") }}" class="img-fluid rounded" style="max-width: 200px; max-height: 200px;" onerror="this.style.display=\'none\'"></a></div>';
+        }
+        const time = msg.created_at ? new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+        div.innerHTML = content + '<small class="d-block text-end opacity-75" style="font-size: 0.7em;">' + escapeHtml(time) + '</small>';
         document.getElementById('admin-chat-messages').appendChild(div);
     }
 

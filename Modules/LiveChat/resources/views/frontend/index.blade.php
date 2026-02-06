@@ -7,7 +7,7 @@
     <div class="card-header bg-white border-bottom p-3 d-flex justify-content-between align-items-center">
         <h5 class="fw-bold mb-0 text-dark">{{ __('Live Chat Support') }}</h5>
         <span class="badge bg-success-subtle text-success">
-            <i class="fas fa-circle me-1 small"></i> Online
+            <i class="fas fa-circle me-1 small"></i> {{ __('Online') }}
         </span>
     </div>
 
@@ -21,13 +21,13 @@
                     @endif
                     @if($message->attachment)
                         <div class="mt-2">
-                            <a href="{{ Storage::url($message->attachment) }}" target="_blank">
-                                <img src="{{ Storage::url($message->attachment) }}" alt="Attachment" class="img-fluid rounded" style="max-width: 200px; max-height: 200px;">
+                            <a href="{{ \Illuminate\Support\Facades\Storage::url($message->attachment) }}" target="_blank" rel="noopener noreferrer">
+                                <img src="{{ \Illuminate\Support\Facades\Storage::url($message->attachment) }}" alt="{{ __('Attachment') }}" class="img-fluid rounded" style="max-width: 200px; max-height: 200px;" onerror="this.style.display='none'">
                             </a>
                         </div>
                     @endif
                     <small class="d-block text-end opacity-75 mt-1" style="font-size: 0.7em;">
-                        {{ $message->created_at->format('h:i A') }}
+                        {{ $message->created_at?->format('h:i A') }}
                     </small>
                 </div>
             @empty
@@ -198,7 +198,10 @@
                         },
                         body: formData
                     });
-                    responseData = await response.json();
+                    responseData = await response.json().catch(() => ({}));
+                    if (!response.ok && !responseData.error) {
+                        responseData = { error: response.status === 500 ? '{{ __("Server error. Please try again.") }}' : '{{ __("Failed to send message.") }}' };
+                    }
                 }
 
                 // Normalize server response which may include `errors` (validation) or `error` (string)
@@ -218,8 +221,7 @@
                             scrollToBottom();
                         }
                     } else {
-                        // Fallback generic message
-                        showError('An unexpected response was received from the server.');
+                        showError(responseData.error || '{{ __("An unexpected response was received. Please try again.") }}');
                     }
                 }
             } catch (error) {

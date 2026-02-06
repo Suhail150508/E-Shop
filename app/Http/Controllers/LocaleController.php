@@ -8,7 +8,8 @@ class LocaleController extends Controller
 {
     public function setLocale($lang)
     {
-        if (in_array($lang, ['en', 'bn', 'ar'])) {
+        $available = config('app.available_locales', ['en', 'bn', 'ar']);
+        if (in_array($lang, $available)) {
             Session::put('locale', $lang);
         }
 

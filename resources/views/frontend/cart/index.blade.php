@@ -19,12 +19,12 @@
             <div class="cart-page-header">
                 <div>
                     <div class="cart-breadcrumb">
-                        <a href="{{ route('home') }}">{{ __('Home') }}</a>
+                        <a href="{{ route('home') }}">{{ __('common.home') }}</a>
                         <span> / </span>
                         <span>{{ setting('cart_breadcrumb', __('cart.cart')) }}</span>
                     </div>
                     <h1 class="cart-title">{{ setting('cart_title', __('cart.shopping_cart')) }}</h1>
-                    <p class="cart-subtitle">{{ setting('cart_subtitle', __('Review your items and proceed to secure checkout.')) }}</p>
+                    <p class="cart-subtitle">{{ setting('cart_subtitle', __('cart.cart_subtitle_review')) }}</p>
                 </div>
             </div>
 
@@ -34,9 +34,9 @@
                         <div class="card-body">
                             @if($items->isEmpty())
                                 <div class="cart-empty-message">
-                                    <p class="mb-3">{{ __('Your cart is empty.') }}</p>
+                                    <p class="mb-3">{{ __('cart.empty_cart') }}</p>
                                     <a href="{{ route('shop.index') }}" class="btn btn-outline-secondary">
-                                        {{ __('Browse Products') }}
+                                        {{ __('cart.browse_products') }}
                                     </a>
                                 </div>
                             @else
@@ -44,10 +44,10 @@
                                     <table class="table align-middle cart-items-table mb-0">
                                         <thead>
                                             <tr>
-                                                <th>{{ __('Product') }}</th>
-                                                <th class="text-center">{{ __('Price') }}</th>
-                                                <th class="text-center">{{ __('Quantity') }}</th>
-                                                <th class="text-end">{{ __('Subtotal') }}</th>
+                                                <th>{{ __('cart.product') }}</th>
+                                                <th class="text-center">{{ __('cart.price') }}</th>
+                                                <th class="text-center">{{ __('cart.quantity') }}</th>
+                                                <th class="text-end">{{ __('cart.subtotal') }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -69,7 +69,7 @@
                                                                 </a>
                                                                 @if(isset($item['options']['color']))
                                                                     <div class="small text-muted mt-1">
-                                                                        {{ __('Color') }}: {{ $item['options']['color'] }}
+                                                                        {{ __('common.color') }}: {{ $item['options']['color'] }}
                                                                     </div>
                                                                 @endif
                                                             </div>
@@ -89,7 +89,7 @@
                                                             @method('PUT')
                                                             <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="0" class="form-control form-control-sm cart-quantity-input">
                                                             <button type="submit" class="btn btn-sm btn-outline-secondary ms-2">
-                                                                {{ __('Update') }}
+                                                                {{ __('common.update') }}
                                                             </button>
                                                         </form>
                                                     </td>
@@ -101,7 +101,7 @@
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                                {{ __('Remove') }}
+                                                                {{ __('cart.remove') }}
                                                             </button>
                                                         </form>
                                                     </td>
@@ -115,11 +115,11 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-outline-danger btn-sm">
-                                            {{ __('Clear Cart') }}
+                                            {{ __('cart.clear_cart') }}
                                         </button>
                                     </form>
                                     <a href="{{ route('shop.index') }}" class="btn btn-outline-secondary btn-sm">
-                                        {{ __('Continue Shopping') }}
+                                        {{ __('cart.continue_shopping') }}
                                     </a>
                                 </div>
                             @endif
@@ -130,14 +130,14 @@
                     <div class="card border-0 shadow-sm order-summary-card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="order-summary-title">{{ __('Order Summary') }}</span>
+                                <span class="order-summary-title">{{ __('cart.order_summary') }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
-                                <span class="order-summary-label">{{ __('Subtotal') }}</span>
+                                <span class="order-summary-label">{{ __('cart.subtotal') }}</span>
                                 <span class="fw-semibold">{{ format_price((float) ($subtotal ?? 0)) }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-4">
-                                <span class="order-summary-label">{{ __('Total') }}</span>
+                                <span class="order-summary-label">{{ __('cart.total') }}</span>
                                 <span class="order-summary-total">{{ format_price((float) ($subtotal ?? 0)) }}</span>
                             </div>
                             @if($codEnabled || $stripeEnabled || $walletEnabled)
@@ -146,7 +146,7 @@
                                 </a>
                             @else
                                 <div class="alert alert-warning mb-0 text-center">
-                                    {{ __('No payment methods available.') }}
+                                    {{ __('common.no_payment_methods_available') }}
                                 </div>
                             @endif
                         </div>

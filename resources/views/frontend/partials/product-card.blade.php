@@ -23,8 +23,9 @@
         <div class="product-image-wrapper">
             <a href="{{ route('shop.product.show', $product->slug) }}">
                 <img src="{{ $product->image_url ?? 'https://placehold.co/500x450' }}" 
-                     alt="{{ $product->name }}" 
+                     alt="{{ $product->name ?: __('common.product_thumbnail') }}" 
                      class="product-img"
+                     loading="lazy"
                      onerror="this.src='https://placehold.co/500x450'">
             </a>
             <div class="product-actions">
@@ -47,7 +48,7 @@
             
             <h3 class="product-title h6 mb-2">
                 <a href="{{ route('shop.product.show', $product->slug) }}" class="text-decoration-none text-dark">
-                    {{ Str::limit($product->name, 40) }}
+                    {{ Str::limit($product->name ?? '', 40) }}
                 </a>
             </h3>
             

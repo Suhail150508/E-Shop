@@ -21,13 +21,21 @@
                         @forelse($reviews as $review)
                             <tr>
                                 <td>
-                                    <a href="{{ route('shop.product.show', $review->product->slug) }}" target="_blank" class="text-decoration-none">
-                                        {{ $review->product->name }}
-                                    </a>
+                                    @if($review->product)
+                                        <a href="{{ route('shop.product.show', $review->product->slug) }}" target="_blank" class="text-decoration-none">
+                                            {{ $review->product->name }}
+                                        </a>
+                                    @else
+                                        <span class="text-muted">{{ __('N/A') }}</span>
+                                    @endif
                                 </td>
                                 <td>
-                                    <div>{{ $review->user->name }}</div>
-                                    <small class="text-muted">{{ $review->user->email }}</small>
+                                    @if($review->user)
+                                        <div>{{ $review->user->name }}</div>
+                                        <small class="text-muted">{{ $review->user->email }}</small>
+                                    @else
+                                        <span class="text-muted">{{ __('N/A') }}</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <div class="text-warning">

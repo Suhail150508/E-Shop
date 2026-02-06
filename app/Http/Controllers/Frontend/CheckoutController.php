@@ -56,6 +56,8 @@ class CheckoutController extends Controller
 
     public function storeShipping(Request $request): RedirectResponse
     {
+        $user = $request->user();
+
         $validated = $request->validate([
             'delivery_type' => 'required|in:home_delivery,pickup',
             'address_id' => 'required_if:delivery_type,home_delivery|exists:addresses,id',
@@ -63,6 +65,14 @@ class CheckoutController extends Controller
             'shipping_latitude' => 'nullable|numeric|between:-90,90',
             'shipping_longitude' => 'nullable|numeric|between:-180,180',
         ]);
+
+        // Ensure address belongs to current user (security)
+        if ($validated['delivery_type'] === 'home_delivery' && ! empty($validated['address_id'])) {
+            $address = Address::where('id', $validated['address_id'])->where('user_id', $user->id)->first();
+            if (! $address) {
+                return redirect()->route('checkout.shipping')->withErrors(['address_id' => __('Selected address is invalid.')]);
+            }
+        }
 
         Session::put('checkout_state', $validated);
 
@@ -95,7 +105,7 @@ class CheckoutController extends Controller
 
         $total = max(0, $subtotal + $tax + $shippingCost - $discount);
 
-        $walletBalance = $request->user()->wallet_balance;
+        $walletBalance = (float) ($request->user()->wallet_balance ?? 0);
 
         $cartItems = $this->cart->items();
 
@@ -159,26 +169,31 @@ class CheckoutController extends Controller
         $user = $request->user();
         $address = null;
 
-        if ($checkoutState['delivery_type'] === 'home_delivery') {
-            $address = Address::find($checkoutState['address_id']);
+        if (($checkoutState['delivery_type'] ?? '') === 'home_delivery' && ! empty($checkoutState['address_id'] ?? null)) {
+            $address = Address::where('id', $checkoutState['address_id'])
+                ->where('user_id', $user->id)
+                ->first();
+            if (! $address) {
+                return redirect()->route('checkout.shipping')->withErrors(['address_id' => __('Selected address is invalid.')]);
+            }
         }
 
         // Construct address string
         $addressLines = [];
         if ($address) {
-            $addressLines[] = $address->line1;
-            if ($address->line2) {
+            $addressLines[] = $address->line1 ?? '';
+            if (! empty($address->line2)) {
                 $addressLines[] = $address->line2;
             }
             $cityLine = array_filter([$address->city, $address->state, $address->postal_code]);
             if ($cityLine) {
                 $addressLines[] = implode(', ', $cityLine);
             }
-            if ($address->country) {
+            if (! empty($address->country)) {
                 $addressLines[] = $address->country;
             }
         }
-        $addressString = implode("\n", $addressLines);
+        $addressString = $addressLines ? implode("\n", $addressLines) : '';
 
         $customerData = [
             'name' => $user->name,

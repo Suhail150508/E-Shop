@@ -17,7 +17,7 @@
                 <!-- Map Section -->
                 <div class="mb-4 position-relative">
                     <div id="map" class="rounded-3 bg-light d-flex align-items-center justify-content-center text-danger fw-bold fs-5 address-map-container">
-                        Map
+                        {{ __('Map') }}
                     </div>
                     <div class="position-absolute top-0 start-50 translate-middle-x mt-3 w-50">
                         <input type="text" class="form-control shadow-sm" placeholder="{{ __('Search for a location') }}">

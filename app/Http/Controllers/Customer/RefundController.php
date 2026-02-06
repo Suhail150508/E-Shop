@@ -32,10 +32,17 @@ class RefundController extends Controller
              return back()->with('error', __('A refund request has already been submitted for this order.'));
         }
 
-        $request->validate([
-            'reason' => 'required|string|max:255',
-            'details' => 'nullable|string',
-            'images' => 'nullable|array',
+        $validReasons = \App\Models\RefundReason::where('status', true)->pluck('reason')->all();
+        $validReasons[] = 'Other';
+
+        $validated = $request->validate([
+            'reason' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($validReasons) {
+                if (! in_array($value, $validReasons)) {
+                    $fail(__('Invalid refund reason selected.'));
+                }
+            }],
+            'details' => 'nullable|string|max:2000',
+            'images' => 'nullable|array|max:5',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -50,8 +57,8 @@ class RefundController extends Controller
         Refund::create([
             'order_id' => $order->id,
             'user_id' => Auth::id(),
-            'reason' => $request->reason,
-            'details' => $request->details,
+            'reason' => $validated['reason'],
+            'details' => $validated['details'] ?? null,
             'amount' => $order->total, // Full refund by default for now
             'status' => Refund::STATUS_PENDING,
             'images' => $imagePaths,

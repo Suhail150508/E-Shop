@@ -102,6 +102,6 @@ class PaymentMethodController extends Controller
                 break;
         }
 
-        return redirect()->back()->with('success', 'Payment method updated successfully.');
+        return redirect()->back()->with('success', __('Payment method updated successfully.'));
     }
 }

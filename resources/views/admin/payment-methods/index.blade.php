@@ -1,16 +1,16 @@
 @extends('layouts.admin')
 
-@section('page_title', 'Payment Method')
+@section('page_title', __('Payment Method'))
 
 @section('content')
 <div class="container-fluid">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
-            <h4 class="mb-1">Payment Method</h4>
+            <h4 class="mb-1">{{ __('Payment Method') }}</h4>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Payment Method</li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}" class="text-decoration-none">{{ __('Dashboard') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('Payment Method') }}</li>
                 </ol>
             </nav>
         </div>
@@ -34,7 +34,7 @@
         <div class="col-lg-9">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3 border-bottom">
-                    <h5 class="mb-0 fw-bold">{{ $gateways[$currentGateway] }} Configuration</h5>
+                    <h5 class="mb-0 fw-bold">{{ $gateways[$currentGateway] ?? $currentGateway }} {{ __('Configuration') }}</h5>
                 </div>
                 <div class="card-body p-4">
                     <form action="{{ route('admin.payment-methods.update', $currentGateway) }}" method="POST" enctype="multipart/form-data">
@@ -43,16 +43,16 @@
 
                         <!-- Visibility Status -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold d-block mb-2">Visibility Status</label>
+                            <label class="form-label fw-bold d-block mb-2">{{ __('Visibility Status') }}</label>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="status" name="status" {{ ($settings['payment_' . $currentGateway . '_enabled'] ?? false) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="status">Enable {{ $gateways[$currentGateway] }}</label>
+                                <label class="form-check-label" for="status">{{ __('Enable') }} {{ $gateways[$currentGateway] ?? $currentGateway }}</label>
                             </div>
                         </div>
 
                         <!-- Image Upload -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Image</label>
+                            <label class="form-label fw-bold">{{ __('Image') }}</label>
                             <div class="card p-3 bg-light border-dashed text-center mb-2" style="border: 2px dashed #dee2e6;">
                                 @if(isset($settings['payment_' . $currentGateway . '_image']))
                                     <div class="mb-3">
@@ -63,7 +63,7 @@
                                         <h3 class="text-muted fw-bold">{{ $gateways[$currentGateway] }}</h3>
                                     </div>
                                 @endif
-                                <p class="text-muted small mb-0">Click here to Choose File and upload</p>
+                                <p class="text-muted small mb-0">{{ __('Click or drag file here to upload') }}</p>
                                 <input type="file" class="form-control position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" name="image">
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                         <!-- Currency -->
                         @if($currentGateway != 'bank')
                         <div class="mb-4">
-                            <label for="currency" class="form-label fw-bold">Currency *</label>
+                            <label for="currency" class="form-label fw-bold">{{ __('Currency') }} *</label>
                             <select class="form-select" id="currency" name="currency">
                                 @foreach($currencies as $currency)
                                     <option value="{{ $currency->code }}" {{ ($settings['payment_' . $currentGateway . '_currency'] ?? 'USD') == $currency->code ? 'selected' : '' }}>
@@ -85,10 +85,10 @@
                         <!-- Stripe Specific Fields -->
                         @if($currentGateway == 'stripe')
                             <div class="mb-4">
-                                <label for="mode" class="form-label fw-bold">Mode *</label>
+                                <label for="mode" class="form-label fw-bold">{{ __('Mode') }} *</label>
                                 <select class="form-select" id="mode" name="mode">
-                                    <option value="test" {{ ($settings['stripe_mode'] ?? 'test') == 'test' ? 'selected' : '' }}>Sandbox</option>
-                                    <option value="live" {{ ($settings['stripe_mode'] ?? 'test') == 'live' ? 'selected' : '' }}>Live</option>
+                                    <option value="test" {{ ($settings['stripe_mode'] ?? 'test') == 'test' ? 'selected' : '' }}>{{ __('Sandbox') }}</option>
+                                    <option value="live" {{ ($settings['stripe_mode'] ?? 'test') == 'live' ? 'selected' : '' }}>{{ __('Live') }}</option>
                                 </select>
                             </div>
 
@@ -115,10 +115,10 @@
                         <!-- Paypal Specific Fields -->
                         @if($currentGateway == 'paypal')
                             <div class="mb-4">
-                                <label for="mode" class="form-label fw-bold">Mode *</label>
+                                <label for="mode" class="form-label fw-bold">{{ __('Mode') }} *</label>
                                 <select class="form-select" id="mode" name="mode">
-                                    <option value="sandbox" {{ ($settings['paypal_mode'] ?? 'sandbox') == 'sandbox' ? 'selected' : '' }}>Sandbox</option>
-                                    <option value="live" {{ ($settings['paypal_mode'] ?? 'sandbox') == 'live' ? 'selected' : '' }}>Live</option>
+                                    <option value="sandbox" {{ ($settings['paypal_mode'] ?? 'sandbox') == 'sandbox' ? 'selected' : '' }}>{{ __('Sandbox') }}</option>
+                                    <option value="live" {{ ($settings['paypal_mode'] ?? 'sandbox') == 'live' ? 'selected' : '' }}>{{ __('Live') }}</option>
                                 </select>
                             </div>
 
@@ -165,12 +165,12 @@
                             <div class="mb-3">
                                 <label for="bank_details" class="form-label fw-bold">Bank Details *</label>
                                 <textarea class="form-control" id="bank_details" name="bank_details" rows="5">{{ $settings['bank_details'] ?? '' }}</textarea>
-                                <div class="form-text">Enter bank name, account number, sort code, IBAN, etc.</div>
+                                <div class="form-text">{{ __('Enter bank name, account number, sort code, IBAN, etc.') }}</div>
                             </div>
                         @endif
 
                         <div class="mt-4">
-                            <button type="submit" class="btn btn-dark px-4 py-2">Update</button>
+                            <button type="submit" class="btn btn-dark px-4 py-2">{{ __('Update') }}</button>
                         </div>
                     </form>
                 </div>

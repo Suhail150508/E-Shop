@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page_title', 'Menu Management')
+@section('page_title', __('Menu Management'))
 
 @section('content')
 <div class="row">
@@ -14,7 +14,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label">{{ __('Menu Name') }}</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="e.g. Header Menu" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="{{ __('e.g. Header Menu') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="position" class="form-label">{{ __('Position') }}</label>

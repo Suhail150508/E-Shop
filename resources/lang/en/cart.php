@@ -21,4 +21,9 @@ return [
     'coupon_code' => 'Coupon Code',
     'apply_coupon' => 'Apply Coupon',
     'remove_coupon' => 'Remove Coupon',
+    'cart_subtitle_review' => 'Review your items and proceed to secure checkout.',
+    'browse_products' => 'Browse Products',
+    'order_summary' => 'Order Summary',
+    'product' => 'Product',
+    'remove' => 'Remove',
 ];

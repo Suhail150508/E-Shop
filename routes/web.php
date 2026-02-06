@@ -149,7 +149,6 @@ Route::prefix('admin')
         Route::resource('products', ProductController::class)->except(['show']);
         Route::resource('reviews', AdminReviewController::class)->only(['index', 'update', 'destroy']);
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
-        Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class);
         Route::get('orders/{order}/invoice', [AdminOrderController::class, 'invoice'])->name('orders.invoice');
         
         // Refund Routes

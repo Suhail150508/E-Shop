@@ -89,7 +89,7 @@
                                                     </div>
                                                     <div class="row mb-2">
                                                         <div class="col-sm-3 fw-bold">{{ __('Phone:') }}</div>
-                                                        <div class="col-sm-9">{{ $message->phone ?? 'N/A' }}</div>
+                                                        <div class="col-sm-9">{{ $message->phone ?? __('N/A') }}</div>
                                                     </div>
                                                     <div class="row mb-2">
                                                         <div class="col-sm-3 fw-bold">{{ __('Date:') }}</div>

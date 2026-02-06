@@ -8,7 +8,6 @@ use Modules\Category\App\Http\Requests\StoreCategoryRequest;
 use Modules\Category\App\Http\Requests\UpdateCategoryRequest;
 use Modules\Category\App\Models\Category;
 use Modules\Category\Services\CategoryService;
-use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -107,7 +106,7 @@ class CategoryController extends Controller
             return redirect()->route('admin.categories.index')
                 ->with('success', __('Category deleted successfully.'));
         } catch (\Exception $e) {
-            Log::error('Error deleting category ID '.$category->id.': '.$e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Error deleting category ID '.$category->id.': '.$e->getMessage());
             return redirect()->back()->with('error', __('An error occurred while deleting the category. Please try again or contact support.'));
         }
     }
@@ -143,7 +142,8 @@ class CategoryController extends Controller
             $this->categoryService->bulkDelete($ids);
             return response()->json(['success' => __('Selected categories deleted successfully.')]);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            \Illuminate\Support\Facades\Log::warning('Category bulk delete failed', ['ids' => $ids, 'error' => $e->getMessage()]);
+            return response()->json(['error' => __('common.error_deleting_selected_categories')], 400);
         }
     }
 }

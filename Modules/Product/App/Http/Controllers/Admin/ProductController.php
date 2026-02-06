@@ -115,10 +115,14 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $this->productService->delete($product);
-
-        return redirect()->route('admin.products.index')
-            ->with('success', __('Product deleted successfully.'));
+        try {
+            $this->productService->delete($product);
+            return redirect()->route('admin.products.index')
+                ->with('success', __('Product deleted successfully.'));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Product delete failed', ['product_id' => $product->id, 'error' => $e->getMessage()]);
+            return redirect()->back()->with('error', __('common.error_deleting_product'));
+        }
     }
 
     /**
@@ -131,12 +135,16 @@ class ProductController extends Controller
     {
         $ids = $request->input('ids');
 
-        if (!is_array($ids) || count($ids) === 0) {
+        if (! is_array($ids) || count($ids) === 0) {
             return response()->json(['error' => __('No items selected.')], 400);
         }
 
-        $this->productService->bulkDelete($ids);
-
-        return response()->json(['success' => __('Selected products deleted successfully.')]);
+        try {
+            $this->productService->bulkDelete($ids);
+            return response()->json(['success' => __('Selected products deleted successfully.')]);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('Product bulk delete failed', ['ids' => $ids, 'error' => $e->getMessage()]);
+            return response()->json(['error' => __('common.error_deleting_selected_products')], 400);
+        }
     }
 }

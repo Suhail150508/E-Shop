@@ -133,7 +133,7 @@
                                 </td>
                                 <td data-label="{{ __('Amount') }}">
                                     <span class="fw-bold text-dark">
-                                        {{ $order->currency ?? '$' }}{{ number_format($order->total, 2) }}
+                                        {{ $order->currency ?? \App\Models\Currency::getDefaultSymbol() }}{{ number_format($order->total ?? 0, 2) }}
                                     </span>
                                 </td>
                                 <td class="text-center" data-label="{{ __('Payment') }}">

@@ -37,7 +37,7 @@ class StoreProductRequest extends FormRequest
             'colors' => 'nullable|array',
             'colors.*' => 'string|max:50',
             'tags' => 'nullable|array',
-            'tags.*' => 'string',
+            'tags.*' => 'string|max:100',
         ];
     }
 }

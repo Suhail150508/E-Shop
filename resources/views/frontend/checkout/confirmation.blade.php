@@ -13,7 +13,7 @@
                 <h6 class="text-muted text-uppercase letter-spacing-2 mb-2">{{ __('Hooray!') }}</h6>
                 <h2 class="fw-bold mb-3">{{ __('All Orders Wrapped Up!') }}</h2>
                 <p class="text-muted mx-auto" style="max-width: 600px;">
-                    {{ __('Don\'t forget to save your Order ID and the phone number used for this order, as you\'ve placed it as a guest. You\'ll need these details to track your order in the future!') }}
+                    {{ __('Thank you for your order! You can track your order status and view details from your account.') }}
                 </p>
             </div>
 
@@ -47,7 +47,7 @@
                                     </td>
                                     <td class="py-4 fw-bold">{{ $order->formatPrice($order->total) }}</td>
                                     <td class="py-4 pe-4 text-end">
-                                        <a href="{{ route('customer.orders.show', $order->id) }}" class="btn btn-outline-primary btn-sm rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;" title="View Details">
+                                        <a href="{{ route('customer.orders.show', $order->id) }}" class="btn btn-outline-primary btn-sm rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;" title="{{ __('View Details') }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </td>

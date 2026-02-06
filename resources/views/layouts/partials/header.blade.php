@@ -21,7 +21,7 @@
             </button>
 
             <!-- Logo - Mobile -->
-            <a class="navbar-brand logo d-lg-none" href="{{ route('home') }}">{{ __('E-shop') }}</a>
+            <a class="navbar-brand logo d-lg-none" href="{{ route('home') }}">{{ config('app.name') }}</a>
 
             <!-- Categories Button - Visible on mobile -->
             <a href="{{ route('shop.index') }}" class="btn btn-rust d-lg-none ms-auto me-3" style="background: var(--rust); color: white; border: none;">
@@ -40,7 +40,7 @@
                     <!-- Top Row: Search Bar and Header Actions -->
                     <div class="nav-top-row d-flex align-items-center justify-content-between">
                         <!-- Logo - Desktop -->
-                        <a class="navbar-brand logo d-none d-lg-block me-3" href="{{ route('home') }}">{{ __('E-shop') }}</a>
+                        <a class="navbar-brand logo d-none d-lg-block me-3" href="{{ route('home') }}">{{ config('app.name') }}</a>
 
                         <form class="search-form d-flex flex-grow-1 me-lg-4 my-3 my-lg-0"
                               method="GET"
@@ -100,13 +100,13 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end p-0 shadow-lg border-0" style="width: 300px; max-height: 400px; overflow-y: auto;">
                                     <li class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                                        <h6 class="mb-0 fw-bold">Notifications</h6>
-                                        <a href="#" class="text-decoration-none small" onclick="markAllRead(event)">Mark all read</a>
+                                        <h6 class="mb-0 fw-bold">{{ __('Notifications') }}</h6>
+                                        <a href="#" class="text-decoration-none small" onclick="markAllRead(event)">{{ __('Mark all read') }}</a>
                                     </li>
                                     <div id="customer-notification-list">
                                         <li class="p-4 text-center text-muted empty-state">
                                             <i class="far fa-bell-slash fa-2x mb-2"></i>
-                                            <p class="mb-0 small">No new notifications</p>
+                                            <p class="mb-0 small">{{ __('No new notifications') }}</p>
                                         </li>
                                     </div>
                                 </ul>
@@ -266,9 +266,6 @@
                                         <li><a class="dropdown-item py-2" href="{{ route('pages.privacy') }}">{{ __('common.privacy') }}</a></li>
                                         <li><a class="dropdown-item py-2" href="{{ route('pages.shipping') }}">{{ __('common.shipping') }}</a></li>
                                     </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">{{ __('common.blog') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('pages.contact') }}">{{ __('common.contact') }}</a>

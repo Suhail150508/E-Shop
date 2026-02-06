@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page_title', 'Dashboard')
+@section('page_title', __('Dashboard'))
 
 @section('content')
     <!-- Stats Cards -->
@@ -15,7 +15,7 @@
                         {{-- <span class="badge bg-success-subtle text-success">+12.5%</span> --}}
                     </div>
                     <h5 class="text-muted fw-normal mb-1">{{ __('Total Revenue') }}</h5>
-                    <h2 class="fw-bold mb-0">{{ config('app.currency', '$') }}{{ number_format($totalRevenue, 2) }}</h2>
+                    <h2 class="fw-bold mb-0">{{ \App\Models\Currency::getDefaultSymbol() }}{{ number_format($totalRevenue ?? 0, 2) }}</h2>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                         {{-- <span class="badge bg-success-subtle text-success">+8.2%</span> --}}
                     </div>
                     <h5 class="text-muted fw-normal mb-1">{{ __('Total Orders') }}</h5>
-                    <h2 class="fw-bold mb-0">{{ number_format($totalOrders) }}</h2>
+                    <h2 class="fw-bold mb-0">{{ number_format($totalOrders ?? 0) }}</h2>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
                         {{-- <span class="badge bg-danger-subtle text-danger">-2.4%</span> --}}
                     </div>
                     <h5 class="text-muted fw-normal mb-1">{{ __('Total Customers') }}</h5>
-                    <h2 class="fw-bold mb-0">{{ number_format($totalCustomers) }}</h2>
+                    <h2 class="fw-bold mb-0">{{ number_format($totalCustomers ?? 0) }}</h2>
                 </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
                         {{-- <span class="badge bg-success-subtle text-success">+5.7%</span> --}}
                     </div>
                     <h5 class="text-muted fw-normal mb-1">{{ __('Total Products') }}</h5>
-                    <h2 class="fw-bold mb-0">{{ number_format($totalProducts) }}</h2>
+                    <h2 class="fw-bold mb-0">{{ number_format($totalProducts ?? 0) }}</h2>
                 </div>
             </div>
         </div>
@@ -123,7 +123,7 @@
                                 </div>
                             </td>
                             <td class="text-muted">{{ $order->created_at->format('M d, Y') }}</td>
-                            <td class="fw-bold">{{ $order->currency }}{{ number_format($order->total, 2) }}</td>
+                            <td class="fw-bold">{{ $order->currency ?? \App\Models\Currency::getDefaultSymbol() }}{{ number_format($order->total ?? 0, 2) }}</td>
                             <td>
                                 @php
                                     $statusClass = match($order->status) {
@@ -146,7 +146,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">No recent orders found.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">{{ __('No recent orders found.') }}</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -213,7 +213,7 @@
         var statusSeries = @json($chartStatusSeries);
 
         if (statusSeries.length === 0) {
-            statusLabels = ['No Orders'];
+            statusLabels = ['{{ __("No Orders") }}'];
             statusSeries = [1]; // Dummy data for visual
             var colors = ['#e2e8f0']; // Grey for empty
         } else {
@@ -261,7 +261,7 @@
                             total: {
                                 show: true,
                                 showAlways: true,
-                                label: 'Total',
+                                label: '{{ __("Total") }}',
                                 fontSize: '14px',
                                 fontFamily: 'Inter, sans-serif',
                                 fontWeight: 600,
@@ -286,7 +286,7 @@
                 y: {
                     formatter: function(val) {
                         // If using dummy data, show 0 in tooltip
-                        if (statusSeries.length === 1 && statusSeries[0] === 1 && statusLabels[0] === 'No Orders') {
+                        if (statusSeries.length === 1 && statusSeries[0] === 1 && statusLabels[0] === '{{ __("No Orders") }}') {
                             return "0";
                         }
                         return val;

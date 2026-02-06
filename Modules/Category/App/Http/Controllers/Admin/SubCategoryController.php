@@ -72,7 +72,12 @@ class SubCategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'parent_id' => 'required|exists:categories,id',
+            'parent_id' => ['required', 'exists:categories,id', function ($attr, $value, $fail) {
+                $parent = Category::find($value);
+                if ($parent && $parent->parent_id !== null) {
+                    $fail(__('common.parent_must_be_root'));
+                }
+            }],
             'name' => 'required|string|max:255',
             'is_active' => 'nullable|boolean',
         ]);
@@ -105,7 +110,15 @@ class SubCategoryController extends Controller
     public function update(Request $request, Category $subcategory)
     {
         $validated = $request->validate([
-            'parent_id' => 'required|exists:categories,id',
+            'parent_id' => ['required', 'exists:categories,id', function ($attr, $value, $fail) use ($subcategory) {
+                if ((int) $value === (int) $subcategory->id) {
+                    $fail(__('common.subcategory_cannot_be_own_parent'));
+                }
+                $parent = Category::find($value);
+                if ($parent && $parent->parent_id !== null) {
+                    $fail(__('common.parent_must_be_root'));
+                }
+            }],
             'name' => 'required|string|max:255',
             'is_active' => 'nullable|boolean',
         ]);
@@ -127,7 +140,8 @@ class SubCategoryController extends Controller
             $this->categoryService->delete($subcategory);
             return redirect()->route('admin.subcategories.index')->with('success', __('Subcategory deleted successfully.'));
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            \Illuminate\Support\Facades\Log::warning('Subcategory delete failed', ['id' => $subcategory->id, 'error' => $e->getMessage()]);
+            return redirect()->back()->with('error', __('common.error_deleting_subcategory'));
         }
     }
 
@@ -149,7 +163,8 @@ class SubCategoryController extends Controller
             $this->categoryService->bulkDelete($ids);
             return response()->json(['success' => __('Selected subcategories deleted successfully.')]);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            \Illuminate\Support\Facades\Log::warning('Subcategory bulk delete failed', ['ids' => $ids, 'error' => $e->getMessage()]);
+            return response()->json(['error' => __('common.error_deleting_selected_subcategories')], 400);
         }
     }
 }

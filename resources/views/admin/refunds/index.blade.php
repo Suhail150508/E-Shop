@@ -69,7 +69,7 @@
                                 </td>
                                 <td data-label="{{ __('Invoice No') }}">
                                     <a href="{{ route('admin.orders.show', $refund->order_id) }}" class="font-monospace text-dark text-decoration-none fw-bold">
-                                        {{ $refund->order->order_number ?? '-' }}
+                                        {{ $refund->order?->order_number ?? __('N/A') }}
                                     </a>
                                 </td>
                                 <td data-label="{{ __('Customer') }}">
@@ -80,7 +80,7 @@
                                 </td>
                                 <td data-label="{{ __('Amount') }}">
                                     <span class="fw-bold text-dark">
-                                        {{ $refund->order->currency ?? config('app.currency', '$') }}{{ number_format($refund->amount, 2) }}
+                                        {{ $refund->order?->currency ?? \App\Models\Currency::getDefaultSymbol() }}{{ number_format($refund->amount ?? 0, 2) }}
                                     </span>
                                 </td>
                                 <td data-label="{{ __('Refund Reason') }}">

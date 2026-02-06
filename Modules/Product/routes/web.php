@@ -14,7 +14,7 @@ use Modules\Product\App\Http\Controllers\Admin\ProductController;
 |
 */
 
-Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
+Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], function () {
     Route::post('products/bulk-delete', [ProductController::class, 'bulkDelete'])->name('products.bulk-delete');
     Route::resource('products', ProductController::class);
 });

@@ -14,11 +14,12 @@ class ContactController extends Controller
     {
         $query = ContactMessage::query();
 
-        if ($request->search) {
-            $query->where(function($q) use ($request) {
-                $q->where('name', 'like', "%{$request->search}%")
-                  ->orWhere('email', 'like', "%{$request->search}%")
-                  ->orWhere('subject', 'like', "%{$request->search}%");
+        if ($request->filled('search')) {
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $request->input('search'));
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%')
+                    ->orWhere('subject', 'like', '%'.$search.'%');
             });
         }
 
@@ -32,13 +33,13 @@ class ContactController extends Controller
         $message = ContactMessage::findOrFail($id);
         $message->delete();
 
-        return back()->with('success', 'Message deleted successfully.');
+        return back()->with('success', __('Message deleted successfully.'));
     }
 
     public function reply(Request $request, $id)
     {
         $request->validate([
-            'reply' => 'required|string',
+            'reply' => 'required|string|max:5000',
         ]);
 
         $message = ContactMessage::findOrFail($id);
@@ -47,13 +48,13 @@ class ContactController extends Controller
             'status' => 'replied',
         ]);
 
-        // Send email notification to user about the reply
         try {
             Mail::to($message->email)->send(new ContactReplyMail($message));
         } catch (\Exception $e) {
-            return back()->with('warning', 'Reply saved but email sending failed: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::warning('Contact reply email failed', ['message_id' => $message->id, 'error' => $e->getMessage()]);
+            return back()->with('warning', __('Reply saved but email could not be sent. Please try again later.'));
         }
 
-        return back()->with('success', 'Reply sent successfully.');
+        return back()->with('success', __('Reply sent successfully.'));
     }
 }

@@ -29,7 +29,7 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-4">
-                <div class="footer-brand">{{ setting('app_name', 'LŪXĒ') }}</div>
+                <div class="footer-brand">{{ setting('app_name', config('app.name')) }}</div>
                 <p class="footer-description">
                     {{ setting('footer_description', __('common.footer_description')) }}
                 </p>
@@ -116,7 +116,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>{{ __('common.copyright', ['year' => date('Y')]) }} | <a href="#" class="text-white text-decoration-none">{{ __('common.privacy') }}</a> | <a href="#" class="text-white text-decoration-none">{{ __('common.terms') }}</a></p>
+            <p>{{ __('common.copyright', ['year' => date('Y')]) }} | <a href="{{ route('pages.privacy') }}" class="text-white text-decoration-none">{{ __('common.privacy') }}</a> | <a href="{{ route('pages.terms') }}" class="text-white text-decoration-none">{{ __('common.terms') }}</a></p>
         </div>
     </div>
 </footer>
@@ -166,13 +166,13 @@
                             toastr.error(data.message);
                             emailInput.classList.add('is-invalid');
                         } else {
-                            toastr.error('Something went wrong. Please try again.');
+                            toastr.error(window.translations?.common?.error_try_again || 'Something went wrong. Please try again.');
                         }
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    toastr.error('An error occurred. Please try again later.');
+                    if (typeof console !== 'undefined' && console.error) console.error('Error:', error);
+                    toastr.error(window.translations?.common?.error_occurred || 'An error occurred. Please try again later.');
                 })
                 .finally(() => {
                     // Reset state

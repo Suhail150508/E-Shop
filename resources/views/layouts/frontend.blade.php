@@ -8,10 +8,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="user-id" content="{{ auth()->id() }}">
 
-    <title>@yield('title', 'Modern Lifestyle Store')</title>
+    <title>@yield('title', config('app.name'))</title>
     @yield('meta') 
     @php
-        $favicon = $settings['favicon'] ?? null;
+        $favicon = ($settings ?? [])['favicon'] ?? null;
     @endphp
     @if($favicon)
         <link rel="shortcut icon" href="{{ asset($favicon) }}" type="image/x-icon">
@@ -49,7 +49,7 @@
     @stack('styles')
 </head>
 
-<body>
+<body id="top">
 
 @include('layouts.partials.header')
 
@@ -63,7 +63,7 @@
 @include('layouts.partials.logout-modal')
 
 {{-- Scroll to Top --}}
-<a href="#" class="scroll-top"><i class="fas fa-arrow-up"></i></a>
+<a href="#top" class="scroll-top" aria-label="{{ __('common.back_to_top') }}"><i class="fas fa-arrow-up"></i></a>
 
 {{-- Floating Cart --}}
 @php
@@ -75,7 +75,7 @@
 <div id="floating-cart" class="floating-cart">
     <a href="{{ route('cart.index') }}">
         <i class="fas fa-shopping-bag"></i>
-        <span id="floating-cart-count">{{ $cartCount ?? 0 }}</span>
+        <span id="floating-cart-count" aria-label="{{ __('common.cart') }}">{{ $cartCount ?? 0 }}</span>
     </a>
 </div>
 @endif

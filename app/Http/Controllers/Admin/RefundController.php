@@ -25,10 +25,10 @@ class RefundController extends Controller
             $query->where('status', $request->status);
         }
 
-        if ($request->has('search') && $request->search !== null && $request->search !== '') {
-            $search = $request->search;
+        if ($request->filled('search')) {
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $request->input('search'));
             $query->whereHas('order', function ($q) use ($search) {
-                $q->where('order_number', 'like', "%{$search}%");
+                $q->where('order_number', 'like', '%'.$search.'%');
             });
         }
 
@@ -101,7 +101,8 @@ class RefundController extends Controller
             return back()->with('success', __('Refund request updated successfully.'));
 
         } catch (\Exception $e) {
-            return back()->with('error', __('Something went wrong: ') . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Refund update failed', ['id' => $refund->id, 'error' => $e->getMessage()]);
+            return back()->with('error', __('Something went wrong. Please try again.'));
         }
     }
 }

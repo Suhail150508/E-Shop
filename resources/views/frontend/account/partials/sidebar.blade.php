@@ -25,16 +25,19 @@
             <span>{{ __('My Wishlist') }}</span>
         </a>
 
-        <!-- Features not yet implemented -->
+        @if(Route::has('customer.wallet.index'))
         <a href="{{ route('customer.wallet.index') }}" class="nav-link d-flex align-items-center px-3 py-2 {{ request()->routeIs('customer.wallet.*') ? 'active' : '' }}">
             <i class="fa-solid fa-wallet fa-fw me-3"></i>
             <span>{{ __('Wallet') }}</span>
         </a>
+        @endif
 
+        @if(Route::has('livechat.index'))
         <a href="{{ route('livechat.index') }}" class="nav-link d-flex align-items-center px-3 py-2 {{ request()->routeIs('livechat.index') ? 'active' : '' }}">
             <i class="fa-regular fa-comments fa-fw me-3"></i>
             <span>{{ __('Chat') }}</span>
         </a>
+        @endif
 
         <a href="{{ route('customer.support-tickets.index') }}" class="nav-link d-flex align-items-center px-3 py-2 {{ request()->routeIs('customer.support-tickets.*') ? 'active' : '' }}">
             <i class="fa-solid fa-headset fa-fw me-3"></i>

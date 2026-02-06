@@ -57,7 +57,7 @@ class PageController extends Controller
 
         $page->update($data);
 
-        return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully.');
+        return redirect()->route('admin.pages.index')->with('success', __('Page updated successfully.'));
     }
 
     public function uploadImage(Request $request)
@@ -79,6 +79,6 @@ class PageController extends Controller
             ]);
         }
         
-        return response()->json(['error' => 'No file uploaded'], 400);
+        return response()->json(['error' => __('No file uploaded.')], 400);
     }
 }

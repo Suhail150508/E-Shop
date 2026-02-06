@@ -6,7 +6,7 @@
         <h1 class="text-white display-4 breadcrumb-title">{{ $title ?? '' }}</h1>
         <nav aria-label="breadcrumb" class="d-flex justify-content-center">
             <ol class="breadcrumb breadcrumb-nav mb-0">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('common.home') }}</a></li>
                 @if(isset($parents) && is_array($parents))
                     @foreach($parents as $parent)
                          <li class="breadcrumb-item"><a href="{{ $parent['url'] }}">{{ $parent['label'] }}</a></li>

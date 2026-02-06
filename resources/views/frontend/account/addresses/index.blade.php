@@ -72,8 +72,8 @@
                                 @if($address->line2)
                                     <div class="d-flex mb-1"><i class="fa-solid fa-map-pin me-2 mt-1 opacity-50 address-icon-width"></i> <span>{{ $address->line2 }}</span></div>
                                 @endif
-                                <div class="d-flex mb-1"><i class="fa-solid fa-city me-2 mt-1 opacity-50 address-icon-width"></i> <span>{{ $address->city }}, {{ $address->state }} {{ $address->postal_code }}</span></div>
-                                <div class="d-flex mb-1"><i class="fa-solid fa-globe me-2 mt-1 opacity-50 address-icon-width"></i> <span>{{ $address->country }}</span></div>
+                                <div class="d-flex mb-1"><i class="fa-solid fa-city me-2 mt-1 opacity-50 address-icon-width"></i> <span>{{ trim(implode(', ', array_filter([$address->city, $address->state, $address->postal_code]))) ?: __('N/A') }}</span></div>
+                                <div class="d-flex mb-1"><i class="fa-solid fa-globe me-2 mt-1 opacity-50 address-icon-width"></i> <span>{{ $address->country ?? __('N/A') }}</span></div>
                                 @if($address->phone)
                                     <div class="d-flex mt-2"><i class="fa-solid fa-phone me-2 mt-1 opacity-50 address-icon-width"></i> <span>{{ $address->phone }}</span></div>
                                 @endif

@@ -53,7 +53,8 @@ class PaymentManager extends BaseService
         try {
             $order = $this->orders->createFromCart($user, $customerData);
         } catch (\Exception $e) {
-            return redirect()->route('cart.index')->with('error', __('Order creation failed: ').$e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Order creation failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);
+            return redirect()->route('cart.index')->with('error', __('Cart is empty or order creation failed.'));
         }
 
         if (! $order) {

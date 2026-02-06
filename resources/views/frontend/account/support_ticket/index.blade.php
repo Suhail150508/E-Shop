@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="{{ __('Search...') }}" value="{{ is_string(request('search')) ? request('search') : '' }}">
+                            <input type="text" name="search" class="form-control" placeholder="{{ __('Search...') }}" value="{{ is_string(request('search')) ? e(request('search')) : '' }}">
                             <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
                         </div>
                     </div>
