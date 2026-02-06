@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="image" class="form-label fw-bold">{{ __('Banner Image') }}</label>
+                        <label for="image" class="form-label fw-bold">{{ __('Breadcrumb Image') }}</label>
                         @if($page->image)
                             <div class="mb-2">
                                 <img src="{{ filter_var($page->image, FILTER_VALIDATE_URL) ? $page->image : asset($page->image) }}" alt="Current Image" class="img-fluid rounded border">

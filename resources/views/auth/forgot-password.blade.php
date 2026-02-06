@@ -1,11 +1,15 @@
 @extends('layouts.frontend')
 
+ @push('styles')
+    <link rel="stylesheet" href="{{ asset('frontend/css/auth.css') }}">
+@endpush
+
 @section('content')
 @php
     $page = \App\Models\Page::where('slug', 'auth-forgot-password')->first();
     $title = $page ? $page->title : __('Forgot Password?');
     $subtitle = $page ? $page->content : __('Enter your email address and we will send you a link to reset your password.');
-    $image = $page && $page->image ? (filter_var($page->image, FILTER_VALIDATE_URL) ? $page->image : asset($page->image)) : 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
+    $image = $page && $page->image ? (filter_var($page->image, FILTER_VALIDATE_URL) ? $page->image : asset($page->image)) : null;
 @endphp
 
 <div class="container-fluid p-0">
@@ -13,7 +17,7 @@
         <!-- Image Side (Left) -->
         <div class="col-lg-6 d-none d-lg-block position-relative overflow-hidden bg-light">
             <div class="position-absolute top-0 start-0 w-100 h-100 bg-cover animate-image" 
-                 style="background-image: url('{{ $image }}'); background-position: center; background-size: cover;">
+                 style="background-image: url('{{ getImageOrPlaceholder($image, '800x600') }}'); background-position: center; background-size: cover;">
             </div>
             <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div>
             <div class="position-absolute bottom-0 start-0 p-5 text-white w-100" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
@@ -27,7 +31,7 @@
             <div class="w-100 p-4 p-md-5" style="max-width: 550px;">
                 <div class="text-center mb-5">
                     <a href="{{ route('home') }}" class="d-inline-block mb-4 text-decoration-none">
-                        <img src="{{ asset('frontend/img/logo.png') }}" alt="{{ config('app.name') }}" height="40" onerror="this.onerror=null; this.src='https://placehold.co/150x40?text={{ config('app.name') }}';">
+                        <img src="{{ asset('frontend/img/logo.png') }}" alt="{{ config('app.name') }}" height="40" onerror="this.onerror=null; this.src='{{ getImageOrPlaceholder(null, '150x40') }}';">
                     </a>
                     <h1 class="h2 fw-bold mb-2">{{ $title }}</h1>
                     <p class="text-muted">{{ $subtitle }}</p>
@@ -59,22 +63,4 @@
     </div>
 </div>
 
-<style>
-    @keyframes slowZoom {
-        0% { transform: scale(1); }
-        100% { transform: scale(1.1); }
-    }
-    .animate-image {
-        animation: slowZoom 20s infinite alternate ease-in-out;
-    }
-    .form-floating > .form-control:focus ~ label,
-    .form-floating > .form-control:not(:placeholder-shown) ~ label {
-        color: var(--bs-primary);
-        opacity: 0.8;
-    }
-    .form-floating > .form-control:focus {
-        border-color: var(--bs-primary);
-        box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.1);
-    }
-</style>
 @endsection

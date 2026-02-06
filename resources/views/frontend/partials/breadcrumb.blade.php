@@ -1,6 +1,6 @@
 
 
-<div class="breadcrumb-section" style="background-image: url('{{ $bgImage ?? 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80' }}');">
+<div class="breadcrumb-section" style="background-image: url('{{ getImageOrPlaceholder($bgImage ?? null, '1920x300') }}');">
     <div class="breadcrumb-overlay"></div>
     <div class="container breadcrumb-content">
         <h1 class="text-white display-4 breadcrumb-title">{{ $title ?? '' }}</h1>

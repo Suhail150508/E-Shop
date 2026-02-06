@@ -1,5 +1,9 @@
 @extends('layouts.frontend')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('frontend/css/checkout.css') }}">
+@endpush
+
 @section('content')
 <div class="container py-5">
     @include('frontend.checkout.steps', ['currentStep' => 3])
@@ -145,7 +149,7 @@
                             
                             <div class="d-flex align-items-center mt-3">
                                 <div>
-                                    <h6 class="mb-0 small fw-bold text-truncate" style="max-width: 150px;">{{ $cartItems->first()['name'] ?? __('Item') }}</h6>
+                                    <h6 class="mb-0 small fw-bold text-truncate text-truncate-150">{{ $cartItems->first()['name'] ?? __('Item') }}</h6>
                                     <small class="text-muted">{{ $cartItems->sum('quantity') }} {{ __('Items') }}</small>
                                 </div>
                                 <div class="ms-auto fw-bold">{{ format_price($subtotal) }}</div>
@@ -161,7 +165,7 @@
                                     <i class="fas fa-tag me-2"></i>
                                     <div>
                                         <div class="fw-bold small">{{ $coupon['code'] }}</div>
-                                        <div class="small" style="font-size: 0.75rem;">{{ __('Applied') }}</div>
+                                        <div class="small text-xs">{{ __('Applied') }}</div>
                                     </div>
                                 </div>
                                 <button type="button" class="btn-close btn-sm" id="remove_coupon_btn" aria-label="Remove"></button>

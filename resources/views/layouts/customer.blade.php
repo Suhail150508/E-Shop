@@ -29,5 +29,6 @@
 
     @push('styles')
         <link rel="stylesheet" href="{{ asset('frontend/css/customer-panel.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/css/customer.css') }}">
     @endpush
 @endsection

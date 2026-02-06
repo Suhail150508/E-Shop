@@ -289,6 +289,8 @@ return [
     'error_deleting_selected_products' => 'An error occurred while deleting selected products. Please try again.',
     'error_try_again' => 'Something went wrong. Please try again.',
     'error_occurred' => 'An error occurred. Please try again later.',
+    'post_too_large' => 'The uploaded data exceeds the server limit. Please upload smaller files or fewer files at once.',
+    'max_size_per_image_hint' => 'Max :size per image. Use smaller or fewer images if you see an upload limit error.',
     'no_payment_methods_available' => 'No payment methods available. Please contact support.',
     'notifications' => 'Notifications',
     'mark_all_read' => 'Mark all read',

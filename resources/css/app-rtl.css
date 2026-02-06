@@ -1,0 +1,12 @@
+@import "bootstrap/dist/css/bootstrap.rtl.min.css";
+
+#toast-container>div{border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.18);opacity:.98}
+#toast-container>.toast-success{background-color:#0f5132;color:#fff}
+#toast-container>.toast-error{background-color:#b91c1c;color:#fff}
+#toast-container>.toast-info{background-color:#1e40af;color:#fff}
+#toast-container>.toast-warning{background-color:#b45309;color:#fff}
+.toast-title{font-weight:600}
+.toast-message{font-size:.95rem}
+.toast-progress{height:3px;background-color:rgba(255,255,255,.35)}
+.toast-close-button{font-size:18px;opacity:.9;text-shadow:none}
+.toast-close-button:hover{opacity:1}

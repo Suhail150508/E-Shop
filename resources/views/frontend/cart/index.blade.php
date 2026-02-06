@@ -62,7 +62,7 @@
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex align-items-center cart-product-info">
-                                                            <img src="{{ getImageOrPlaceholder($item['image'], '80x80') }}" alt="{{ $item['name'] }}" class="rounded me-3 object-fit-cover">
+                                                            <img src="{{ getImageOrPlaceholder($item['image'], '80x80') }}" alt="{{ $item['name'] }}" class="rounded me-3 object-fit-cover" onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
                                                             <div class="cart-product-name">
                                                                 <a href="{{ route('shop.product.show', $item['slug']) }}">
                                                                     {{ $item['name'] }}

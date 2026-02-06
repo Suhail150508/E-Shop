@@ -2,6 +2,10 @@
 
 @section('page_title', setting('shop_page_title', __('common.shop_all')))
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('frontend/css/shop.css') }}">
+@endpush
+
 @section('content')
     <!-- Page Header -->
     <div class="page-header">
@@ -48,7 +52,7 @@
                                     </label>
                                     @if($category->children->isNotEmpty())
                                         @foreach($category->children as $child)
-                                            <label class="filter-option" style="margin-left: 1.5rem;">
+                                            <label class="filter-option sub-category-indent">
                                                 <input type="checkbox" name="categories[]" value="{{ $child->id }}"
                                                        {{ in_array($child->id, (array)request('categories', [])) ? 'checked' : '' }}>
                                                 <span class="filter-label">
@@ -113,7 +117,7 @@
                                     @if(isset($colors) && count($colors) > 0)
                                         @foreach($colors as $color)
                                             <div class="color-option {{ in_array($color->name, $selectedColors) ? 'active' : '' }}" 
-                                                 style="background: {{ $color->code }}; border: 1px solid #E5E5E5;" 
+                                                 style="background: {{ $color->code }};" 
                                                  data-color="{{ $color->name }}"
                                                  title="{{ $color->name }}"
                                                  onclick="toggleColor(this)"></div>

@@ -24,7 +24,7 @@
             <a class="navbar-brand logo d-lg-none" href="{{ route('home') }}">{{ config('app.name') }}</a>
 
             <!-- Categories Button - Visible on mobile -->
-            <a href="{{ route('shop.index') }}" class="btn btn-rust d-lg-none ms-auto me-3" style="background: var(--rust); color: white; border: none;">
+            <a href="{{ route('shop.index') }}" class="btn btn-categories d-lg-none ms-auto me-3">
                 <i class="fas fa-bars me-1"></i> {{ __('Categories') }}
             </a>
 

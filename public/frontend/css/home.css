@@ -1,0 +1,455 @@
+/**
+ * Home Page - Professional UI/UX
+ * Scoped enhancements: animations, responsive, cart-style product cards
+ * Use .home-page wrapper so other pages are unaffected.
+ */
+
+/* ---- Reduce motion preference ---- */
+@media (prefers-reduced-motion: reduce) {
+    .home-page .fade-in,
+    .home-page .gallery-item,
+    .home-page .category-card,
+    .home-page .product-card,
+    .home-page .hero-badge,
+    .home-page .btn-custom,
+    .home-page .gallery-img { animation: none !important; transition-duration: 0.01ms !important; }
+}
+
+/* ---- Scroll-triggered fade-in ---- */
+.home-page .fade-in {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1), transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.home-page .fade-in.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+.home-page .fade-in[data-delay="1"] { transition-delay: 0.1s; }
+.home-page .fade-in[data-delay="2"] { transition-delay: 0.2s; }
+.home-page .fade-in[data-delay="3"] { transition-delay: 0.3s; }
+.home-page .fade-in[data-delay="4"] { transition-delay: 0.4s; }
+.home-page .fade-in[data-delay="5"] { transition-delay: 0.5s; }
+
+/* ---- Hero (always visible on load; keyframe animations run without scroll) ---- */
+.home-page .hero-section .fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+.home-page .hero-section {
+    padding-top: clamp(100px, 18vw, 140px);
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+    min-height: auto;
+}
+.home-page .hero-content {
+    padding-right: clamp(0, 2vw, 1.5rem);
+}
+.home-page .hero-badge {
+    animation: homeHeroBadgeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+.home-page .hero-title {
+    animation: homeHeroTextIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards;
+}
+.home-page .hero-subtitle {
+    animation: homeHeroTextIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards;
+}
+.home-page .hero-cta {
+    animation: homeHeroTextIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.3s backwards;
+}
+@keyframes homeHeroBadgeIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes homeHeroTextIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Hero gallery (home only) ---- */
+.home-page .hero-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px; /* Increased gap for cleaner separation */
+    padding: 20px 10px; /* Minimal padding */
+    background: transparent; 
+    box-shadow: none;
+    border-radius: 0;
+    align-items: center; /* Center items vertically */
+}
+
+/* Staggered Grid (Waterfall Effect) */
+@media (min-width: 992px) {
+    .home-page .gallery-item:nth-child(2) {
+        transform: translateY(40px); /* Push middle column down */
+    }
+    
+    /* Subtle floating animation for all columns */
+    .home-page .gallery-item {
+        animation: galleryFloat 6s ease-in-out infinite;
+    }
+    .home-page .gallery-item:nth-child(2) {
+        animation-delay: 1s; /* Offset animation for middle column */
+    }
+    .home-page .gallery-item:nth-child(3) {
+        animation-delay: 2s; /* Offset animation for last column */
+    }
+}
+
+@keyframes galleryFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Adjusted for staggered layout: Override transform in keyframes */
+@media (min-width: 992px) {
+    @keyframes galleryFloatStaggered {
+        0%, 100% { transform: translateY(40px); }
+        50% { transform: translateY(30px); }
+    }
+    .home-page .gallery-item:nth-child(2) {
+        animation-name: galleryFloatStaggered;
+    }
+}
+
+/* Mobile/Tablet Horizontal Scroll (App-like feel) */
+@media (max-width: 991px) {
+    .home-page .hero-gallery {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 20px;
+        gap: 16px;
+        scrollbar-width: none;
+    }
+    .home-page .hero-gallery::-webkit-scrollbar {
+        display: none;
+    }
+    .home-page .gallery-item {
+        min-width: 85%; /* Show part of next item */
+        scroll-snap-align: center;
+        animation: none; /* No floating on mobile for performance */
+    }
+}
+
+.home-page .gallery-item {
+    position: relative;
+    border-radius: 24px; /* More rounded */
+    overflow: hidden;
+    aspect-ratio: 3/4; /* Portrait ratio (ideal for fashion) */
+    background: #fff;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1); /* Softer, deeper shadow */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 4px solid #fff; /* White border for clean look */
+}
+
+.home-page .gallery-item:hover {
+    transform: translateY(-8px) scale(1.02) !important; /* Lift effect on hover */
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+/* Ensure staggered item maintains its base offset on hover if needed, 
+   but for simplicity, we let hover lift it relative to its current position 
+   or just let the hover effect take over. 
+   Actually, applying transform on hover might conflict with animation.
+   Better to apply hover effect to internal wrapper or pause animation.
+*/
+.home-page .gallery-item:hover {
+    animation-play-state: paused;
+}
+.home-page .gallery-item .image-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.home-page .gallery-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out, transform 6s ease;
+    z-index: 1;
+}
+.home-page .gallery-img.active {
+    opacity: 1;
+    z-index: 2;
+    transform: scale(1.05); /* Subtle zoom effect */
+}
+.home-page .gallery-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 3;
+    letter-spacing: 0.5px;
+}
+
+/* ---- Categories ---- */
+.home-page .category-section {
+    padding: clamp(3rem, 6vw, 5rem) 0;
+}
+.home-page .category-section .section-title {
+    margin-bottom: 0.5rem;
+}
+.home-page .category-section .row.g-4 > [class*="col-"] {
+    animation: homeCategoryIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+.home-page .category-section .row.g-4 > [class*="col-"]:nth-child(1) { animation-delay: 0.05s; }
+.home-page .category-section .row.g-4 > [class*="col-"]:nth-child(2) { animation-delay: 0.15s; }
+.home-page .category-section .row.g-4 > [class*="col-"]:nth-child(3) { animation-delay: 0.25s; }
+.home-page .category-section .row.g-4 > [class*="col-"]:nth-child(4) { animation-delay: 0.35s; }
+@keyframes homeCategoryIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.home-page .category-card {
+    border-radius: 16px;
+    min-height: 220px;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.home-page .category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* ---- Promo (split banner) ---- */
+.home-page .promo-section {
+    padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+.home-page .promo-section .row {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.35s ease;
+}
+.home-page .promo-section .row:hover {
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.12);
+}
+.home-page .promo-section .promo-img-col {
+    min-height: 320px;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.home-page .promo-section:hover .promo-img-col {
+    transform: scale(1.03);
+}
+.home-page .promo-section .promo-content {
+    padding: clamp(1.5rem, 4vw, 3rem) !important;
+}
+
+/* ---- Products sections (Flash Sale + Featured) ---- */
+.home-page .products-section {
+    padding: clamp(3rem, 6vw, 5rem) 0;
+}
+.home-page .products-section#flash-sale {
+    background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 100%);
+}
+.home-page .products-section .row.g-4 {
+    margin-top: 2rem !important;
+}
+
+/* Home product cards: cart-style, clean and professional */
+.home-page .products-section .product-card {
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+    overflow: hidden;
+}
+.home-page .products-section .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+    border-color: rgba(209, 122, 92, 0.25);
+}
+.home-page .products-section .product-image-wrapper {
+    border-radius: 16px 16px 0 0;
+}
+.home-page .products-section .product-img {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.home-page .products-section .product-card:hover .product-img {
+    transform: scale(1.06);
+}
+.home-page .products-section .product-info {
+    padding: 1.25rem 1.25rem 1.5rem;
+    border-radius: 0 0 16px 16px;
+}
+.home-page .products-section .product-card .btn-outline-primary {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.65rem 1.25rem;
+    transition: all 0.3s ease;
+}
+.home-page .products-section .product-card .btn-outline-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(209, 122, 92, 0.35);
+}
+.home-page .products-section .product-badge {
+    border-radius: 10px;
+    top: 14px;
+    left: 14px;
+}
+.home-page .products-section .product-actions {
+    top: 14px;
+    right: 14px;
+}
+
+/* Stagger product cards on home */
+.home-page .products-section .row.g-4 > [class*="col-"] {
+    animation: homeProductIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+.home-page .products-section .row.g-4 > [class*="col-"]:nth-child(1) { animation-delay: 0.05s; }
+.home-page .products-section .row.g-4 > [class*="col-"]:nth-child(2) { animation-delay: 0.1s; }
+.home-page .products-section .row.g-4 > [class*="col-"]:nth-child(3) { animation-delay: 0.15s; }
+.home-page .products-section .row.g-4 > [class*="col-"]:nth-child(4) { animation-delay: 0.2s; }
+.home-page .products-section .row.g-4 > [class*="col-"]:nth-child(5) { animation-delay: 0.25s; }
+.home-page .products-section .row.g-4 > [class*="col-"]:nth-child(6) { animation-delay: 0.3s; }
+@keyframes homeProductIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Testimonials / About ---- */
+.home-page .banner-section-dark {
+    padding: clamp(3rem, 6vw, 5rem) 0;
+    position: relative;
+    overflow: hidden;
+}
+.home-page .banner-section-dark .position-relative img {
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.home-page .banner-section-dark .position-relative:hover img {
+    transform: scale(1.02);
+}
+.home-page .banner-section-dark .testimonial-avatar {
+    transition: transform 0.3s ease;
+}
+.home-page .banner-section-dark .testimonial-avatar:hover {
+    transform: translateY(-4px);
+}
+.home-page .banner-section-dark .avatar-circle {
+    transition: transform 0.3s ease;
+}
+.home-page .banner-section-dark .testimonial-avatar:hover .avatar-circle {
+    transform: scale(1.08);
+}
+.home-page .banner-section-dark .btn-primary {
+    border-radius: 50px;
+    font-weight: 600;
+    padding: 0.85rem 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.home-page .banner-section-dark .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+/* ---- Section headers (home) ---- */
+.home-page .section-badge {
+    transition: transform 0.3s ease;
+}
+.home-page .section-badge-solid {
+    border-radius: 50px;
+}
+.home-page .section-title {
+    transition: color 0.2s ease;
+}
+
+/* ---- View all products button ---- */
+.home-page .products-section .btn-outline-dark.rounded-pill {
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+.home-page .products-section .btn-outline-dark.rounded-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ---- Empty state products ---- */
+.home-page .products-section .col-12.text-center {
+    padding: 3rem 1rem !important;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 991.98px) {
+    .home-page .hero-section {
+        padding-top: 100px;
+    }
+    .home-page .hero-gallery {
+        margin-top: 1.5rem;
+        /* Make it smaller on tablets if needed, or keep grid */
+        gap: 8px;
+    }
+    .home-page .promo-section .promo-img-col {
+        min-height: 280px;
+    }
+    .home-page .category-card {
+        min-height: 200px;
+    }
+}
+@media (max-width: 767.98px) {
+    .home-page .hero-title {
+        font-size: clamp(1.75rem, 6vw, 2.5rem);
+    }
+    .home-page .hero-subtitle {
+        font-size: 1rem;
+    }
+    .home-page .hero-cta {
+        flex-direction: column;
+        width: 100%;
+    }
+    .home-page .hero-cta .btn-custom {
+        width: 100%;
+        justify-content: center;
+    }
+    .home-page .category-section .row.g-4 > [class*="col-"],
+    .home-page .products-section .row.g-4 > [class*="col-"] {
+        animation-delay: 0s !important;
+    }
+    .home-page .products-section .product-card {
+        border-radius: 14px;
+    }
+    .home-page .products-section .product-info {
+        padding: 1rem 1rem 1.25rem;
+    }
+    .home-page .banner-section-dark .ps-lg-4 {
+        padding-left: 0 !important;
+        padding-top: 1.5rem;
+    }
+    
+    /* Hero Gallery Mobile */
+    .home-page .hero-gallery {
+        grid-template-columns: repeat(3, 1fr); /* Keep 3 columns or switch to 1? 3 columns looks cool */
+        gap: 6px;
+        padding: 6px;
+    }
+    .home-page .gallery-item {
+         aspect-ratio: 3/4; /* Slightly shorter on mobile? */
+    }
+}
+@media (max-width: 575.98px) {
+    .home-page .section-title {
+        font-size: 1.5rem;
+    }
+    .home-page .promo-section .promo-content .display-5 {
+        font-size: 1.75rem;
+    }
+}
+ /* Navbar Dropdown Hover */
+@media (min-width: 992px) {
+    .navbar .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+}

@@ -44,7 +44,7 @@
                                 <!-- Product Image -->
                                 <a href="{{ route('shop.product.show', $product->slug) }}" class="d-block text-center p-4 bg-white">
                                     @if($product->image)
-                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid wishlist-img">
+                                        <img src="{{ getImageOrPlaceholder($product->image, '300x300') }}" alt="{{ $product->name }}" class="img-fluid wishlist-img" onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
                                     @else
                                         <div class="d-flex align-items-center justify-content-center bg-light rounded wishlist-img-placeholder">
                                             <i class="fa-regular fa-image fa-3x text-muted opacity-50"></i>

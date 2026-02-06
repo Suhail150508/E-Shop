@@ -35,16 +35,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('global/toastr/toastr.main.css') }}">
     
-    <style>
-    /* Navbar Dropdown Hover */
-    @media (min-width: 992px) {
-        .navbar .nav-item.dropdown:hover .dropdown-menu {
-            display: block;
-            margin-top: 0;
-        }
-    }
-    </style>
-
     @stack('style_section')
     @stack('styles')
 </head>

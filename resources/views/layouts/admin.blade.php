@@ -237,9 +237,49 @@
                     <span>{{ __('Reviews') }}</span>
                 </a>
 
+                <div class="menu-header">{{ __('Page Management') }}</div>
+                @php
+                    $isPagesActive = request()->routeIs('admin.pages.*');
+                @endphp
+                <a class="nav-link {{ $isPagesActive ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" href="#pagesMenu" role="button" aria-expanded="{{ $isPagesActive ? 'true' : 'false' }}" aria-controls="pagesMenu">
+                    <i class="fas fa-file-alt"></i>
+                    <span>{{ __('Manage Pages') }}</span>
+                    <i class="fas fa-chevron-right arrow ms-auto"></i>
+                </a>
+                <div class="collapse {{ $isPagesActive ? 'show' : '' }}" id="pagesMenu">
+                    <div class="sub-menu">
+                        <a href="{{ route('admin.pages.index') }}" class="nav-link {{ request()->routeIs('admin.pages.index') ? 'active' : '' }}">
+                            <span>{{ __('All Pages') }}</span>
+                        </a>
+                        @if(isset($adminPages))
+                            @foreach($adminPages as $page)
+                                <a href="{{ route('admin.pages.edit', $page->id) }}" class="nav-link {{ request()->url() == route('admin.pages.edit', $page->id) ? 'active' : '' }}">
+                                    <span>{{ $page->title }}</span>
+                                </a>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+
+                <div class="menu-header">{{ __('International') }}</div>
+                <a href="{{ route('admin.currency.index') }}" class="nav-link {{ request()->routeIs('admin.currency.*') ? 'active' : '' }}">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>{{ __('Multi Currency') }}</span>
+                </a>
+                <a href="{{ route('admin.language.index') }}" class="nav-link {{ request()->routeIs('admin.language.*') ? 'active' : '' }}">
+                    <i class="fas fa-globe"></i>
+                    <span>{{ __('Multi Language') }}</span>
+                </a>
+
+                <div class="menu-header">{{ __('Payment Settings') }}</div>
+                <a href="{{ route('admin.payment-methods.index') }}" class="nav-link {{ request()->routeIs('admin.payment-methods.*') ? 'active' : '' }}">
+                    <i class="fas fa-credit-card"></i>
+                    <span>{{ __('Payment Methods') }}</span>
+                </a>
+
                 <div class="menu-header">{{ __('System Settings') }}</div>
                 @php
-                    $isSettingsActive = request()->routeIs('admin.pages.*') || request()->routeIs('admin.currency.*') || request()->routeIs('admin.language.*') || request()->routeIs('admin.payment-methods.*') || request()->routeIs('admin.email-configuration.*') || request()->routeIs('admin.settings.*');
+                    $isSettingsActive = request()->routeIs('admin.email-configuration.*') || request()->routeIs('admin.settings.*');
                 @endphp
                 <a class="nav-link {{ $isSettingsActive ? 'active' : 'collapsed' }}" data-bs-toggle="collapse" href="#settingsMenu" role="button" aria-expanded="{{ $isSettingsActive ? 'true' : 'false' }}" aria-controls="settingsMenu">
                     <i class="fas fa-cog"></i>
@@ -250,18 +290,6 @@
                     <div class="sub-menu">
                         <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                             <span>{{ __('General Settings') }}</span>
-                        </a>
-                        <a href="{{ route('admin.pages.index') }}" class="nav-link {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
-                            <span>{{ __('Pages') }}</span>
-                        </a>
-                        <a href="{{ route('admin.currency.index') }}" class="nav-link {{ request()->routeIs('admin.currency.*') ? 'active' : '' }}">
-                            <span>{{ __('Multi Currency') }}</span>
-                        </a>
-                        <a href="{{ route('admin.language.index') }}" class="nav-link {{ request()->routeIs('admin.language.*') ? 'active' : '' }}">
-                            <span>{{ __('Multi Language') }}</span>
-                        </a>
-                        <a href="{{ route('admin.payment-methods.index') }}" class="nav-link {{ request()->routeIs('admin.payment-methods.*') ? 'active' : '' }}">
-                            <span>{{ __('Payment Methods') }}</span>
                         </a>
                         <a href="{{ route('admin.email-configuration.index') }}" class="nav-link {{ request()->routeIs('admin.email-configuration.index') ? 'active' : '' }}">
                             <span>{{ __('Email Config') }}</span>

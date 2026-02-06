@@ -1,0 +1,32 @@
+/* Auth Pages Styles */
+.auth-container {
+    min-height: 100vh;
+}
+
+.auth-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.auth-form-wrapper {
+    max-width: 550px;
+}
+
+@keyframes slowZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.animate-image {
+    animation: slowZoom 20s infinite alternate ease-in-out;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--bs-primary);
+    opacity: 0.8;
+}
+
+.form-floating > .form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.1);
+}

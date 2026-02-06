@@ -3,7 +3,7 @@
 @section('page_title', isset($currentCategory) ? $currentCategory->name : __('common.shop_all'))
 
 @push('styles')
-    <!-- Styles are now in frontend-shared.css -->
+    <link rel="stylesheet" href="{{ asset('frontend/css/shop.css') }}">
 @endpush
 
 @section('content')
@@ -55,7 +55,7 @@
                                     </label>
                                     @if($category->children->isNotEmpty())
                                         @foreach($category->children as $child)
-                                            <label class="filter-option" style="margin-left: 1.5rem;">
+                                            <label class="filter-option sub-category-indent">
                                                 <input type="checkbox" name="categories[]" value="{{ $child->id }}"
                                                        {{ (isset($currentCategory) && $currentCategory->id == $child->id) || in_array($child->id, (array)request('categories', [])) ? 'checked' : '' }}>
                                                 <span class="filter-label">

@@ -1,17 +1,19 @@
 @extends('layouts.frontend')
 @section('header')
-
 @endsection
+@push('styles')
+<link rel="stylesheet" href="{{ asset('frontend/css/home.css') }}">
+@endpush
 @section('content')
-
+<div class="home-page">
   <!-- Hero Section -->
     <section class="hero-section" id="home" role="banner" aria-labelledby="hero-heading">
         <div class="hero-texture" aria-hidden="true"></div>
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-1 mb-lg-0">
-                    <div class="fade-in hero-content">
-                        <span class="hero-badge">{{ __('common.new_collection', ['year' => 2025]) }}</span>
+                    <div class="fade-in hero-content" data-delay="0">
+                        <span class="hero-badge">{{ __('common.new_collection', ['year' => date('Y')]) }}</span>
                         <h1 id="hero-heading" class="hero-title">
                             {{ setting('home_hero_title', __('common.hero_title')) }}
                         </h1>
@@ -36,19 +38,19 @@
                             if (empty($heroImages) || !is_array($heroImages)) {
                                 $heroImages = [
                                     [
-                                        ['image' => 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=90', 'name' => __('Elegant Evening Gown'), 'badge' => __('common.new')],
-                                        ['image' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=90', 'name' => __('Velvet Blazer'), 'badge' => __('Trend')],
-                                        ['image' => 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=800&q=90', 'name' => __('Designer Outfit'), 'badge' => __('Premium')],
+                                        ['image' => null, 'name' => __('Elegant Evening Gown'), 'badge' => __('common.new')],
+                                        ['image' => null, 'name' => __('Velvet Blazer'), 'badge' => __('Trend')],
+                                        ['image' => null, 'name' => __('Designer Outfit'), 'badge' => __('Premium')],
                                     ],
                                     [
-                                        ['image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=90', 'name' => __('Floral Maxi Dress'), 'badge' => __('common.sale_badge')],
-                                        ['image' => 'https://images.unsplash.com/photo-1550614000-4b9519e49a27?auto=format&fit=crop&w=800&q=90', 'name' => __('Summer Dress'), 'badge' => __('Popular')],
-                                        ['image' => 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=90', 'name' => __('Casual Wear'), 'badge' => __('common.new')],
+                                        ['image' => null, 'name' => __('Floral Maxi Dress'), 'badge' => __('common.sale_badge')],
+                                        ['image' => null, 'name' => __('Summer Dress'), 'badge' => __('Popular')],
+                                        ['image' => null, 'name' => __('Casual Wear'), 'badge' => __('common.new')],
                                     ],
                                     [
-                                        ['image' => 'https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&w=800&q=90', 'name' => __('Vintage Collection'), 'badge' => __('common.hot')],
-                                        ['image' => 'https://images.unsplash.com/photo-1554412933-514a83d2f3c8?auto=format&fit=crop&w=800&q=90', 'name' => __('Chic Top'), 'badge' => __('Limited')],
-                                        ['image' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=90', 'name' => __('Fashion Collection'), 'badge' => __('common.hot')],
+                                        ['image' => null, 'name' => __('Vintage Collection'), 'badge' => __('common.hot')],
+                                        ['image' => null, 'name' => __('Chic Top'), 'badge' => __('Limited')],
+                                        ['image' => null, 'name' => __('Fashion Collection'), 'badge' => __('common.hot')],
                                     ]
                                 ];
                             }
@@ -58,13 +60,13 @@
                             <div class="gallery-item" data-position="{{ $positionIndex }}">
                                 <div class="image-wrapper">
                                     @foreach($images as $imgIndex => $item)
-                                        <img src="{{ getImageOrPlaceholder($item['image'] ?? null, '500x450') }}" 
+                                        <img src="{{ getImageOrPlaceholder($item['image'] ?? null, '600x800') }}" 
                                              alt="{{ $item['name'] ?? __('common.gallery_image') }}" 
                                              class="gallery-img {{ $imgIndex === 0 ? 'active' : '' }}"
                                              data-image-index="{{ $imgIndex }}"
                                              data-badge="{{ $item['badge'] ?? '' }}"
                                              loading="{{ $positionIndex === 0 && $imgIndex === 0 ? 'eager' : 'lazy' }}"
-                                             onerror="this.src='https://placehold.co/500x450/cccccc/666666?text=Image+{{ $positionIndex * 3 + $imgIndex + 1 }}'">
+                                             onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
                                     @endforeach
                                 </div>
                                 @if(count($images) > 0)
@@ -81,12 +83,11 @@
     <!-- Categories -->
     <section class="category-section" id="shop">
         <div class="container">
-            <div class="text-center fade-in">
-                <div class="section-badge section-badge-solid">{{ __('common.categories') }}</div>
-                <h2 class="section-title">{{ __('common.shop_by_category') }}</h2>
-                <p class="section-subtitle">{{ __('common.categories_subtitle') }}</p>
+            <div class="text-center fade-in" data-delay="0">
+                <div class="section-badge section-badge-solid">{{ setting('home_category_badge', __('common.categories')) }}</div>
+                <h2 class="section-title">{{ setting('home_category_title', __('common.shop_by_category')) }}</h2>
+                <p class="section-subtitle">{{ setting('home_category_subtitle', __('common.categories_subtitle')) }}</p>
             </div>
-            
             <div class="mt-5">
                 @if(isset($categories) && $categories->count())
                     @php
@@ -185,18 +186,18 @@
     <!-- Mid-Page Fashion Banner -->
     <section class="promo-section py-5 my-3">
         <div class="container">
-            <div class="row g-0 rounded-4 overflow-hidden shadow-sm">
-                <div class="col-lg-6 order-lg-2 promo-img-col" style="background: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop') center/cover; min-height: 400px;"></div>
+            <div class="row g-0 rounded-4 overflow-hidden shadow-sm fade-in" data-delay="0">
+                <div class="col-lg-6 order-lg-2 promo-img-col promo-bg" style="background: url('{{ getImageOrPlaceholder(setting('home_promo_image'), '800x600') }}') center/cover; min-height: 400px;"></div>
                 <div class="col-lg-6 order-lg-1 bg-white d-flex align-items-center">
                     <div class="p-5 promo-content">
-                        <span class="section-badge section-badge-solid promo-badge">{{ __('common.hot_topic') }}</span>
-                        <h2 class="display-5 fw-bold mb-4">{{ __('common.promo_title') }}</h2>
+                        <span class="section-badge section-badge-solid promo-badge">{{ setting('home_promo_badge', __('common.hot_topic')) }}</span>
+                        <h2 class="display-5 fw-bold mb-4">{{ setting('home_promo_title', __('common.promo_title')) }}</h2>
                         <p class="text-muted mb-4 lead">
-                            {{ __('common.promo_subtitle') }}
+                            {{ setting('home_promo_subtitle', __('common.promo_subtitle')) }}
                         </p>
                         <div class="d-flex flex-wrap gap-3">
-                            <a href="{{ route('shop.index') }}" class="btn btn-dark btn-lg rounded-0 px-4">{{ __('common.shop_now') }}</a>
-                            <a href="{{ route('shop.index') }}" class="btn btn-outline-dark btn-lg rounded-0 px-4">{{ __('common.view_collections') }}</a>
+                            <a href="{{ setting('home_promo_btn1_link', route('shop.index')) }}" class="btn btn-dark btn-lg rounded-0 px-4">{{ setting('home_promo_btn1_text', __('common.shop_now')) }}</a>
+                            <a href="{{ setting('home_promo_btn2_link', route('shop.index')) }}" class="btn btn-outline-dark btn-lg rounded-0 px-4">{{ setting('home_promo_btn2_text', __('common.view_collections')) }}</a>
                         </div>
                     </div>
                 </div>
@@ -208,12 +209,11 @@
     @if(isset($flashSaleProducts) && $flashSaleProducts->count())
     <section class="products-section bg-light" id="flash-sale">
         <div class="container">
-            <div class="text-center fade-in">
-                <div class="section-badge section-badge-solid text-danger">{{ __('common.offers') }}</div>
-                <h2 class="section-title">{{ __('common.limited_offers') }}</h2>
-                <p class="section-subtitle">{{ __('common.limited_offers_subtitle') }}</p>
+            <div class="text-center fade-in" data-delay="0">
+                <div class="section-badge section-badge-solid text-danger">{{ setting('home_flash_badge', __('common.offers')) }}</div>
+                <h2 class="section-title">{{ setting('home_flash_title', __('common.limited_offers')) }}</h2>
+                <p class="section-subtitle">{{ setting('home_flash_subtitle', __('common.limited_offers_subtitle')) }}</p>
             </div>
-            
             <div class="row g-4 mt-5">
                 @foreach($flashSaleProducts as $product)
                     @include('frontend.partials.product-card', ['product' => $product, 'badge' => 'SALE'])
@@ -228,8 +228,8 @@
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
-                    <div class="position-relative fade-in">
-                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" alt="{{ __('Fashion Collection') }}" class="img-fluid rounded-4 shadow-lg">
+                    <div class="position-relative fade-in" data-delay="0">
+                        <img src="{{ getImageOrPlaceholder(setting('home_banner_image'), '1200x600') }}" alt="{{ setting('home_banner_title', __('Fashion Collection')) }}" class="img-fluid rounded-4 shadow-lg">
                         <div class="position-absolute bottom-0 end-0 bg-white p-3 rounded-3 shadow mb-4 me-4">
                             <div class="d-flex align-items-center gap-3">
                                 <div class="text-warning"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
@@ -239,11 +239,11 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="fade-in ps-lg-4">
-                        <span class="section-badge section-badge-outline">{{ __('common.testimonials') }}</span>
-                        <h2 class="banner-dark-title mb-4 mt-2">{{ __('common.crafted_with_care') }}</h2>
+                    <div class="fade-in ps-lg-4" data-delay="1">
+                        <span class="section-badge section-badge-outline">{{ setting('home_banner_badge', __('common.testimonials')) }}</span>
+                        <h2 class="banner-dark-title mb-4 mt-2">{{ setting('home_banner_title', __('common.crafted_with_care')) }}</h2>
                         <p class="banner-dark-text mb-4">
-                            {{ __('common.testimonials_paragraph') }}
+                            {{ setting('home_banner_text', __('common.testimonials_paragraph')) }}
                         </p>
                         <div class="testimonial-avatars d-flex gap-3 mb-4">
                             <div class="testimonial-avatar">
@@ -255,7 +255,7 @@
                                 <small class="d-block mt-1 fw-semibold">Sarah J.</small>
                             </div>
                         </div>
-                        <a href="{{ route('shop.index') }}" class="btn btn-primary btn-lg rounded-pill px-5">{{ __('common.shop_now') }} <i class="fas fa-arrow-right ms-2"></i></a>
+                        <a href="{{ setting('home_banner_btn_link', route('shop.index')) }}" class="btn btn-primary btn-lg rounded-pill px-5">{{ setting('home_banner_btn_text', __('common.shop_now')) }} <i class="fas fa-arrow-right ms-2"></i></a>
                     </div>
                 </div>
             </div>
@@ -265,12 +265,11 @@
     <!-- Featured Products -->
     <section class="products-section" id="featured">
         <div class="container">
-            <div class="text-center fade-in">
-                <div class="section-badge section-badge-solid">{{ __('common.latest') }}</div>
-                <h2 class="section-title">{{ __('common.trending_products') }}</h2>
-                <p class="section-subtitle">{{ __('common.trending_subtitle') }}</p>
+            <div class="text-center fade-in" data-delay="0">
+                <div class="section-badge section-badge-solid">{{ setting('home_featured_badge', __('common.latest')) }}</div>
+                <h2 class="section-title">{{ setting('home_featured_title', __('common.trending_products')) }}</h2>
+                <p class="section-subtitle">{{ setting('home_featured_subtitle', __('common.trending_subtitle')) }}</p>
             </div>
-            
             <div class="row g-4 mt-5">
                 @if(isset($featuredProducts) && $featuredProducts->count())
                     @foreach($featuredProducts as $product)
@@ -283,6 +282,13 @@
                 @else
                     <div class="col-12 text-center py-5">
                         <p class="text-muted">{{ __('common.no_products_found') }}</p>
+                    </div>
+                @endif
+                @if((isset($featuredProducts) && $featuredProducts->count()) || (isset($latestProducts) && $latestProducts->count()))
+                    <div class="col-12 text-center mt-4">
+                        <a href="{{ route('shop.index') }}" class="btn btn-outline-dark btn-lg rounded-pill px-4 py-2">
+                            {{ __('common.view_all') }} <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
                     </div>
                 @endif
             </div>
@@ -420,8 +426,26 @@
         initHeroSlider();
     }
 })();
+
+    /**
+     * Scroll-triggered animations: add .in-view when .fade-in enters viewport
+     */
+    (function() {
+        var fadeEls = document.querySelectorAll('.home-page .fade-in');
+        if (!fadeEls.length) return;
+        var io = typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                }
+            });
+        }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 }) : null;
+        if (io) {
+            fadeEls.forEach(function(el) { io.observe(el); });
+        } else {
+            fadeEls.forEach(function(el) { el.classList.add('in-view'); });
+        }
+    })();
 </script>
-
-
-
+</div>
 @endsection

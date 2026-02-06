@@ -43,6 +43,10 @@
                     </div>
 
                     <h5 class="mb-3 text-primary">{{ __('Hero Gallery') }} (3 {{ __('Columns') }} x 3 {{ __('Images') }})</h5>
+                    <p class="text-muted small mb-3">
+                        {{ __('Recommended Size') }}: <strong>600x800px</strong> (Portrait). 
+                        {{ __('common.max_size_per_image_hint', ['size' => '2MB']) }}
+                    </p>
                     <div class="row">
                         @php
                             $positions = [__('Left Column'), __('Center Column'), __('Right Column')];
@@ -59,11 +63,11 @@
                                                 <label class="small fw-bold">{{ __('Image') }} {{ $i + 1 }}</label>
                                                 
                                                 <div class="mb-2">
-                                                    @if(isset($defaultGallery[$posIndex][$i]['image']))
+                                                    @if(isset($defaultGallery[$posIndex][$i]['image']) && $defaultGallery[$posIndex][$i]['image'])
                                                         <img src="{{ getImageOrPlaceholder($defaultGallery[$posIndex][$i]['image'], '300x300') }}" class="img-thumbnail mb-2" style="height: 60px;">
-                                                        <input type="hidden" name="home_hero_gallery[{{ $posIndex }}][{{ $i }}][image]" value="{{ $defaultGallery[$posIndex][$i]['image'] }}">
                                                     @endif
-                                                    <input type="file" class="form-control form-control-sm" name="home_hero_gallery_files[{{ $posIndex }}][{{ $i }}]">
+                                                    <input type="hidden" name="home_hero_gallery[{{ $posIndex }}][{{ $i }}][image]" value="{{ $defaultGallery[$posIndex][$i]['image'] ?? '' }}">
+                                                    <input type="file" class="form-control form-control-sm" name="home_hero_gallery_files[{{ $posIndex }}][{{ $i }}]" accept="image/jpeg,image/png,image/gif,image/webp">
                                                 </div>
                                                 
                                                 <input type="text" class="form-control form-control-sm mb-1" name="home_hero_gallery[{{ $posIndex }}][{{ $i }}][name]" value="{{ $defaultGallery[$posIndex][$i]['name'] ?? '' }}" placeholder="Alt Name">
@@ -319,7 +323,7 @@
                         <div class="col-md-12">
                             <label class="form-label">Side Image</label>
                             @if(isset($settings['auth_reset_image']))
-                                <div class="mb-2"><img src="{{ asset($settings['auth_reset_image']) }}" height="100" class="rounded object-fit-cover"></div>
+                                <div class="mb-2"><img src="{{ getImageOrPlaceholder($settings['auth_reset_image'], '600x800') }}" height="100" class="rounded object-fit-cover"></div>
                             @endif
                             <input type="file" class="form-control" name="auth_reset_image">
                         </div>

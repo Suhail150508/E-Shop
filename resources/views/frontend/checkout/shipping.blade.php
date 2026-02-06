@@ -1,5 +1,9 @@
 @extends('layouts.frontend')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('frontend/css/checkout.css') }}">
+@endpush
+
 @section('content')
 <div class="container py-5">
     @include('frontend.checkout.steps', ['currentStep' => 2])
@@ -72,7 +76,7 @@
                         <div id="map-section" class="mt-4 mb-3 {{ (old('delivery_type', $checkoutState['delivery_type'] ?? 'home_delivery') == 'pickup') ? 'd-none' : '' }}">
                             <label class="form-label fw-bold mb-2">{{ __('Pin Delivery Location (Optional)') }}</label>
                             <div class="card border p-1">
-                                <div id="google-map" style="height: 300px; width: 100%; border-radius: 4px;"></div>
+                                <div id="google-map" class="google-map-container"></div>
                             </div>
                             <input type="hidden" name="shipping_latitude" id="shipping_latitude" value="{{ old('shipping_latitude', $checkoutState['shipping_latitude'] ?? '') }}">
                             <input type="hidden" name="shipping_longitude" id="shipping_longitude" value="{{ old('shipping_longitude', $checkoutState['shipping_longitude'] ?? '') }}">
@@ -83,98 +87,11 @@
                         </div>
 
                         @push('scripts')
-                        <script src="https://maps.googleapis.com/maps/api/js?key={{ $googleMapsApiKey }}&callback=initMap&libraries=places" async defer></script>
                         <script>
-                            function initMap() {
-                                const defaultLocation = { lat: 23.8103, lng: 90.4125 }; // Default to Dhaka or configurable
-                                
-                                let savedLat = parseFloat(document.getElementById('shipping_latitude').value);
-                                let savedLng = parseFloat(document.getElementById('shipping_longitude').value);
-                                
-                                let initialPos = defaultLocation;
-                                let hasSavedLocation = !isNaN(savedLat) && !isNaN(savedLng);
-                                
-                                if (hasSavedLocation) {
-                                    initialPos = { lat: savedLat, lng: savedLng };
-                                }
-
-                                const map = new google.maps.Map(document.getElementById("google-map"), {
-                                    zoom: 15,
-                                    center: initialPos,
-                                    mapTypeControl: false,
-                                    streetViewControl: false,
-                                    fullscreenControl: true
-                                });
-
-                                const marker = new google.maps.Marker({
-                                    position: initialPos,
-                                    map: map,
-                                    draggable: true,
-                                    animation: google.maps.Animation.DROP,
-                                    title: "{{ __('Delivery Location') }}"
-                                });
-
-                                // Try HTML5 geolocation if no saved position
-                                if (!hasSavedLocation) {
-                                    if (navigator.geolocation) {
-                                        navigator.geolocation.getCurrentPosition(
-                                            (position) => {
-                                                const pos = {
-                                                    lat: position.coords.latitude,
-                                                    lng: position.coords.longitude,
-                                                };
-                                                map.setCenter(pos);
-                                                marker.setPosition(pos);
-                                                updateInputs(pos);
-                                            },
-                                            () => {
-                                                // Handle location error (optional)
-                                            }
-                                        );
-                                    }
-                                }
-
-                                map.addListener("click", (e) => {
-                                    placeMarkerAndPanTo(e.latLng, map);
-                                });
-                                
-                                marker.addListener("dragend", (e) => {
-                                    updateInputs(e.latLng);
-                                });
-
-                                function placeMarkerAndPanTo(latLng, map) {
-                                    marker.setPosition(latLng);
-                                    map.panTo(latLng);
-                                    updateInputs(latLng);
-                                }
-                                
-                                function updateInputs(latLng) {
-                                    const lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
-                                    const lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
-                                    
-                                    document.getElementById('shipping_latitude').value = lat;
-                                    document.getElementById('shipping_longitude').value = lng;
-                                }
-                            }
-                            
-                            // Toggle map visibility based on delivery type
-                            document.addEventListener('DOMContentLoaded', function() {
-                                const deliveryRadios = document.querySelectorAll('input[name="delivery_type"]');
-                                const mapSection = document.getElementById('map-section');
-                                
-                                deliveryRadios.forEach(radio => {
-                                    radio.addEventListener('change', function() {
-                                        if (mapSection) {
-                                            if (this.value === 'pickup') {
-                                                mapSection.classList.add('d-none');
-                                            } else {
-                                                mapSection.classList.remove('d-none');
-                                            }
-                                        }
-                                    });
-                                });
-                            });
+                            window.deliveryLocationTitle = "{{ __('Delivery Location') }}";
                         </script>
+                        <script src="{{ asset('frontend/js/checkout-map.js') }}"></script>
+                        <script src="https://maps.googleapis.com/maps/api/js?key={{ $googleMapsApiKey }}&callback=initMap&libraries=places" async defer></script>
                         @endpush
                         @endif
 

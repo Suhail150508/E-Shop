@@ -1,0 +1,12 @@
+.text-terracotta {
+    color: #E07A5F !important;
+}
+.btn-terracotta {
+    background-color: #E07A5F;
+    border-color: #E07A5F;
+}
+.btn-terracotta:hover {
+    background-color: #d16b50;
+    border-color: #d16b50;
+    color: white;
+}

@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-@include('frontend.partials.breadcrumb', ['title' => $page->title ?? 'About Us', 'bgImage' => $page->image ?? 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1951&q=80'])
+@include('frontend.partials.breadcrumb', ['title' => $page->title ?? 'About Us', 'bgImage' => $page->image ?? null])
 
 @if(isset($page) && $page->content)
     {!! $page->content !!}
@@ -9,7 +9,7 @@
     <div class="container py-5">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1951&q=80" alt="About Us" class="img-fluid rounded shadow-sm">
+                <img src="{{ getImageOrPlaceholder(null, '600x400') }}" alt="About Us" class="img-fluid rounded shadow-sm" onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
             </div>
             <div class="col-lg-6 ps-lg-5">
                 <h2 class="mb-4">Our Story</h2>

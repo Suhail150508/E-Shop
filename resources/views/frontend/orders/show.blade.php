@@ -57,9 +57,9 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0 me-3">
                                                     @if($item->product && $item->product->image)
-                                                        <img src="{{ asset($item->product->image) }}" alt="{{ $item->product_name }}" class="rounded" width="50" height="50" style="object-fit: cover;">
+                                                        <img src="{{ getImageOrPlaceholder($item->product->image, '100x100') }}" alt="{{ $item->product_name }}" class="rounded product-thumb-50" onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
                                                     @else
-                                                        <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" style="width: 50px; height: 50px;">
+                                                        <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted product-thumb-placeholder-50">
                                                             <i class="fa-solid fa-image"></i>
                                                         </div>
                                                     @endif
@@ -93,7 +93,7 @@
                     <h5 class="fw-bold mb-4">{{ __('Order Timeline') }}</h5>
                     <div class="position-relative ps-4 border-start border-2">
                         <div class="mb-4 position-relative">
-                            <div class="position-absolute top-0 start-0 translate-middle bg-primary rounded-circle" style="width: 12px; height: 12px; left: -1px !important;"></div>
+                            <div class="position-absolute top-0 start-0 translate-middle bg-primary rounded-circle timeline-dot"></div>
                             <h6 class="fw-bold mb-1">{{ __('Order Placed') }}</h6>
                             <p class="text-muted small mb-0">{{ $order->created_at?->format('M d, Y h:i A') }}</p>
                         </div>

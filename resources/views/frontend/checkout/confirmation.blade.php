@@ -1,5 +1,9 @@
 @extends('layouts.frontend')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('frontend/css/checkout.css') }}">
+@endpush
+
 @section('content')
 <div class="container py-5">
     @include('frontend.checkout.steps', ['currentStep' => 4])
@@ -7,12 +11,12 @@
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="text-center mb-5">
-                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white mb-3 shadow-sm" style="width: 80px; height: 80px; font-size: 2.5rem;">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white mb-3 shadow-sm success-icon-wrapper">
                     <i class="fas fa-check"></i>
                 </div>
                 <h6 class="text-muted text-uppercase letter-spacing-2 mb-2">{{ __('Hooray!') }}</h6>
                 <h2 class="fw-bold mb-3">{{ __('All Orders Wrapped Up!') }}</h2>
-                <p class="text-muted mx-auto" style="max-width: 600px;">
+                <p class="text-muted mx-auto success-message-text">
                     {{ __('Thank you for your order! You can track your order status and view details from your account.') }}
                 </p>
             </div>
@@ -47,7 +51,7 @@
                                     </td>
                                     <td class="py-4 fw-bold">{{ $order->formatPrice($order->total) }}</td>
                                     <td class="py-4 pe-4 text-end">
-                                        <a href="{{ route('customer.orders.show', $order->id) }}" class="btn btn-outline-primary btn-sm rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;" title="{{ __('View Details') }}">
+                                        <a href="{{ route('customer.orders.show', $order->id) }}" class="btn btn-outline-primary btn-sm rounded-circle btn-icon-circle-sm" title="{{ __('View Details') }}">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </td>

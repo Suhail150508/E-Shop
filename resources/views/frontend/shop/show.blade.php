@@ -1,9 +1,12 @@
 @extends('layouts.frontend')
 
-@section('content')
+
     @push('styles')
         <link rel="stylesheet" href="{{ asset('frontend/css/product-details.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/css/shop.css') }}">
     @endpush
+
+@section('content')
 
     <div class="product-page-wrapper">
         <div class="container">
@@ -50,10 +53,11 @@
                             </div>
 
                             <div class="main-image-wrapper mb-4 d-flex align-items-center justify-content-center flex-grow-1" id="zoomContainer">
-                                <img src="{{ $mainImage }}" 
+                                <img src="{{ getImageOrPlaceholder($mainImage, '800x800') }}" 
                                      alt="{{ $product->name }}" 
                                      id="mainProductImage" 
-                                     class="img-fluid rounded-3 main-product-image">
+                                     class="img-fluid rounded-3 main-product-image"
+                                     onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
                             </div>
 
                             <!-- Controls -->
@@ -74,9 +78,10 @@
                                         <button class="thumb-btn border-0 p-1 rounded-3 bg-white shadow-sm {{ $loop->first ? 'active ring-2 ring-primary' : '' }}" 
                                                 onclick="updateMainImage(this, '{{ $image['url'] }}')"
                                                 data-index="{{ $index }}">
-                                            <img src="{{ $image['url'] }}" 
+                                            <img src="{{ getImageOrPlaceholder($image['url'], '150x150') }}" 
                                                  alt="{{ __('common.product_thumbnail') }} {{ $index + 1 }}"
-                                                 class="w-100 h-100 rounded-2 thumb-img">
+                                                 class="w-100 h-100 rounded-2 thumb-img"
+                                                 onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
                                         </button>
                                     @endforeach
                                 </div>
@@ -163,9 +168,8 @@
                                         <div class="d-flex flex-wrap gap-2">
                                             @foreach($product->colors as $index => $color)
                                                 <input type="radio" class="btn-check" name="color" id="color_idx_{{ $index }}" value="{{ $color }}" required>
-                                                <label class="btn btn-outline-light border d-flex align-items-center gap-2 p-2 rounded-3" for="color_idx_{{ $index }}" 
-                                                       style="cursor: pointer;">
-                                                    <span class="rounded-circle shadow-sm border" style="width: 25px; height: 25px; background-color: {{ $color }};"></span>
+                                                <label class="btn btn-outline-light border d-flex align-items-center gap-2 p-2 rounded-3 cursor-pointer" for="color_idx_{{ $index }}">
+                                                    <span class="rounded-circle shadow-sm border color-swatch-sm" style="background-color: {{ $color }};"></span>
                                                     <span class="small fw-medium text-dark">{{ $color }}</span>
                                                 </label>
                                             @endforeach
@@ -175,7 +179,7 @@
 
                                     <div class="action-group mb-4">
                                         <div class="d-flex flex-wrap gap-3">
-                                            <div class="qty-control d-flex align-items-center border border-2 rounded-pill overflow-hidden bg-light" style="width: 140px;">
+                                            <div class="qty-control d-flex align-items-center border border-2 rounded-pill overflow-hidden bg-light qty-control-wrapper">
                                                 <button type="button" class="btn border-0 px-3 text-muted hover-dark" onclick="decreaseQty()">
                                                     <i class="fas fa-minus small"></i>
                                                 </button>

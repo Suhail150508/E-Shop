@@ -18,15 +18,32 @@ class SettingService extends BaseService
 
     public function set(string $key, $value = null)
     {
+        if (is_array($value) || is_object($value)) {
+            $value = json_encode($value);
+        }
+        if ($value !== null && ! is_string($value)) {
+            $value = (string) $value;
+        }
+
         $setting = Setting::updateOrCreate(
             ['key' => $key],
             ['value' => $value]
         );
 
-        Cache::forget("setting_{$key}");
-        Cache::forget('settings_all');
+        $this->clearCache($key);
 
         return $setting;
+    }
+
+    /**
+     * Clear cached settings so frontend and admin see fresh data.
+     */
+    public function clearCache(?string $key = null): void
+    {
+        if ($key !== null) {
+            Cache::forget("setting_{$key}");
+        }
+        Cache::forget('settings_all');
     }
 
     public function all()

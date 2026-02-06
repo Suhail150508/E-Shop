@@ -65,15 +65,15 @@
                                     </td>
                                     <td class="text-end pe-4">
                                         <div class="d-flex justify-content-end gap-2">
-                                            <a href="{{ route('customer.orders.show', $order) }}" class="btn btn-sm btn-outline-info rounded-2 shadow-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" data-bs-toggle="tooltip" title="{{ __('View Details') }}">
+                                            <a href="{{ route('customer.orders.show', $order) }}" class="btn btn-sm btn-outline-info rounded-2 shadow-sm d-flex align-items-center justify-content-center action-btn-circle" data-bs-toggle="tooltip" title="{{ __('View Details') }}">
                                                 <i class="fa-regular fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('customer.orders.invoice', $order) }}" class="btn btn-sm btn-outline-secondary rounded-2 shadow-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" data-bs-toggle="tooltip" title="{{ __('Download Invoice') }}">
+                                            <a href="{{ route('customer.orders.invoice', $order) }}" class="btn btn-sm btn-outline-secondary rounded-2 shadow-sm d-flex align-items-center justify-content-center action-btn-circle" data-bs-toggle="tooltip" title="{{ __('Download Invoice') }}">
                                                 <i class="fa-regular fa-file-lines"></i>
                                             </a>
                                             @if($order->status === 'delivered' && $order->payment_status === 'paid' && !$order->refunds()->exists())
                                                 <a href="{{ route('customer.orders.show', $order) }}?trigger_refund=1" 
-                                                   class="btn btn-sm btn-outline-danger rounded-2 shadow-sm d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" data-bs-toggle="tooltip" title="{{ __('Request Refund') }}">
+                                                   class="btn btn-sm btn-outline-danger rounded-2 shadow-sm d-flex align-items-center justify-content-center action-btn-circle" data-bs-toggle="tooltip" title="{{ __('Request Refund') }}">
                                                     <i class="fa-solid fa-arrow-rotate-left"></i>
                                                 </a>
                                             @endif

@@ -1,0 +1,113 @@
+/* Customer Panel Layout */
+.account-layout {
+    min-height: 80vh;
+    padding-top: 8rem;
+    padding-bottom: 5rem;
+}
+
+.account-layout .btn-white {
+    background-color: var(--white);
+    color: var(--charcoal);
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+.account-layout .btn-white:hover {
+    background-color: var(--cream);
+    color: var(--rust);
+    border-color: var(--rust);
+}
+
+@media (min-width: 992px) {
+    .sticky-sidebar {
+        position: sticky;
+        top: 160px;
+        z-index: 10;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .account-layout {
+        padding-top: 6rem;
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dashboard */
+.dashboard-stat-icon {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(209, 122, 92, 0.1);
+    color: var(--rust);
+}
+
+.text-rust {
+    color: var(--rust);
+}
+
+.dashboard-stat-icon-sage {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(156, 175, 136, 0.1);
+    color: var(--sage);
+}
+.text-sage {
+    color: var(--sage);
+}
+
+.dashboard-stat-icon-gold {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(212, 175, 55, 0.1);
+    color: var(--gold);
+}
+.text-gold {
+    color: var(--gold);
+}
+
+.dashboard-stat-icon-terracotta {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(232, 153, 126, 0.1);
+    color: var(--terracotta);
+}
+.text-terracotta {
+    color: var(--terracotta);
+}
+
+.action-btn-circle {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Order Show */
+.product-thumb-50 {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+.product-thumb-placeholder-50 {
+    width: 50px;
+    height: 50px;
+}
+.timeline-dot {
+    width: 12px;
+    height: 12px;
+    left: -1px !important;
+}

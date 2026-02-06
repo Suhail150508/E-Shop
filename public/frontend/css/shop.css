@@ -1,0 +1,22 @@
+/* Shop Index */
+.sub-category-indent {
+    margin-left: 1.5rem !important;
+}
+
+.color-option {
+    border: 1px solid #E5E5E5;
+}
+
+/* Product Show */
+.color-swatch-sm {
+    width: 25px;
+    height: 25px;
+}
+
+.qty-control-wrapper {
+    width: 140px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

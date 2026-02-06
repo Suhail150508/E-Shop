@@ -44,7 +44,7 @@
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex align-items-center wishlist-product-info">
-                                                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="rounded me-3 object-fit-cover" width="80" height="80">
+                                                            <img src="{{ getImageOrPlaceholder($product->image_url, '80x80') }}" alt="{{ $product->name }}" class="rounded me-3 object-fit-cover" width="80" height="80" onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
                                                             <div class="wishlist-product-name">
                                                                 <a href="{{ route('shop.product.show', $product) }}">
                                                                     {{ $product->name }}

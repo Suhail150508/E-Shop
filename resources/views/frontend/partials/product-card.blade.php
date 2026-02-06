@@ -22,11 +22,11 @@
 
         <div class="product-image-wrapper">
             <a href="{{ route('shop.product.show', $product->slug) }}">
-                <img src="{{ $product->image_url ?? 'https://placehold.co/500x450' }}" 
+                <img src="{{ getImageOrPlaceholder($product->image_url, '500x450') }}" 
                      alt="{{ $product->name ?: __('common.product_thumbnail') }}" 
                      class="product-img"
                      loading="lazy"
-                     onerror="this.src='https://placehold.co/500x450'">
+                     onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
             </a>
             <div class="product-actions">
                 <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST" class="d-block add-to-wishlist-form">

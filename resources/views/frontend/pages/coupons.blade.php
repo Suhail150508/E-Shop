@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-@include('frontend.partials.breadcrumb', ['title' => optional($page)->title ?? __('common.coupons'), 'bgImage' => optional($page)->image ?? 'https://images.unsplash.com/photo-1607083206968-13611e3d76db?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'])
+@include('frontend.partials.breadcrumb', ['title' => optional($page)->title ?? __('common.coupons'), 'bgImage' => optional($page)->image ?? getImageOrPlaceholder(null, '1920x400')])
 
 @if(isset($page) && $page->content)
     {!! $page->content !!}

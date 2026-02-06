@@ -26,5 +26,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => __('common.post_too_large'),
+                ], 413);
+            }
+            return redirect()->back()
+                ->with('error', __('common.post_too_large'));
+        });
     })->create();
