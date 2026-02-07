@@ -33,13 +33,21 @@ class ProductController extends Controller
             'max_price' => $request->input('max_price'),
             'availability' => (array) $request->input('availability', []),
             'colors' => $request->input('colors'),
+            'sizes' => $request->input('sizes'),
+            'tags' => $request->input('tags'),
+            'unit_id' => $request->input('unit_id'),
+            'is_tryable' => $request->input('is_tryable'),
+            'rating' => $request->input('rating'),
             'sort' => (string) $request->input('sort', 'featured'),
         ];
 
         $products = $this->productService->getFrontendProducts($filters);
         $colors = $this->productService->getUniqueColors();
+        $sizes = $this->productService->getUniqueSizes();
+        $units = $this->productService->getUniqueUnits();
+        $tags = $this->productService->getUniqueTags();
 
-        return view('frontend.shop.index', compact('categories', 'products', 'colors'));
+        return view('frontend.shop.index', compact('categories', 'products', 'colors', 'sizes', 'units', 'tags'));
     }
 
     public function category(Category $category): View
@@ -67,12 +75,18 @@ class ProductController extends Controller
             ->paginate(12);
 
         $colors = $this->productService->getUniqueColors();
+        $sizes = $this->productService->getUniqueSizes();
+        $units = $this->productService->getUniqueUnits();
+        $tags = $this->productService->getUniqueTags();
 
         return view('frontend.shop.category', [
             'categories' => $categories,
             'products' => $products,
             'currentCategory' => $category,
             'colors' => $colors,
+            'sizes' => $sizes,
+            'units' => $units,
+            'tags' => $tags,
         ]);
     }
 

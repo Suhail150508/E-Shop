@@ -40,7 +40,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('customer.profile.edit')->with('success', __('Profile updated successfully.'));
+        return redirect()->route('customer.profile.edit')->with('success', __('common.profile_updated_success'));
     }
 
     public function editPassword(Request $request)
@@ -61,13 +61,13 @@ class ProfileController extends Controller
 
         if (! Hash::check($credentials['current_password'], $user->password)) {
             return back()->withErrors([
-                'current_password' => __('The current password is incorrect.'),
+                'current_password' => __('common.current_password_incorrect'),
             ]);
         }
 
         $user->password = Hash::make($credentials['password']);
         $user->save();
 
-        return redirect()->route('customer.password.edit')->with('success', __('Password updated successfully.'));
+        return redirect()->route('customer.password.edit')->with('success', __('common.password_updated_success'));
     }
 }

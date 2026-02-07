@@ -99,8 +99,8 @@
                         </div>
                         @if($order->status === 'processing' || $order->status === 'shipped' || $order->status === 'delivered')
                             <div class="mb-4 position-relative">
-                                <div class="position-absolute top-0 start-0 translate-middle bg-{{ $order->status === 'cancelled' ? 'danger' : 'primary' }} rounded-circle" style="width: 12px; height: 12px; left: -1px !important;"></div>
-                                <h6 class="fw-bold mb-1 text-capitalize">{{ $order->status }}</h6>
+                                <div class="position-absolute top-0 start-0 translate-middle bg-{{ $order->status_color }} rounded-circle" style="width: 12px; height: 12px; left: -1px !important;"></div>
+                                <h6 class="fw-bold mb-1 text-capitalize">{{ __(ucfirst($order->status)) }}</h6>
                                 <p class="text-muted small mb-0">{{ __('Current Status') }}</p>
                             </div>
                         @endif
@@ -137,13 +137,13 @@
                     <div class="mt-4 pt-4 border-top">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <span class="text-muted">{{ __('Payment Status') }}</span>
-                            <span class="badge rounded-pill bg-{{ $order->payment_status === 'paid' ? 'success' : 'warning' }} bg-opacity-10 text-{{ $order->payment_status === 'paid' ? 'success' : 'warning' }} px-3">
-                                {{ ucfirst($order->payment_status) }}
+                            <span class="badge rounded-pill bg-{{ $order->payment_status_color }} bg-opacity-10 text-{{ $order->payment_status_color }} px-3">
+                                {{ __(ucfirst($order->payment_status)) }}
                             </span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="text-muted">{{ __('Payment Method') }}</span>
-                            <span class="fw-semibold">{{ $order->payment_method ?: 'N/A' }}</span>
+                            <span class="fw-semibold">{{ $order->payment_method ?: __('common.na') }}</span>
                         </div>
                     </div>
                 </div>
@@ -233,7 +233,7 @@
                             </div>
                             <div class="col-md-3 col-6">
                                 <small class="text-muted text-uppercase fw-bold" style="font-size: 10px;">{{ __('Placed On') }}</small>
-                                <h6 class="mb-0 fw-bold">{{ $order->created_at->format('M d, Y') }}</h6>
+                                <h6 class="mb-0 fw-bold">{{ $order->created_at?->format('M d, Y') }}</h6>
                             </div>
                             <div class="col-md-3 col-6">
                                 <small class="text-muted text-uppercase fw-bold" style="font-size: 10px;">{{ __('Total Amount') }}</small>
@@ -297,7 +297,7 @@
                                     <div class="step-name">{{ $step['label'] }}</div>
                                     @if($index == $activeStep && $status != 'cancelled')
                                         <div class="text-primary fw-bold small mt-1 animate__animated animate__fadeIn" style="font-size: 11px;">
-                                            {{ $order->updated_at->format('h:i A') }}
+                                            {{ $order->updated_at?->format('h:i A') }}
                                             <div class="badge bg-primary bg-opacity-10 text-primary mt-1 px-2">{{ __('Current') }}</div>
                                         </div>
                                     @endif

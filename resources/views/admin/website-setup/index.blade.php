@@ -281,7 +281,7 @@
                         <div class="col-md-12">
                             <label class="form-label">Side Image</label>
                             @if(isset($settings['auth_register_image']))
-                                <div class="mb-2"><img src="{{ asset($settings['auth_register_image']) }}" height="100" class="rounded object-fit-cover"></div>
+                                <div class="mb-2"><img src="{{ getImageOrPlaceholder($settings['auth_register_image'], '600x800') }}" height="100" class="rounded object-fit-cover"></div>
                             @endif
                             <input type="file" class="form-control" name="auth_register_image">
                         </div>

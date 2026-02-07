@@ -26,6 +26,7 @@
 
     {{-- Shared Frontend CSS --}}
     <link rel="stylesheet" href="{{ asset('frontend/css/frontend-shared.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/tryon-modal.css') }}">
 
     {{-- Toastr --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -53,8 +54,8 @@
 
 {{-- Floating Cart --}}
 @php
-    $hideRoutes = ['cart.*','checkout.*','login','register','admin.*','customer.*'];
-    $showFloatingCart = !collect($hideRoutes)->contains(fn($r)=>Str::is($r, Route::currentRouteName()));
+    $allowedRoutes = ['home', 'shop.index', 'shop.category', 'shop.product.show'];
+    $showFloatingCart = collect($allowedRoutes)->contains(Route::currentRouteName());
 @endphp
 
 @if($showFloatingCart)
@@ -67,9 +68,9 @@
 @endif
 
 {{-- JS Libraries (Local) --}}
-    <script src="{{ asset('backend/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('backend/js/popper.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="{{ asset('backend/js/jquery.min.js') }}"></script>
+<script src="{{ asset('backend/js/popper.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="{{ asset('global/toastr/toastr.main.js') }}" defer></script>
 <script src="{{ asset('backend/js/bootstrap.min.js') }}"></script>
 
@@ -89,6 +90,7 @@
 
 @include('layouts.partials.toaster')
 
+@include('frontend.partials.tryon-modal')
 @stack('modals')
 @stack('scripts')
 </body>

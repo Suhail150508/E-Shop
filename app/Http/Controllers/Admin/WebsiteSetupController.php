@@ -50,12 +50,38 @@ class WebsiteSetupController extends Controller
             'image' => __('Each file must be an image (jpeg, png, gif or webp).'),
         ]);
 
-        $inputs = $request->except(['_token', 'home_hero_gallery_files']);
+        $allowedKeys = [
+            'home_hero_title', 'home_hero_subtitle',
+            'home_category_title', 'home_category_subtitle', 'home_category_badge',
+            'home_flash_title', 'home_flash_subtitle', 'home_flash_badge',
+            'home_promo_title', 'home_promo_subtitle', 'home_promo_badge',
+            'home_promo_btn1_text', 'home_promo_btn1_link', 'home_promo_btn2_text', 'home_promo_btn2_link',
+            'home_banner_title', 'home_banner_badge', 'home_banner_text',
+            'home_banner_btn_text', 'home_banner_btn_link',
+            'home_featured_title', 'home_featured_subtitle', 'home_featured_badge',
+            'shop_page_title', 'shop_breadcrumb', 'shop_header_title', 'shop_header_subtitle',
+            'category_default_subtitle',
+            'product_related_title',
+            'auth_login_title', 'auth_login_subtitle',
+            'auth_register_title', 'auth_register_subtitle',
+            'auth_forgot_title', 'auth_forgot_subtitle',
+            'auth_reset_title', 'auth_reset_subtitle',
+            'cart_breadcrumb', 'cart_title', 'cart_subtitle',
+            'checkout_shipping_title', 'checkout_payment_title',
+            'home_promo_image', 'home_banner_image',
+            'auth_login_image', 'auth_register_image', 'auth_forgot_image', 'auth_reset_image'
+        ];
+
+        $inputs = $request->only($allowedKeys);
 
         // Process Hero Gallery Images
         if ($request->has('home_hero_gallery') || $request->hasFile('home_hero_gallery_files')) {
             $galleryInput = $request->input('home_hero_gallery', []);
             $finalGallery = [];
+
+            // Get OLD gallery for deletion handling
+            $oldGalleryJson = $this->settingService->get('home_hero_gallery');
+            $oldGallery = json_decode($oldGalleryJson, true) ?? [];
 
             // Explicitly iterate 3 columns x 3 rows to match the fixed UI structure
             for ($p = 0; $p < 3; $p++) {
@@ -76,17 +102,14 @@ class WebsiteSetupController extends Controller
                     if (isset($files[$p][$i]) && $files[$p][$i] instanceof \Illuminate\Http\UploadedFile) {
                         $file = $files[$p][$i];
                         if ($file->isValid()) {
-                            $extension = $file->getClientOriginalExtension();
-                            $imageName = "hero-{$p}-{$i}-" . time() . '-' . rand(1000, 9999) . '.' . $extension;
-                            $destinationPath = public_path('uploads/custom-images');
-                            
-                            if (!file_exists($destinationPath)) {
-                                mkdir($destinationPath, 0755, true);
+                            // Delete old image
+                            $oldImage = $oldGallery[$p][$i]['image'] ?? null;
+                            if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+                                Storage::disk('public')->delete($oldImage);
                             }
                             
-                            if ($file->move($destinationPath, $imageName)) {
-                                $itemData['image'] = 'uploads/custom-images/' . $imageName;
-                            }
+                            $path = $file->store('uploads/custom-images', 'public');
+                            $itemData['image'] = $path;
                         }
                     }
                     
@@ -99,25 +122,16 @@ class WebsiteSetupController extends Controller
             unset($inputs['home_hero_gallery']);
         }
 
-        // Handle other single file uploads
-        foreach ($request->files ?? [] as $key => $file) {
-            if ($key === 'home_hero_gallery_files') {
-                continue;
-            }
-            if (is_array($file)) {
-                continue;
-            }
-            if (! $file->isValid()) {
-                continue;
-            }
-            $extension = $file->getClientOriginalExtension();
-            $imageName = Str::slug($key) . '-' . date('Y-m-d-h-i-s') . '-' . rand(999, 9999) . '.' . $extension;
-            $destinationPath = public_path('uploads/custom-images');
-            if (! is_dir($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-            if ($file->move($destinationPath, $imageName)) {
-                $inputs[$key] = 'uploads/custom-images/' . $imageName;
+        foreach ($inputs as $key => $value) {
+            if ($request->hasFile($key)) {
+                // Delete old image
+                $oldImage = $this->settingService->get($key);
+                if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+                    Storage::disk('public')->delete($oldImage);
+                }
+
+                $path = $request->file($key)->store('uploads/custom-images', 'public');
+                $inputs[$key] = $path;
             }
         }
 

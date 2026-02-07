@@ -86,9 +86,9 @@ class CategoryService
     /**
      * Delete a category.
      */
-    public function delete(Category $category): void
+    public function delete(Category $category, bool $checkProducts = true): void
     {
-        if ($category->products()->where('is_active', true)->exists()) {
+        if ($checkProducts && $category->products()->where('is_active', true)->exists()) {
             throw new \Exception(__('Cannot delete category because it has active products.'));
         }
 
@@ -105,9 +105,19 @@ class CategoryService
      */
     public function bulkDelete(array $ids): void
     {
-        $categories = Category::whereIn('id', $ids)->get();
+        $categories = Category::whereIn('id', $ids)
+            ->withCount(['products' => function ($query) {
+                $query->where('is_active', true);
+            }])
+            ->get();
+
         foreach ($categories as $category) {
-            $this->delete($category);
+            if ($category->products_count > 0) {
+                 // Skip throwing exception to allow partial success, or throw to stop all? 
+                 // The original behavior was throw on first failure. I'll stick to that but optimized.
+                 throw new \Exception(__('Cannot delete category because it has active products.'));
+            }
+            $this->delete($category, false);
         }
     }
 

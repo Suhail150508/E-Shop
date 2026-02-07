@@ -159,6 +159,22 @@
                             <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="mb-4">
+                            <label class="form-label d-block">{{ __('common.sizes') }}</label>
+                            <div class="d-flex flex-wrap gap-3">
+                            @foreach($sizes as $size)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="sizes[]" id="size_{{ $loop->index }}" value="{{ $size->name }}" {{ in_array($size->name, old('sizes', [])) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="size_{{ $loop->index }}">
+                                        {{ $size->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                        @error('sizes')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="mb-2">
                         <label class="form-label d-block">{{ __('Tags') }}</label>
                         <div class="input-group mb-2">
@@ -219,6 +235,11 @@
                             <input class="form-check-input" type="checkbox" id="is_flash_sale" name="is_flash_sale" value="1" {{ old('is_flash_sale') ? 'checked' : '' }}>
                             <label class="form-check-label fw-semibold" for="is_flash_sale">{{ __('Flash Sale') }}</label>
                             <div class="form-text text-muted">{{ __('Include in flash sale promotions.') }}</div>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="is_tryable" name="is_tryable" value="1" {{ old('is_tryable') ? 'checked' : '' }}>
+                            <label class="form-check-label fw-semibold" for="is_tryable">{{ __('common.enable_virtual_try_on') }}</label>
+                            <div class="form-text text-muted">{{ __('common.tryon_product_hint') }}</div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -325,21 +346,23 @@
 </style>
 @endpush
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="{{ asset('backend/vendor/tinymce/tinymce.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            tinymce.init({
-                selector: '#description',
-                menubar: false,
-                plugins: 'link lists',
-                toolbar: 'undo redo | bold italic | bullist numlist | link',
-                height: 300,
-                setup: function (editor) {
-                    editor.on('change', function () {
-                        editor.save();
-                    });
-                }
-            });
+            if (typeof tinymce !== 'undefined') {
+                tinymce.init({
+                    selector: '#description',
+                    menubar: false,
+                    plugins: 'link lists',
+                    toolbar: 'undo redo | bold italic | bullist numlist | link',
+                    height: 300,
+                    setup: function (editor) {
+                        editor.on('change', function () {
+                            editor.save();
+                        });
+                    }
+                });
+            }
             const categorySelect = document.getElementById('category_id');
             const subcategorySelect = document.getElementById('subcategory_id');
             const oldSubcategoryId = "{{ old('subcategory_id') }}";

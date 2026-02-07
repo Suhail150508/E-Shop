@@ -29,6 +29,11 @@
                      onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
             </a>
             <div class="product-actions">
+                @if($product->is_tryable ?? false)
+                    <button type="button" class="btn-action btn-action-tryon try-on-btn" data-id="{{ $product->id }}" data-image="{{ $product->image_url ?? '' }}" title="{{ __('common.virtual_try_on') }}" aria-label="{{ __('common.virtual_try_on') }}">
+                        <i class="fas fa-user-check"></i>
+                    </button>
+                @endif
                 <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST" class="d-block add-to-wishlist-form">
                     @csrf
                     <button type="submit" class="btn-action" title="{{ __('common.add_to_wishlist') }}">
@@ -79,7 +84,7 @@
                 @endif
             </div>
             
-            <div class="mt-3">
+            <div class="product-card-actions mt-3">
                 <form action="{{ route('cart.store', $product->id) }}" method="POST" class="add-to-cart-form">
                     @csrf
                     <input type="hidden" name="quantity" value="1">

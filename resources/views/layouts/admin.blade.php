@@ -332,17 +332,17 @@
 
                 <div class="dropdown notification-dropdown">
                     <div class="notification-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-bell"></i>
+                        <i class="fas fa-bell"></i>
                         <span class="notification-badge d-none" id="notification-count">0</span>
                     </div>
-                    <div class="dropdown-menu dropdown-menu-end p-0 shadow-lg border-0" style="width: 320px; max-height: 400px; overflow-y: auto;">
+                    <div class="dropdown-menu dropdown-menu-end p-0 shadow-lg border-0 notification-dropdown">
                         <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light">
                             <h6 class="m-0 fw-bold">{{ __('Notifications') }}</h6>
                             <button type="button" class="btn btn-sm btn-link text-decoration-none p-0" onclick="markAllRead()">{{ __('Mark all read') }}</button>
                         </div>
                         <div id="notification-list">
                             <div class="text-center p-4 text-muted" id="no-notifications">
-                                <i class="bi bi-bell-slash fs-4 mb-2 d-block"></i>
+                                <i class="fas fa-bell-slash fs-4 mb-2 d-block"></i>
                                 {{ __('No new notifications') }}
                             </div>
                         </div>
@@ -351,10 +351,10 @@
 
                 <div class="dropdown user-dropdown">
                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Admin') }}&background=4f46e5&color=fff" alt="{{ __('Admin') }}" class="user-avatar">
+                        <img src="{{ getImageOrPlaceholder(auth()->user()->image ?? null, '50x50') }}" alt="{{ __('Admin') }}" class="user-avatar">
                         <div class="d-none d-md-block text-start">
                             <div class="small fw-bold">{{ auth()->user()->name ?? __('Admin') }}</div>
-                            <div class="small text-muted" style="font-size: 0.7rem; line-height: 1;">{{ __('Administrator') }}</div>
+                            <div class="small text-muted user-role-text">{{ __('Administrator') }}</div>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg">
@@ -598,11 +598,8 @@
 
             // Listen for new notifications
             if (window.Echo) {
-                console.log('Listening for notifications on App.Models.User.' + userId);
                 window.Echo.private('App.Models.User.' + userId)
                     .notification((notification) => {
-                        console.log('New notification received:', notification);
-                        
                         // Increment count
                         let count = parseInt(notificationCount.textContent) || 0;
                         updateCount(count + 1);

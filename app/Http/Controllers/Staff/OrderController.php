@@ -25,6 +25,8 @@ class OrderController extends Controller
             abort(403, 'Unauthorized access to this order.');
         }
 
+        $order->load(['items.product', 'user']);
+
         return view('staff.orders.show', compact('order'));
     }
 

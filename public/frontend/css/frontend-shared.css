@@ -1589,8 +1589,8 @@ section.products-section {
         right: 10px;
         transform: none;
         border-radius: 50%;
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         padding: 0;
         display: flex;
         align-items: center;
@@ -1606,7 +1606,7 @@ section.products-section {
     }
     .cart-icon-wrapper {
         margin-bottom: 0;
-        font-size: 20px;
+        font-size: 24px;
     }
     @keyframes cartShakeMobile {
         0% { transform: scale(1); }
@@ -5229,6 +5229,12 @@ section.products-section {
     transform: scale(1.1);
 }
 
+/* Try-On icon in product-actions: same hover as other action buttons for consistency */
+.btn-action-tryon:hover {
+    background: var(--rust);
+    color: #fff;
+}
+
 .product-info {
     padding: 1.25rem;
     background: white;
@@ -5752,7 +5758,7 @@ section.products-section {
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
     box-shadow: -5px 5px 20px rgba(0,0,0,0.15);
-    padding: 15px 10px 15px 15px;
+    padding: 20px 15px 20px 20px;
     transition: all 0.3s ease;
     border: 2px solid #eee;
     border-right: none;
@@ -5761,14 +5767,14 @@ section.products-section {
 }
 
 .floating-cart:hover {
-    padding-right: 20px;
+    padding-right: 25px;
     box-shadow: -8px 8px 25px rgba(0,0,0,0.2);
     border-color: var(--rust);
 }
 
 .cart-icon-wrapper {
     position: relative;
-    font-size: 24px;
+    font-size: 28px;
     color: var(--charcoal);
     text-align: center;
     margin-bottom: 5px;

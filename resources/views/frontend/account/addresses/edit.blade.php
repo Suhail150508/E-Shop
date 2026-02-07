@@ -3,9 +3,6 @@
 @section('title', __('Edit Address'))
 
 @section('account_content')
-    <!-- intl-tel-input CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-
     <div class="card border-0 shadow-sm rounded-3">
         <div class="card-header bg-white border-bottom-0 py-3 px-4">
             <h5 class="mb-0 fw-bold">{{ __('Address / Edit') }}</h5>
@@ -15,7 +12,8 @@
                 @csrf
                 @method('PUT')
                 
-                <!-- Map Section -->
+                <!-- Map Section (Commented out until fully implemented with local assets) -->
+                {{-- 
                 <div class="mb-4 position-relative">
                     <div id="map" class="rounded-3 bg-light d-flex align-items-center justify-content-center text-danger fw-bold fs-5 address-map-container">
                         {{ __('Map') }}
@@ -27,6 +25,7 @@
                     <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude', $address->latitude) }}">
                     <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude', $address->longitude) }}">
                 </div>
+                --}}
 
                 <div class="row g-3">
                     <!-- Type and Contact Number -->
@@ -130,35 +129,4 @@
             </form>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const phoneInput = document.querySelector("#phone");
-            if (phoneInput) {
-                const iti = window.intlTelInput(phoneInput, {
-                    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
-                    preferredCountries: ['us', 'gb', 'bd'],
-                    separateDialCode: true,
-                    initialCountry: "auto",
-                    geoIpLookup: function(callback) {
-                        fetch("https://ipapi.co/json")
-                            .then(function(res) { return res.json(); })
-                            .then(function(data) { callback(data.country_code); })
-                            .catch(function() { callback("us"); });
-                    },
-                });
-
-                // Update input value with full number on form submit
-                const form = phoneInput.closest('form');
-                if (form) {
-                    form.addEventListener('submit', function() {
-                        if (iti.isValidNumber()) {
-                            phoneInput.value = iti.getNumber();
-                        }
-                    });
-                }
-            }
-        });
-    </script>
 @endsection

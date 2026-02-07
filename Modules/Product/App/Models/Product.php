@@ -32,10 +32,12 @@ class Product extends Model
         'is_active',
         'is_featured',
         'is_flash_sale',
+        'is_tryable',
         'meta_title',
         'meta_description',
         'meta_keywords',
         'colors',
+        'sizes',
         'tags',
     ];
 
@@ -45,7 +47,9 @@ class Product extends Model
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
         'is_flash_sale' => 'boolean',
+        'is_tryable' => 'boolean',
         'colors' => 'array',
+        'sizes' => 'array',
         'tags' => 'array',
     ];
 
@@ -94,6 +98,18 @@ class Product extends Model
             return collect([]);
         }
         return \App\Models\Color::whereIn('name', $this->colors)->get();
+    }
+
+    /**
+     * Get the Size models associated with the product.
+     * Assumes 'sizes' attribute contains an array of size names.
+     */
+    public function getSizeObjectsAttribute()
+    {
+        if (empty($this->sizes) || !is_array($this->sizes)) {
+            return collect([]);
+        }
+        return \App\Models\Size::whereIn('name', $this->sizes)->get();
     }
 
     public function getImageUrlAttribute()

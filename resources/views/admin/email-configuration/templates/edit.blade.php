@@ -3,8 +3,9 @@
 @section('page_title', __('Edit Email Template'))
 
 @push('styles')
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<link href="{{ asset('backend/vendor/summernote/summernote-lite.min.css') }}" rel="stylesheet">
 <style>
+    /*
     .note-editor .note-toolbar {
         background-color: #f8fafc;
         border-bottom: 1px solid #e2e8f0;
@@ -13,6 +14,7 @@
         border-color: #e2e8f0;
         border-radius: 0.5rem;
     }
+    */
 </style>
 @endpush
 
@@ -115,23 +117,25 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script src="{{ asset('backend/vendor/summernote/summernote-lite.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('#message').summernote({
-            placeholder: '{{ __('Write your email content here...') }}',
-            tabsize: 2,
-            height: 300,
-            toolbar: [
-              ['style', ['style']],
-              ['font', ['bold', 'underline', 'clear']],
-              ['color', ['color']],
-              ['para', ['ul', 'ol', 'paragraph']],
-              ['table', ['table']],
-              ['insert', ['link']],
-              ['view', ['fullscreen', 'codeview', 'help']]
-            ]
-        });
+        if (typeof $.fn.summernote !== 'undefined') {
+            $('#message').summernote({
+                placeholder: '{{ __('Write your email content here...') }}',
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        }
     });
 </script>
 @endpush

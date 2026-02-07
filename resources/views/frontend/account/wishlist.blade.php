@@ -89,10 +89,10 @@
                                     <div class="mt-auto d-flex justify-content-between align-items-center">
                                         <div class="line-height-1">
                                             @if($product->has_discount)
-                                                <div class="fw-bold text-primary mb-0">${{ number_format($product->final_price, 2) }}</div>
-                                                <small class="text-muted text-decoration-line-through address-font-xs">${{ number_format($product->price, 2) }}</small>
+                                                <div class="fw-bold text-primary mb-0">{{ format_price($product->final_price) }}</div>
+                                                <small class="text-muted text-decoration-line-through address-font-xs">{{ format_price($product->price) }}</small>
                                             @else
-                                                <div class="fw-bold text-primary mb-0">${{ number_format($product->price, 2) }}</div>
+                                                <div class="fw-bold text-primary mb-0">{{ format_price($product->price) }}</div>
                                             @endif
                                         </div>
                                         

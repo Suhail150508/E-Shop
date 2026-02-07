@@ -4,6 +4,8 @@ namespace Modules\Product\Services;
 
 use App\Models\Color;
 use App\Models\ProductImage;
+use App\Models\Size;
+use App\Models\Unit;
 use App\Services\BaseService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -43,6 +45,7 @@ class ProductService extends BaseService
     public function create(array $data)
     {
         $data['is_active'] = isset($data['is_active']) ? (bool) $data['is_active'] : false;
+        $data['is_tryable'] = isset($data['is_tryable']) ? (bool) $data['is_tryable'] : false;
 
         if (isset($data['slug'])) {
             $data['slug'] = $this->generateUniqueSlug(Product::class, $data['slug']);
@@ -79,6 +82,7 @@ class ProductService extends BaseService
     public function update(Product $product, array $data)
     {
         $data['is_active'] = isset($data['is_active']) ? (bool) $data['is_active'] : false;
+        $data['is_tryable'] = isset($data['is_tryable']) ? (bool) $data['is_tryable'] : false;
 
         if (isset($data['slug'])) {
             $data['slug'] = $this->generateUniqueSlug(Product::class, $data['slug'], 'slug', $product->id);
@@ -88,7 +92,11 @@ class ProductService extends BaseService
 
         if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
             if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+                if (Storage::disk('public')->exists($product->image)) {
+                    Storage::disk('public')->delete($product->image);
+                } elseif (file_exists(public_path($product->image))) {
+                    @unlink(public_path($product->image));
+                }
             }
             $data['image'] = $data['image']->store('products', 'public');
         }
@@ -118,11 +126,19 @@ class ProductService extends BaseService
     public function delete(Product $product)
     {
         if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+            if (Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            } elseif (file_exists(public_path($product->image))) {
+                @unlink(public_path($product->image));
+            }
         }
 
         foreach ($product->images as $image) {
-            Storage::disk('public')->delete($image->path);
+            if (Storage::disk('public')->exists($image->path)) {
+                Storage::disk('public')->delete($image->path);
+            } elseif (file_exists(public_path($image->path))) {
+                @unlink(public_path($image->path));
+            }
             $image->delete();
         }
 
@@ -131,7 +147,7 @@ class ProductService extends BaseService
 
     public function bulkDelete(array $ids)
     {
-        $products = Product::whereIn('id', $ids)->get();
+        $products = Product::whereIn('id', $ids)->with('images')->get();
         foreach ($products as $product) {
             $this->delete($product);
         }
@@ -171,6 +187,42 @@ class ProductService extends BaseService
             });
         }
 
+        // Sizes
+        if (!empty($filters['sizes'])) {
+            $sizes = is_array($filters['sizes']) ? $filters['sizes'] : explode(',', $filters['sizes']);
+            $query->where(function ($q) use ($sizes) {
+                foreach ($sizes as $size) {
+                    $q->orWhereJsonContains('sizes', trim($size));
+                }
+            });
+        }
+
+        // Tags
+        if (!empty($filters['tags'])) {
+            $tags = is_array($filters['tags']) ? $filters['tags'] : explode(',', $filters['tags']);
+            $query->where(function ($q) use ($tags) {
+                foreach ($tags as $tag) {
+                    $q->orWhereJsonContains('tags', trim($tag));
+                }
+            });
+        }
+
+        // Unit
+        if (!empty($filters['unit_id'])) {
+            $units = is_array($filters['unit_id']) ? $filters['unit_id'] : explode(',', $filters['unit_id']);
+            $query->whereIn('unit_id', $units);
+        }
+
+        // Virtual Try-On
+        if (!empty($filters['is_tryable'])) {
+            $query->where('is_tryable', true);
+        }
+
+        // Rating
+        if (!empty($filters['rating'])) {
+            $query->having('approved_reviews_avg_rating', '>=', (int)$filters['rating']);
+        }
+
         // Price Range
         if (isset($filters['min_price'])) {
             $query->where('price', '>=', $filters['min_price']);
@@ -202,6 +254,32 @@ class ProductService extends BaseService
     public function getUniqueColors()
     {
         return Color::where('is_active', true)->orderBy('name')->get();
+    }
+
+    public function getUniqueSizes()
+    {
+        return Size::where('is_active', true)->orderBy('name')->get();
+    }
+
+    public function getUniqueUnits()
+    {
+        return Unit::where('is_active', true)->orderBy('name')->get();
+    }
+
+    public function getUniqueTags()
+    {
+        $tags = Product::where('is_active', true)->whereNotNull('tags')->pluck('tags');
+        $uniqueTags = [];
+        foreach ($tags as $tagList) {
+            if (is_array($tagList)) {
+                foreach ($tagList as $tag) {
+                    if (!empty(trim($tag))) {
+                        $uniqueTags[] = trim($tag);
+                    }
+                }
+            }
+        }
+        return array_unique($uniqueTags);
     }
 
     /**

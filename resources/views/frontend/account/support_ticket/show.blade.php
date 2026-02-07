@@ -8,12 +8,12 @@
             <h4 class="mb-1">{{ $ticket->subject }}</h4>
             <div class="d-flex align-items-center gap-3 text-muted small">
                 <span><i class="fas fa-hashtag me-1"></i>{{ $ticket->ticket_number }}</span>
-                <span><i class="fas fa-layer-group me-1"></i>{{ $ticket->department->name ?? __('Unknown') }}</span>
-                <span><i class="fas fa-calendar me-1"></i>{{ $ticket->created_at->format('M d, Y H:i') }}</span>
+                <span><i class="fas fa-layer-group me-1"></i>{{ $ticket->department?->name ?? __('Unknown') }}</span>
+                <span><i class="fas fa-calendar me-1"></i>{{ $ticket->created_at?->format('M d, Y H:i') }}</span>
             </div>
         </div>
         <div class="text-end">
-            <span class="badge bg-{{ $ticket->status_color }} fs-6 mb-2">{{ ucfirst($ticket->status) }}</span>
+            <span class="badge bg-{{ $ticket->status_color }} fs-6 mb-2">{{ __(ucfirst($ticket->status)) }}</span>
             <div>
                 <a href="{{ route('customer.support-tickets.index') }}" class="btn btn-sm btn-outline-secondary">
                     <i class="fas fa-arrow-left me-1"></i>{{ __('Back to List') }}
@@ -34,7 +34,7 @@
                                     <div class="fw-bold {{ $message->user_id === auth()->id() ? 'text-primary' : 'text-dark' }}">
                                         {{ $message->user->name ?? __('Unknown User') }}
                                     </div>
-                                    <span class="text-muted small">{{ $message->created_at->format('M d, Y H:i A') }}</span>
+                                    <span class="text-muted small">{{ $message->created_at?->format('M d, Y H:i A') }}</span>
                                 </div>
                                 @if($message->user_id !== auth()->id())
                                     <span class="badge bg-light text-dark border">{{ __('Support') }}</span>

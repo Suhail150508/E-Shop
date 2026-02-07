@@ -13,16 +13,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('backend/css/font-awesome-all.min.css') }}">
     
     <!-- Bootstrap 5 -->
     <link rel="stylesheet" href="{{ asset('global/bootstrap/css/bootstrap.min.css') }}">
     
     <!-- ApexCharts -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="{{ asset('backend/js/apexcharts.min.js') }}"></script>
 
     <!-- Toastr CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('global/toastr/toastr.main.css') }}">
 
     <style>
         :root {
@@ -552,10 +552,10 @@
     </main>
 
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="{{ asset('backend/js/jquery.min.js') }}"></script>
     <script src="{{ asset('global/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('global/toastr/toastr.main.js') }}"></script>
     @include('layouts.partials.toaster')
 
     <script>

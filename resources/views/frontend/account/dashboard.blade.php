@@ -45,9 +45,9 @@
                         <i class="fa-solid fa-wallet fs-5"></i>
                     </div>
                     <div>
-                        <h4 class="fw-bold mb-0 text-gold">${{ number_format($walletBalance ?? 0, 0) }}</h4>
-                        <div class="text-muted small">{{ __('My Wallet') }}</div>
-                    </div>
+                                <h4 class="fw-bold mb-0 text-gold">{{ format_price($walletBalance ?? 0) }}</h4>
+                                <div class="text-muted small">{{ __('My Wallet') }}</div>
+                            </div>
                 </div>
             </div>
         </div>
@@ -90,7 +90,7 @@
                         <tr>
                             <td class="ps-4 fw-bold">#{{ $order->order_number }}</td>
                             <td class="text-muted">{{ $order->created_at->format('d F Y h:i A') }}</td>
-                            <td class="fw-bold">${{ number_format($order->total, 2) }}</td>
+                            <td class="fw-bold">{{ format_price($order->total) }}</td>
                             <td>
                                 @if($order->payment_status == 'paid')
                                     <span class="badge rounded-pill bg-success bg-opacity-10 text-success px-3 py-2">{{ __('Paid') }}</span>
@@ -104,7 +104,7 @@
                                 @elseif($order->status == 'cancelled')
                                     <span class="badge rounded-pill bg-danger bg-opacity-10 text-danger px-3 py-2">{{ __('Cancelled') }}</span>
                                 @else
-                                    <span class="badge rounded-pill bg-warning bg-opacity-10 text-warning px-3 py-2">{{ ucfirst($order->status) }}</span>
+                                    <span class="badge rounded-pill bg-warning bg-opacity-10 text-warning px-3 py-2">{{ __(ucfirst($order->status)) }}</span>
                                 @endif
                             </td>
                             <td class="text-end pe-4">

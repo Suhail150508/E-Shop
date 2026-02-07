@@ -82,11 +82,11 @@
                             </td>
                             <td>
                                 <span class="badge border border-{{ $ticket->priority_color }} text-{{ $ticket->priority_color }}">
-                                    {{ ucfirst($ticket->priority) }}
+                                    {{ __(ucfirst($ticket->priority)) }}
                                 </span>
                             </td>
                             <td>
-                                <span class="badge bg-{{ $ticket->status_color }}">{{ ucfirst($ticket->status) }}</span>
+                                <span class="badge bg-{{ $ticket->status_color }}">{{ __(ucfirst($ticket->status)) }}</span>
                             </td>
                             <td class="text-end px-4">
                                 <a href="{{ route('customer.support-tickets.show', $ticket->id) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __('View Ticket') }}">

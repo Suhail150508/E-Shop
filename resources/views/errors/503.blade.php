@@ -6,7 +6,7 @@
     <title>{{ __('Service Unavailable') }}</title>
     
     {{-- Fonts & Icons --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('backend/css/font-awesome-all.min.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
     {{-- Bootstrap via Vite (RTL-aware) --}}

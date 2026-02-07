@@ -26,4 +26,10 @@ return [
     'order_summary' => 'Order Summary',
     'product' => 'Product',
     'remove' => 'Remove',
+    'add_success' => 'Added to cart successfully',
+    'add_failed' => 'Failed to add to cart',
+    'remove_success' => 'Item removed from cart',
+    'remove_failed' => 'Error removing item',
+    'update_success' => 'Cart updated',
+    'update_failed' => 'Error updating cart',
 ];

@@ -9,13 +9,13 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="avatar-lg bg-primary-subtle rounded-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <div class="avatar-lg bg-primary-subtle rounded-3 d-flex align-items-center justify-content-center stats-icon-container">
                             <i class="fas fa-dollar-sign text-primary fs-4"></i>
                         </div>
                         {{-- <span class="badge bg-success-subtle text-success">+12.5%</span> --}}
                     </div>
                     <h5 class="text-muted fw-normal mb-1">{{ __('Total Revenue') }}</h5>
-                    <h2 class="fw-bold mb-0">{{ \App\Models\Currency::getDefaultSymbol() }}{{ number_format($totalRevenue ?? 0, 2) }}</h2>
+                    <h2 class="fw-bold mb-0">{{ format_price($totalRevenue ?? 0) }}</h2>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="avatar-lg bg-info-subtle rounded-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <div class="avatar-lg bg-info-subtle rounded-3 d-flex align-items-center justify-content-center stats-icon-container">
                             <i class="fas fa-shopping-bag text-info fs-4"></i>
                         </div>
                         {{-- <span class="badge bg-success-subtle text-success">+8.2%</span> --}}
@@ -39,7 +39,7 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="avatar-lg bg-warning-subtle rounded-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <div class="avatar-lg bg-warning-subtle rounded-3 d-flex align-items-center justify-content-center stats-icon-container">
                             <i class="fas fa-users text-warning fs-4"></i>
                         </div>
                         {{-- <span class="badge bg-danger-subtle text-danger">-2.4%</span> --}}
@@ -54,8 +54,8 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="avatar-lg bg-purple-subtle rounded-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: #f3e8ff;">
-                            <i class="fas fa-box text-purple fs-4" style="color: #9333ea;"></i>
+                        <div class="avatar-lg bg-purple-subtle rounded-3 d-flex align-items-center justify-content-center stats-icon-container">
+                            <i class="fas fa-box text-purple fs-4"></i>
                         </div>
                         {{-- <span class="badge bg-success-subtle text-success">+5.7%</span> --}}
                     </div>
@@ -74,7 +74,7 @@
                     <h5 class="card-title mb-0 fw-bold">{{ __('Revenue Analytics') }} ({{ date('Y') }})</h5>
                 </div>
                 <div class="card-body">
-                    <div id="revenueChart" style="min-height: 350px;"></div>
+                    <div id="revenueChart" class="chart-container-revenue"></div>
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
                     <h5 class="card-title mb-0 fw-bold">{{ __('Order Status') }}</h5>
                 </div>
                 <div class="card-body d-flex align-items-center justify-content-center">
-                    <div id="orderStatusChart" style="width: 100%;"></div>
+                    <div id="orderStatusChart" class="chart-container-status"></div>
                 </div>
             </div>
         </div>
@@ -123,19 +123,10 @@
                                 </div>
                             </td>
                             <td class="text-muted">{{ $order->created_at->format('M d, Y') }}</td>
-                            <td class="fw-bold">{{ $order->currency ?? \App\Models\Currency::getDefaultSymbol() }}{{ number_format($order->total ?? 0, 2) }}</td>
+                            <td class="fw-bold">{{ format_price($order->total ?? 0) }}</td>
                             <td>
-                                @php
-                                    $statusClass = match($order->status) {
-                                        'completed', 'delivered' => 'success',
-                                        'pending' => 'warning',
-                                        'cancelled' => 'danger',
-                                        'processing' => 'info',
-                                        default => 'secondary'
-                                    };
-                                @endphp
-                                <span class="badge bg-{{ $statusClass }}-subtle text-{{ $statusClass }} px-3 py-2 rounded-pill text-capitalize">
-                                    {{ $order->status }}
+                                <span class="badge bg-{{ $order->status_color }}-subtle text-{{ $order->status_color }} px-3 py-2 rounded-pill text-capitalize">
+                                    {{ __(ucfirst($order->status)) }}
                                 </span>
                             </td>
                             <td class="pe-4 text-end">
@@ -181,7 +172,7 @@
             },
             yaxis: {
                 labels: {
-                    formatter: function (value) { return "{{ config('app.currency', '$') }}" + value.toFixed(2); }
+                    formatter: function (value) { return "{{ \App\Models\Currency::getDefaultSymbol() }}" + value.toFixed(2); }
                 }
             },
             grid: {
@@ -200,7 +191,7 @@
             },
             tooltip: {
                 y: {
-                    formatter: function (value) { return "{{ config('app.currency', '$') }}" + value.toFixed(2); }
+                    formatter: function (value) { return "{{ \App\Models\Currency::getDefaultSymbol() }}" + value.toFixed(2); }
                 }
             }
         };

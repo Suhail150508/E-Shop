@@ -14,6 +14,7 @@ class OrderController extends Controller
         $user = $request->user();
 
         $orders = Order::where('user_id', $request->user()->id)
+            ->with(['refunds'])
             ->latest()
             ->paginate(10);
 

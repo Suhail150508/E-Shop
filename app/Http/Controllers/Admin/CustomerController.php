@@ -120,6 +120,10 @@ class CustomerController extends Controller
             abort(404);
         }
 
+        if ($customer->orders()->exists()) {
+            return back()->with('error', __('Cannot delete customer with existing orders.'));
+        }
+
         $customer->delete();
 
         return redirect()->route('admin.customers.index')->with('success', __('Customer deleted successfully.'));

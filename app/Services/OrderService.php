@@ -236,15 +236,40 @@ class OrderService extends BaseService
                 return $order;
             }
 
+            // Handle Cancellation (Stock Restoration / Wallet Reversal)
             if ($previousStatus !== Order::STATUS_CANCELLED && $status === Order::STATUS_CANCELLED) {
-                $this->restoreStock($order);
-            } elseif ($previousStatus === Order::STATUS_CANCELLED && $status !== Order::STATUS_CANCELLED) {
-                $this->reduceStock($order);
+                if ($order->type === Order::TYPE_WALLET_DEPOSIT) {
+                    // If it was previously approved (Delivered), revert the balance
+                    if ($previousStatus === Order::STATUS_DELIVERED) {
+                        $order->user->decrement('wallet_balance', $order->total);
+                        
+                        \Modules\PaymentGateway\App\Models\WalletTransaction::where('payment_transaction_id', $order->order_number)
+                            ->update(['status' => 'cancelled']);
+                    }
+                } else {
+                    $this->restoreStock($order);
+                }
+            } 
+            // Handle Restoration from Cancelled (Stock Reduction / Wallet Credit)
+            elseif ($previousStatus === Order::STATUS_CANCELLED && $status !== Order::STATUS_CANCELLED) {
+                if ($order->type === Order::TYPE_WALLET_DEPOSIT) {
+                    // If restoring to Delivered/Processing, credit the balance
+                    if ($status === Order::STATUS_DELIVERED || $status === Order::STATUS_PROCESSING) {
+                        $order->user->increment('wallet_balance', $order->total);
+                        
+                        \Modules\PaymentGateway\App\Models\WalletTransaction::where('payment_transaction_id', $order->order_number)
+                            ->update(['status' => 'approved']);
+                            
+                        $status = Order::STATUS_DELIVERED;
+                    }
+                } else {
+                    $this->reduceStock($order);
+                }
             }
 
-            // Wallet Deposit Logic
+            // Wallet Deposit Logic (Pending -> Approved)
             if ($order->type === Order::TYPE_WALLET_DEPOSIT) {
-                if ($status === Order::STATUS_PROCESSING && $previousStatus === Order::STATUS_PENDING) {
+                if (($status === Order::STATUS_PROCESSING || $status === Order::STATUS_DELIVERED) && $previousStatus === Order::STATUS_PENDING) {
                     // Increment User Balance directly to avoid duplicate transaction
                     $order->user->increment('wallet_balance', $order->total);
 
@@ -291,18 +316,19 @@ class OrderService extends BaseService
             return;
         }
 
-        $order->loadMissing('items.product');
+        if (! $order->relationLoaded('items')) {
+            $order->load('items');
+        }
 
         foreach ($order->items as $item) {
-            if (! $item->product) {
+            if (! $item->product_id) {
                 continue;
             }
 
-            $product = $item->product->refresh();
-
-            $newStock = max(0, $product->stock - $item->quantity);
-
-            $product->update(['stock' => $newStock]);
+            // Optimize: Use direct DB update to avoid N+1 reads and race conditions
+            Product::where('id', $item->product_id)->update([
+                'stock' => DB::raw('GREATEST(0, stock - ' . $item->quantity . ')')
+            ]);
         }
     }
 
@@ -312,18 +338,16 @@ class OrderService extends BaseService
             return;
         }
 
-        $order->loadMissing('items.product');
+        if (! $order->relationLoaded('items')) {
+            $order->load('items');
+        }
 
         foreach ($order->items as $item) {
-            if (! $item->product) {
+            if (! $item->product_id) {
                 continue;
             }
 
-            $product = $item->product->refresh();
-
-            $product->update([
-                'stock' => $product->stock + $item->quantity,
-            ]);
+            Product::where('id', $item->product_id)->increment('stock', $item->quantity);
         }
     }
 

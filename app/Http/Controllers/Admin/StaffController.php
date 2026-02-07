@@ -85,6 +85,10 @@ class StaffController extends Controller
             abort(404);
         }
 
+        if ($staff->assignedOrders()->exists()) {
+            return back()->with('error', __('Cannot delete staff member assigned to orders.'));
+        }
+
         $staff->delete();
 
         return redirect()->route('admin.staff.index')->with('success', __('Staff member deleted successfully.'));

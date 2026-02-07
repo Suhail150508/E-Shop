@@ -56,6 +56,28 @@ class HomeController extends Controller
             return compact('featuredProducts', 'flashSaleProducts', 'latestProducts', 'highlightProduct');
         });
 
-        return view('frontend.home', array_merge(['categories' => $categories], $productsData));
+        // Hero Images Fallback
+        $heroImages = json_decode(setting('home_hero_gallery') ?? '[]', true);
+        if (empty($heroImages) || !is_array($heroImages)) {
+            $heroImages = [
+                [
+                    ['image' => null, 'name' => 'Elegant Evening Gown', 'badge' => 'new'],
+                    ['image' => null, 'name' => 'Velvet Blazer', 'badge' => 'trend'],
+                    ['image' => null, 'name' => 'Designer Outfit', 'badge' => 'premium'],
+                ],
+                [
+                    ['image' => null, 'name' => 'Floral Maxi Dress', 'badge' => 'sale_badge'],
+                    ['image' => null, 'name' => 'Summer Dress', 'badge' => 'popular'],
+                    ['image' => null, 'name' => 'Casual Wear', 'badge' => 'new'],
+                ],
+                [
+                    ['image' => null, 'name' => 'Vintage Collection', 'badge' => 'hot'],
+                    ['image' => null, 'name' => 'Chic Top', 'badge' => 'limited'],
+                    ['image' => null, 'name' => 'Fashion Collection', 'badge' => 'hot'],
+                ]
+            ];
+        }
+
+        return view('frontend.home', array_merge(['categories' => $categories, 'heroImages' => $heroImages], $productsData));
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Color;
 use App\Models\Language;
+use App\Models\Size;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Modules\Category\Services\CategoryService;
@@ -59,6 +60,7 @@ class ProductController extends Controller
         $brands = Brand::where('is_active', true)->orderBy('name')->pluck('name', 'id');
         $units = Unit::where('is_active', true)->orderBy('name')->pluck('name', 'id');
         $colors = Color::where('is_active', true)->orderBy('name')->get();
+        $sizes = Size::where('is_active', true)->orderBy('name')->get();
         $languages = Language::getActiveForAdmin();
         if ($languages->isEmpty()) {
             $languages = collect([
@@ -68,7 +70,7 @@ class ProductController extends Controller
         $defaultLanguage = Language::getDefault();
         $defaultLocale = $defaultLanguage ? $defaultLanguage->code : config('app.locale', 'en');
 
-        return view('product::admin.products.create', compact('categories', 'brands', 'units', 'colors', 'languages', 'defaultLanguage', 'defaultLocale'));
+        return view('product::admin.products.create', compact('categories', 'brands', 'units', 'colors', 'sizes', 'languages', 'defaultLanguage', 'defaultLocale'));
     }
 
     /**
@@ -80,6 +82,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $data = $request->validated();
+        $data['is_tryable'] = $request->boolean('is_tryable');
         $translations = $data['translations'] ?? [];
         unset($data['translations']);
         $product = $this->productService->create($data);
@@ -104,6 +107,7 @@ class ProductController extends Controller
         $brands = Brand::where('is_active', true)->orderBy('name')->pluck('name', 'id');
         $units = Unit::where('is_active', true)->orderBy('name')->pluck('name', 'id');
         $colors = Color::where('is_active', true)->orderBy('name')->get();
+        $sizes = Size::where('is_active', true)->orderBy('name')->get();
         $languages = Language::getActiveForAdmin();
         if ($languages->isEmpty()) {
             $languages = collect([
@@ -113,7 +117,7 @@ class ProductController extends Controller
         $defaultLanguage = Language::getDefault();
         $defaultLocale = $defaultLanguage ? $defaultLanguage->code : config('app.locale', 'en');
 
-        return view('product::admin.products.edit', compact('product', 'categories', 'brands', 'units', 'colors', 'languages', 'defaultLanguage', 'defaultLocale'));
+        return view('product::admin.products.edit', compact('product', 'categories', 'brands', 'units', 'colors', 'sizes', 'languages', 'defaultLanguage', 'defaultLocale'));
     }
 
     /**
@@ -126,6 +130,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $data = $request->validated();
+        $data['is_tryable'] = $request->boolean('is_tryable');
         $translations = $data['translations'] ?? [];
         unset($data['translations']);
         $this->productService->update($product, $data);

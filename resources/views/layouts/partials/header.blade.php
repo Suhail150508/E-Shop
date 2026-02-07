@@ -27,7 +27,7 @@
 
             <!-- Categories Button - Visible on mobile -->
             <a href="{{ route('shop.index') }}" class="btn btn-categories d-lg-none ms-auto me-3">
-                <i class="fas fa-bars me-1"></i> {{ __('Categories') }}
+                <i class="fas fa-bars me-1"></i> {{ __('common.categories_label') }}
             </a>
 
             <!-- Cart Icon - Mobile -->
@@ -104,13 +104,13 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end p-0 shadow-lg border-0" style="width: 300px; max-height: 400px; overflow-y: auto;">
                                     <li class="p-3 border-bottom d-flex justify-content-between align-items-center">
-                                        <h6 class="mb-0 fw-bold">{{ __('Notifications') }}</h6>
-                                        <a href="#" class="text-decoration-none small" onclick="markAllRead(event)">{{ __('Mark all read') }}</a>
+                                        <h6 class="mb-0 fw-bold">{{ __('common.notifications') }}</h6>
+                                        <a href="#" class="text-decoration-none small" onclick="markAllRead(event)">{{ __('common.mark_all_read') }}</a>
                                     </li>
                                     <div id="customer-notification-list">
                                         <li class="p-4 text-center text-muted empty-state">
                                             <i class="far fa-bell-slash fa-2x mb-2"></i>
-                                            <p class="mb-0 small">{{ __('No new notifications') }}</p>
+                                            <p class="mb-0 small">{{ __('common.no_new_notifications') }}</p>
                                         </li>
                                     </div>
                                 </ul>

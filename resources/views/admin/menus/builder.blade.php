@@ -3,7 +3,7 @@
 @section('page_title', __('Menu Builder'))
 
 @push('styles')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nestable2/1.6.0/jquery.nestable.min.css">
+<link rel="stylesheet" href="{{ asset('backend/vendor/nestable/jquery.nestable.min.css') }}">
 <style>
     .dd { max-width: 100%; }
     .dd-handle { height: auto; padding: 10px 15px; border: 1px solid #e2e8f0; background: #fff; border-radius: 6px; margin-bottom: 10px; font-weight: 500; cursor: move; transition: all 0.2s; }
@@ -155,16 +155,19 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/nestable2/1.6.0/jquery.nestable.min.js"></script>
+<script src="{{ asset('backend/vendor/nestable/jquery.nestable.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         const menuId = {{ $menu->id }};
         const csrfToken = '{{ csrf_token() }}';
 
-        // Initialize Nestable
-        $('#menu-nestable').nestable({
-            maxDepth: 3
-        });
+        if (typeof $.fn.nestable !== 'undefined') {
+             // Initialize Nestable
+            $('#menu-nestable').nestable({
+                maxDepth: 3
+            });
+        }
+
 
         // Add Custom Link
         $('#add-custom-btn').click(function() {

@@ -159,7 +159,7 @@
 @endpush
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="{{ asset('backend/vendor/tinymce/tinymce.min.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var localeLabels = @json($localeLabels);
@@ -206,12 +206,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    tinymce.init(Object.assign({ selector: '#content' }, baseConfig, { height: 500 }));
+    if (typeof tinymce !== 'undefined') {
+        tinymce.init(Object.assign({ selector: '#content' }, baseConfig, { height: 500 }));
 
-    document.querySelectorAll('.rich-editor').forEach(function(textarea) {
-        if (!textarea.id) return;
-        tinymce.init(Object.assign({ selector: '#' + textarea.id }, baseConfig));
-    });
+        document.querySelectorAll('.rich-editor').forEach(function(textarea) {
+            if (!textarea.id) return;
+            tinymce.init(Object.assign({ selector: '#' + textarea.id }, baseConfig));
+        });
+    }
 });
 </script>
 @endpush

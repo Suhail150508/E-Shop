@@ -58,8 +58,8 @@
             <table class="table align-middle mb-0 table-hover">
                 <thead class="bg-light">
                     <tr>
-                        <th class="ps-4" style="width: 50px;"></th> <!-- Expand Toggle -->
-                        <th class="text-center" style="width: 60px;">{{ __('SL') }}</th>
+                        <th class="ps-4 w-50px"></th> <!-- Expand Toggle -->
+                        <th class="text-center w-60px">{{ __('SL') }}</th>
                         <th>{{ __('Product Info') }}</th>
                         <th>{{ __('Category') }}</th>
                         <th>{{ __('Brand') }}</th>
@@ -167,7 +167,7 @@
                         <tr>
                             <td colspan="6" class="text-center py-5">
                                 <div class="empty-state">
-                                    <div class="empty-state-icon bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                    <div class="empty-state-icon bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3 empty-state-icon-large">
                                         <i class="fas fa-box-open fa-2x text-muted"></i>
                                     </div>
                                     <h5 class="fw-bold text-dark mb-1">{{ __('No Products Found') }}</h5>
@@ -190,59 +190,9 @@
         @endif
     </div>
 </div>
+@endsection
 
-<style>
-    .btn-info-soft {
-        background-color: rgba(13, 202, 240, 0.1);
-        color: #0dcaf0;
-        border: none;
-    }
-    .btn-info-soft:hover {
-        background-color: #0dcaf0;
-        color: white;
-    }
-    .btn-primary-soft {
-        background-color: rgba(13, 110, 253, 0.1);
-        color: #0d6efd;
-        border: none;
-    }
-    .btn-primary-soft:hover {
-        background-color: #0d6efd;
-        color: white;
-    }
-    .btn-danger-soft {
-        background-color: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
-        border: none;
-    }
-    .btn-danger-soft:hover {
-        background-color: #dc3545;
-        color: white;
-    }
-    .avatar-sm {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-    }
-    .toggle-details[aria-expanded="true"] i {
-        transform: rotate(45deg);
-        transition: transform 0.2s;
-    }
-    .toggle-details[aria-expanded="false"] i {
-        transform: rotate(0deg);
-        transition: transform 0.2s;
-    }
-    .bg-primary-subtle {
-        background-color: #cfe2ff !important;
-    }
-    .bg-success-subtle {
-        background-color: #d1e7dd !important;
-    }
-    .bg-danger-subtle {
-        background-color: #f8d7da !important;
-    }
-</style>
-
+@push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const toggleButtons = document.querySelectorAll('.toggle-details');
@@ -260,4 +210,4 @@
         });
     });
 </script>
-@endsection
+@endpush

@@ -189,15 +189,11 @@ class LiveChatController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $extension = $image->getClientOriginalExtension();
-            $imageName = 'chat-' . Auth::id() . '-' . date('Y-m-d-H-i-s') . '-' . rand(999, 9999) . '.' . $extension;
-            $destinationPath = public_path('uploads/custom-images');
-            $image->move($destinationPath, $imageName);
+            $path = $request->file('image')->store('uploads/custom-images', 'public');
 
-            return response()->json(['url' => asset('uploads/custom-images/' . $imageName)]);
+            return response()->json(['url' => Storage::url($path)]);
         }
 
-        return response()->json(['error' => 'Upload failed'], 500);
+        return response()->json(['error' => 'No image uploaded'], 400);
     }
 }

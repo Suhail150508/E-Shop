@@ -39,7 +39,7 @@
                             </div>
                             @if($message->attachment)
                                 <div class="mt-3 pt-3 border-top border-secondary-subtle">
-                                    <a href="{{ asset('storage/' . $message->attachment) }}" target="_blank" class="text-decoration-none small">
+                                    <a href="{{ Str::startsWith($message->attachment, 'uploads/') ? asset($message->attachment) : Storage::url($message->attachment) }}" target="_blank" class="text-decoration-none small">
                                         <i class="fas fa-paperclip me-1"></i>{{ __('View Attachment') }}
                                     </a>
                                 </div>

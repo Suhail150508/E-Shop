@@ -27,7 +27,7 @@
                     @enderror
                     @if(isset($settings['app_logo']))
                         <div class="mt-2 p-2 bg-light rounded d-inline-block">
-                            <img src="{{ asset($settings['app_logo']) }}" alt="App Logo" style="max-height: 50px;">
+                            <img src="{{ getImageOrPlaceholder($settings['app_logo'], '150x50') }}" alt="App Logo" style="max-height: 50px;">
                         </div>
                     @endif
                 </div>
@@ -40,7 +40,7 @@
                     @enderror
                     @if(isset($settings['app_favicon']))
                         <div class="mt-2 p-2 bg-light rounded d-inline-block">
-                            <img src="{{ asset($settings['app_favicon']) }}" alt="App Favicon" style="max-height: 32px;">
+                            <img src="{{ getImageOrPlaceholder($settings['app_favicon'], '32x32') }}" alt="App Favicon" style="max-height: 32px;">
                         </div>
                     @endif
                 </div>

@@ -59,7 +59,7 @@ class AddressController extends Controller
 
         Address::create($data);
 
-        return redirect()->route('customer.addresses.index')->with('success', __('Address added successfully.'));
+        return redirect()->route('customer.addresses.index')->with('success', __('common.address_added_success'));
     }
 
     public function edit(Request $request, Address $address)
@@ -108,7 +108,7 @@ class AddressController extends Controller
 
         $address->update($data);
 
-        return redirect()->route('customer.addresses.index')->with('success', __('Address updated successfully.'));
+        return redirect()->route('customer.addresses.index')->with('success', __('common.address_updated_success'));
     }
 
     public function destroy(Request $request, Address $address)
@@ -119,7 +119,7 @@ class AddressController extends Controller
 
         $address->delete();
 
-        return redirect()->route('customer.addresses.index')->with('success', __('Address removed successfully.'));
+        return redirect()->route('customer.addresses.index')->with('success', __('common.address_removed_success'));
     }
 
     public function setDefault(Request $request, Address $address)
@@ -134,6 +134,6 @@ class AddressController extends Controller
 
         $address->update(['is_default' => true]);
 
-        return redirect()->route('customer.addresses.index')->with('success', __('Default address updated.'));
+        return redirect()->route('customer.addresses.index')->with('success', __('common.default_address_updated'));
     }
 }

@@ -48,11 +48,15 @@ class DashboardController extends Controller
         } else {
             $revenueData = $query->select(
                 DB::raw('sum(total) as sums'),
-                DB::raw("DATE_FORMAT(created_at,'%M') as months")
+                DB::raw("MONTH(created_at) as month_num"),
+                DB::raw("DATE_FORMAT(created_at,'%M') as month_name")
             )
-            ->groupBy('months')
-            ->orderBy('created_at')
-            ->pluck('sums', 'months')
+            ->groupBy('month_num', 'month_name')
+            ->orderBy('month_num')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->month_name => $item->sums];
+            })
             ->toArray();
         }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class BrandController extends Controller
@@ -64,12 +65,8 @@ class BrandController extends Controller
         $data['is_active'] = $request->has('is_active') ? true : false;
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $extension = $image->getClientOriginalExtension();
-            $imageName = Str::slug($request->name) . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extension;
-            $destinationPath = public_path('uploads/custom-images');
-            $image->move($destinationPath, $imageName);
-            $data['image'] = 'uploads/custom-images/' . $imageName;
+            $path = $request->file('image')->store('uploads/custom-images', 'public');
+            $data['image'] = $path;
         }
 
         Brand::create($data);
@@ -110,17 +107,16 @@ class BrandController extends Controller
         $data['is_active'] = $request->has('is_active') ? true : false;
 
         if ($request->hasFile('image')) {
-            if ($brand->image) {
-                if (file_exists(public_path($brand->image))) {
-                    @unlink(public_path($brand->image));
-                }
+            if ($brand->image && Storage::disk('public')->exists($brand->image)) {
+                Storage::disk('public')->delete($brand->image);
             }
-            $image = $request->file('image');
-            $extension = $image->getClientOriginalExtension();
-            $imageName = Str::slug($request->name ?? $brand->name) . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extension;
-            $destinationPath = public_path('uploads/custom-images');
-            $image->move($destinationPath, $imageName);
-            $data['image'] = 'uploads/custom-images/' . $imageName;
+            // Fallback for legacy files
+            elseif ($brand->image && file_exists(public_path($brand->image))) {
+                 @unlink(public_path($brand->image));
+            }
+
+            $path = $request->file('image')->store('uploads/custom-images', 'public');
+            $data['image'] = $path;
         }
 
         $brand->update($data);
@@ -141,7 +137,10 @@ class BrandController extends Controller
         }
 
         if ($brand->image) {
-            if (file_exists(public_path($brand->image))) {
+            if (Storage::disk('public')->exists($brand->image)) {
+                Storage::disk('public')->delete($brand->image);
+            }
+            elseif (file_exists(public_path($brand->image))) {
                 @unlink(public_path($brand->image));
             }
         }
@@ -164,16 +163,24 @@ class BrandController extends Controller
             return response()->json(['error' => __('No items selected.')], 400);
         }
 
-        $brands = Brand::whereIn('id', $ids)->get();
+        $brands = Brand::whereIn('id', $ids)
+            ->withCount(['products' => function ($query) {
+                $query->where('is_active', true);
+            }])
+            ->get();
+
         foreach ($brands as $brand) {
-            if ($brand->products()->where('is_active', true)->exists()) {
+            if ($brand->products_count > 0) {
                 return response()->json(['error' => __('Cannot delete some brands because they have active products.')], 400);
             }
         }
 
         foreach ($brands as $brand) {
             if ($brand->image) {
-                if (file_exists(public_path($brand->image))) {
+                if (Storage::disk('public')->exists($brand->image)) {
+                    Storage::disk('public')->delete($brand->image);
+                }
+                elseif (file_exists(public_path($brand->image))) {
                     @unlink(public_path($brand->image));
                 }
             }

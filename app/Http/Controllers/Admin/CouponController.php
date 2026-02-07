@@ -41,7 +41,16 @@ class CouponController extends Controller
         $request->validate([
             'code' => 'required|unique:coupons,code',
             'type' => 'required|in:fixed,percent',
-            'value' => 'required|numeric|min:0',
+            'value' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->type === 'percent' && $value > 100) {
+                        $fail(__('The percentage value cannot exceed 100.'));
+                    }
+                },
+            ],
             'min_spend' => 'nullable|numeric|min:0',
             'usage_limit' => 'nullable|integer|min:1',
             'expiry_date' => 'nullable|date|after:today',
@@ -77,7 +86,16 @@ class CouponController extends Controller
         $request->validate([
             'code' => 'required|unique:coupons,code,'.$coupon->id,
             'type' => 'required|in:fixed,percent',
-            'value' => 'required|numeric|min:0',
+            'value' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->type === 'percent' && $value > 100) {
+                        $fail(__('The percentage value cannot exceed 100.'));
+                    }
+                },
+            ],
             'min_spend' => 'nullable|numeric|min:0',
             'usage_limit' => 'nullable|integer|min:1',
             'expiry_date' => 'nullable|date|after:today',

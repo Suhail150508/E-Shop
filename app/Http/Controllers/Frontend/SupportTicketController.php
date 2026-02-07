@@ -43,11 +43,11 @@ class SupportTicketController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'subject' => 'required|string|max:255',
-            'department_id' => 'required|exists:support_departments,id',
-            'priority' => 'required|in:low,medium,high,urgent',
-            'message' => 'required|string',
-            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'subject' => ['required', 'string', 'max:255'],
+            'department_id' => ['required', 'exists:support_departments,id'],
+            'priority' => ['required', 'in:low,medium,high,urgent'],
+            'message' => ['required', 'string', 'max:10000'],
+            'attachment' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf,doc,docx', 'max:2048'],
         ]);
 
         $attachmentPath = null;
@@ -70,7 +70,7 @@ class SupportTicketController extends Controller
             'attachment' => $attachmentPath,
         ]);
 
-        return back()->with('success', __('Support ticket created successfully.'));
+        return back()->with('success', __('common.support_ticket_created_success'));
     }
 
     public function show($id)
@@ -86,7 +86,7 @@ class SupportTicketController extends Controller
         $ticket = SupportTicket::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
         $request->validate([
-            'message' => 'required|string',
+            'message' => ['required', 'string', 'max:10000'],
             'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
         ]);
 
@@ -103,6 +103,6 @@ class SupportTicketController extends Controller
 
         $ticket->update(['status' => 'open']);
 
-        return back()->with('success', __('Reply sent successfully.'));
+        return back()->with('success', __('common.support_ticket_reply_success'));
     }
 }

@@ -133,6 +133,117 @@
                             </div>
                         </div>
 
+                        <!-- Size Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.size') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                @if(isset($sizes) && count($sizes) > 0)
+                                    @foreach($sizes as $size)
+                                        <label class="filter-option">
+                                            <input type="checkbox" name="sizes[]" value="{{ $size->name }}"
+                                                   {{ in_array($size->name, (array)request('sizes', [])) ? 'checked' : '' }}>
+                                            <span class="filter-label">
+                                                <span>{{ $size->name }}</span>
+                                            </span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted small ps-1">{{ __('common.no_sizes_available') }}</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Unit Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.unit') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                @if(isset($units) && count($units) > 0)
+                                    @foreach($units as $unit)
+                                        <label class="filter-option">
+                                            <input type="checkbox" name="unit_id[]" value="{{ $unit->id }}"
+                                                   {{ in_array($unit->id, (array)request('unit_id', [])) ? 'checked' : '' }}>
+                                            <span class="filter-label">
+                                                <span>{{ $unit->name }}</span>
+                                            </span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted small ps-1">{{ __('common.no_units_available') }}</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Tags Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.tags') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                @if(isset($tags) && count($tags) > 0)
+                                    @foreach($tags as $tag)
+                                        <label class="filter-option">
+                                            <input type="checkbox" name="tags[]" value="{{ $tag }}"
+                                                   {{ in_array($tag, (array)request('tags', [])) ? 'checked' : '' }}>
+                                            <span class="filter-label">
+                                                <span>{{ $tag }}</span>
+                                            </span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted small ps-1">{{ __('common.no_tags_available') }}</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Rating Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.rating') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                @foreach(range(5, 1) as $rating)
+                                    <label class="filter-option">
+                                        <input type="radio" name="rating" value="{{ $rating }}"
+                                               {{ request('rating') == $rating ? 'checked' : '' }}>
+                                        <span class="filter-label">
+                                            <span class="text-warning">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="fas fa-star {{ $i <= $rating ? '' : 'text-muted' }}"></i>
+                                                @endfor
+                                            </span>
+                                            <span class="small text-muted ms-1">{{ $rating }} & up</span>
+                                        </span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Virtual Try-On -->
+                        <div class="filter-section">
+                             <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.features') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                <label class="filter-option">
+                                    <input type="checkbox" name="is_tryable" value="1"
+                                           {{ request('is_tryable') ? 'checked' : '' }}>
+                                    <span class="filter-label">
+                                        <i class="fas fa-camera me-1"></i>
+                                        <span>{{ __('common.virtual_try_on') }}</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
                         <!-- Availability Filter -->
                         <div class="filter-section">
                             <div class="filter-title" onclick="toggleFilter(this)">

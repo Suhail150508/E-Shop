@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Currency;
 use App\Services\SettingService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentMethodController extends Controller
 {
@@ -48,10 +49,14 @@ class PaymentMethodController extends Controller
 
         // Handle Image Upload
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = $gateway.'_'.time().'.'.$image->getClientOriginalExtension();
-            $image->move(public_path('uploads/payment_gateways'), $imageName);
-            $this->settingService->set('payment_'.$gateway.'_image', 'uploads/payment_gateways/'.$imageName);
+            $key = 'payment_'.$gateway.'_image';
+            $oldImage = $this->settingService->get($key);
+            if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+                Storage::disk('public')->delete($oldImage);
+            }
+
+            $path = $request->file('image')->store('uploads/payment_gateways', 'public');
+            $this->settingService->set($key, $path);
         }
 
         // Common Settings

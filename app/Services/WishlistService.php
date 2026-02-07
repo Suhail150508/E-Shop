@@ -34,6 +34,7 @@ class WishlistService extends BaseService
 
         return Product::whereIn('id', $ids->all())
             ->where('is_active', true)
+            ->with('approvedReviews')
             ->get();
     }
 

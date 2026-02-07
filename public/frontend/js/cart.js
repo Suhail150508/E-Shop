@@ -6,6 +6,8 @@ document.addEventListener('submit', function (e) {
     const count = document.getElementById('floating-cart-count');
     const submitBtn = form.querySelector('button[type="submit"]');
     let originalBtnContent = '';
+    const transCart = window.translations?.cart || {};
+    const transCommon = window.translations?.common || {};
 
     if (submitBtn) {
         originalBtnContent = submitBtn.innerHTML;
@@ -80,18 +82,18 @@ document.addEventListener('submit', function (e) {
                 setTimeout(() => count.style.transform = 'scale(1)', 200);
             }
             if (typeof toastr !== 'undefined') {
-                toastr.success(data.message || 'Added to cart successfully');
+                toastr.success(data.message || transCart.add_success || 'Added to cart successfully');
             }
         } else {
              if (typeof toastr !== 'undefined') {
-                toastr.error(data.message || 'Failed to add to cart');
+                toastr.error(data.message || transCart.add_failed || 'Failed to add to cart');
              }
         }
     })
     .catch((error) => {
         console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
-            toastr.error('Something went wrong. Please try again.');
+            toastr.error(transCommon.error_generic || 'Something went wrong. Please try again.');
         }
     })
     .finally(() => {
@@ -111,6 +113,7 @@ document.addEventListener('submit', function (e) {
     const btn = form.querySelector('button');
     const icon = btn ? btn.querySelector('i') : null;
     let originalIconClass = '';
+    const transCommon = window.translations?.common || {};
 
     if (icon) {
         originalIconClass = icon.className;
@@ -149,7 +152,7 @@ document.addEventListener('submit', function (e) {
             }
         } else {
              if (typeof toastr !== 'undefined') {
-                toastr.error(data.message || 'Error');
+                toastr.error(data.message || transCommon.error_generic || 'Error');
              }
              if (icon) icon.className = originalIconClass;
         }
@@ -157,7 +160,7 @@ document.addEventListener('submit', function (e) {
     .catch((error) => {
         console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
-            toastr.error('Something went wrong. Please try again.');
+            toastr.error(transCommon.error_generic || 'Something went wrong. Please try again.');
         }
         if (icon) icon.className = originalIconClass;
     });
@@ -170,6 +173,8 @@ document.addEventListener('submit', function (e) {
     e.preventDefault();
     const form = e.target;
     const row = form.closest('tr');
+    const transCart = window.translations?.cart || {};
+    const transCommon = window.translations?.common || {};
     
     fetch(form.action, {
         method: 'POST',
@@ -186,20 +191,20 @@ document.addEventListener('submit', function (e) {
     .then(data => {
         if (data.success) {
             if (typeof toastr !== 'undefined') {
-                toastr.success(data.message || 'Item removed from cart');
+                toastr.success(data.message || transCart.remove_success || 'Item removed from cart');
             }
             // Reload to update totals (simple & reliable)
             setTimeout(() => location.reload(), 1000);
         } else {
              if (typeof toastr !== 'undefined') {
-                toastr.error(data.message || 'Error removing item');
+                toastr.error(data.message || transCart.remove_failed || 'Error removing item');
              }
         }
     })
     .catch((error) => {
         console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
-            toastr.error('Something went wrong.');
+            toastr.error(transCommon.error_generic || 'Something went wrong.');
         }
     });
 });
@@ -211,6 +216,7 @@ document.addEventListener('submit', function (e) {
     e.preventDefault();
     const form = e.target;
     const row = form.closest('tr');
+    const transCommon = window.translations?.common || {};
 
     fetch(form.action, {
         method: 'POST',
@@ -224,7 +230,7 @@ document.addEventListener('submit', function (e) {
     .then(data => {
         if (data.success) {
             if (typeof toastr !== 'undefined') {
-                toastr.success(data.message || 'Item removed from wishlist');
+                toastr.success(data.message || transCommon.wishlist_remove_success || 'Item removed from wishlist');
             }
             if (row) {
                 row.remove();
@@ -236,14 +242,14 @@ document.addEventListener('submit', function (e) {
             }
         } else {
              if (typeof toastr !== 'undefined') {
-                toastr.error(data.message || 'Error');
+                toastr.error(data.message || transCommon.wishlist_remove_failed || 'Error');
              }
         }
     })
     .catch((error) => {
         console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
-            toastr.error('Something went wrong.');
+            toastr.error(transCommon.error_generic || 'Something went wrong.');
         }
     });
 });
@@ -254,6 +260,8 @@ document.addEventListener('submit', function (e) {
 
     e.preventDefault();
     const form = e.target;
+    const transCart = window.translations?.cart || {};
+    const transCommon = window.translations?.common || {};
     
     fetch(form.action, {
         method: 'POST',
@@ -267,19 +275,19 @@ document.addEventListener('submit', function (e) {
     .then(data => {
         if (data.success) {
             if (typeof toastr !== 'undefined') {
-                toastr.success(data.message || 'Cart updated');
+                toastr.success(data.message || transCart.update_success || 'Cart updated');
             }
             setTimeout(() => location.reload(), 1000);
         } else {
              if (typeof toastr !== 'undefined') {
-                toastr.error(data.message || 'Error updating cart');
+                toastr.error(data.message || transCart.update_failed || 'Error updating cart');
              }
         }
     })
     .catch((error) => {
         console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
-            toastr.error('Something went wrong.');
+            toastr.error(transCommon.error_generic || 'Something went wrong.');
         }
     });
 });

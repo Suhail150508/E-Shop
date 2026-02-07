@@ -33,9 +33,9 @@
                         <tr>
                             <td class="ps-4">
                                 <div class="d-flex align-items-center gap-2">
-                                    <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center rounded-circle" style="width: 32px; height: 32px; font-size: 14px;">
-                                        {{ substr($customer->name, 0, 1) }}
-                                    </div>
+                                    <div class="avatar-sm bg-primary text-white d-flex align-items-center justify-content-center rounded-circle">
+                                    {{ substr($customer->name, 0, 1) }}
+                                </div>
                                     <span class="fw-medium">{{ $customer->name }}</span>
                                 </div>
                             </td>

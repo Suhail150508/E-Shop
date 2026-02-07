@@ -130,6 +130,117 @@
                             </div>
                         </div>
 
+                        <!-- Size Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.size') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                @if(isset($sizes) && count($sizes) > 0)
+                                    @foreach($sizes as $size)
+                                        <label class="filter-option">
+                                            <input type="checkbox" name="sizes[]" value="{{ $size->name }}"
+                                                   {{ in_array($size->name, (array)request('sizes', [])) ? 'checked' : '' }}>
+                                            <span class="filter-label">
+                                                <span>{{ $size->name }}</span>
+                                            </span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted small ps-1">{{ __('common.no_sizes_available') }}</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Unit Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.unit') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                @if(isset($units) && count($units) > 0)
+                                    @foreach($units as $unit)
+                                        <label class="filter-option">
+                                            <input type="checkbox" name="unit_id[]" value="{{ $unit->id }}"
+                                                   {{ in_array($unit->id, (array)request('unit_id', [])) ? 'checked' : '' }}>
+                                            <span class="filter-label">
+                                                <span>{{ $unit->name }}</span>
+                                            </span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted small ps-1">{{ __('common.no_units_available') }}</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Tags Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.tags') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                @if(isset($tags) && count($tags) > 0)
+                                    @foreach($tags as $tag)
+                                        <label class="filter-option">
+                                            <input type="checkbox" name="tags[]" value="{{ $tag }}"
+                                                   {{ in_array($tag, (array)request('tags', [])) ? 'checked' : '' }}>
+                                            <span class="filter-label">
+                                                <span>{{ $tag }}</span>
+                                            </span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted small ps-1">{{ __('common.no_tags_available') }}</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Rating Filter -->
+                        <div class="filter-section">
+                            <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.rating') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                @foreach(range(5, 1) as $rating)
+                                    <label class="filter-option">
+                                        <input type="radio" name="rating" value="{{ $rating }}"
+                                               {{ request('rating') == $rating ? 'checked' : '' }}>
+                                        <span class="filter-label">
+                                            <span class="text-warning">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="fas fa-star {{ $i <= $rating ? '' : 'text-muted' }}"></i>
+                                                @endfor
+                                            </span>
+                                            <span class="small text-muted ms-1">{{ $rating }} {{ __('common.and_up') }}</span>
+                                        </span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Virtual Try-On -->
+                        <div class="filter-section">
+                             <div class="filter-title" onclick="toggleFilter(this)">
+                                <span>{{ __('common.features') }}</span>
+                                <i class="fas fa-chevron-down filter-toggle"></i>
+                            </div>
+                            <div class="filter-content">
+                                <label class="filter-option">
+                                    <input type="checkbox" name="is_tryable" value="1"
+                                           {{ request('is_tryable') ? 'checked' : '' }}>
+                                    <span class="filter-label">
+                                        <i class="fas fa-camera me-1"></i>
+                                        <span>{{ __('common.virtual_try_on') }}</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
                         <!-- Availability Filter -->
                         <div class="filter-section">
                             <div class="filter-title" onclick="toggleFilter(this)">
@@ -263,265 +374,8 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize filters
-            updateActiveFilters();
-            handleResponsiveFilters();
-            window.addEventListener('resize', handleResponsiveFilters);
-            
-            // Set initial view from localStorage
-            const savedView = localStorage.getItem('shopView') || 'grid';
-            setView(savedView, false);
-        });
-
-        // Toggle filter sections
-        function toggleFilter(element) {
-            const content = element.nextElementSibling;
-            
-            // Toggle class
-            element.classList.toggle('collapsed');
-            
-            // Update height based on class state
-            if (element.classList.contains('collapsed')) {
-                content.style.maxHeight = '0px';
-            } else {
-                content.style.maxHeight = content.scrollHeight + 'px';
-            }
-        }
-
-        // Initialize all filter sections
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.filter-title').forEach((title, index) => {
-                const content = title.nextElementSibling;
-                const toggle = title.querySelector('.filter-toggle');
-                
-                // Keep the first section (Category) open by default, collapse others
-                if (index === 0) {
-                    content.style.maxHeight = content.scrollHeight + 'px';
-                    title.classList.remove('collapsed');
-                } else {
-                    content.style.maxHeight = '0px';
-                    title.classList.add('collapsed');
-                }
-                
-                content.style.overflow = 'hidden';
-                // Use a slight timeout to ensure transitions work after load
-                setTimeout(() => {
-                    content.style.transition = 'max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-                }, 100);
-            });
-        });
-        
-        function toggleColor(element) {
-            element.classList.toggle('active');
-            updateColorInput();
-            updateActiveFilters();
-        }
-
-        function updateColorInput() {
-            const colors = Array.from(document.querySelectorAll('.color-option.active'))
-                .map(opt => opt.dataset.color);
-            document.getElementById('colorInput').value = colors.join(',');
-        }
-
-        // Set grid/list view
-        function setView(view, save = true) {
-            const grid = document.getElementById('productsGrid');
-            const buttons = document.querySelectorAll('.view-btn');
-            
-            buttons.forEach(btn => btn.classList.remove('active'));
-            // Find the button for this view
-            const activeBtn = document.querySelector(`.view-btn[onclick="setView('${view}')"]`);
-            if (activeBtn) activeBtn.classList.add('active');
-            
-            if (view === 'list') {
-                grid.classList.add('list-view');
-            } else {
-                grid.classList.remove('list-view');
-            }
-            
-            if (save) {
-                localStorage.setItem('shopView', view);
-            }
-        }
-
-        // Mobile filters
-        function handleResponsiveFilters() {
-            const sidebar = document.getElementById('desktopFilters');
-            const mobileContainer = document.getElementById('mobileFiltersContent');
-            const content = document.querySelector('.filter-card');
-            
-            // Safety check
-            if (!content || !sidebar || !mobileContainer) return;
-            
-            if (window.innerWidth <= 900) {
-                // Move to mobile if not already there
-                if (!mobileContainer.contains(content)) {
-                    mobileContainer.appendChild(content);
-                }
-            } else {
-                // Move to desktop if not already there
-                if (!sidebar.contains(content)) {
-                    sidebar.appendChild(content);
-                }
-            }
-        }
-
-        function openMobileFilters() {
-            document.getElementById('mobileFilters').classList.add('show');
-            document.getElementById('filterOverlay').classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMobileFilters() {
-            document.getElementById('mobileFilters').classList.remove('show');
-            document.getElementById('filterOverlay').classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        const mobileToggle = document.getElementById('mobileFilterToggle');
-        if(mobileToggle) mobileToggle.addEventListener('click', openMobileFilters);
-        
-        const filterOverlay = document.getElementById('filterOverlay');
-        if(filterOverlay) filterOverlay.addEventListener('click', closeMobileFilters);
-
-        // Clear all filters
-        function clearAllFilters() {
-            // Uncheck all checkboxes
-            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-            
-            // Remove active color options
-            document.querySelectorAll('.color-option.active').forEach(opt => opt.classList.remove('active'));
-            
-            // Clear price inputs
-            document.querySelectorAll('input[name="min_price"], input[name="max_price"]').forEach(input => {
-                input.value = '';
-            });
-            
-            // Update color input
-            updateColorInput();
-            
-            // Update active filters display
-            updateActiveFilters();
-            
-            // Submit form
-            document.getElementById('filtersForm').submit();
-        }
-
-        // Update active filters display
-        function updateActiveFilters() {
-            const container = document.getElementById('activeFilters');
-            const form = document.getElementById('filtersForm');
-            if(!form || !container) return;
-            
-            const formData = new FormData(form);
-            
-            let activeFilters = [];
-            
-            // Check categories
-            const categories = formData.getAll('categories[]');
-            if (categories.length) {
-                categories.forEach(id => {
-                    const label = document.querySelector(`input[name="categories[]"][value="${id}"]`)
-                        ?.closest('.filter-label')?.querySelector('span:first-child')?.textContent || `Category ${id}`;
-                    activeFilters.push({
-                        label: label,
-                        remove: () => {
-                            const checkbox = document.querySelector(`input[name="categories[]"][value="${id}"]`);
-                            if (checkbox) checkbox.checked = false;
-                            form.submit();
-                        }
-                    });
-                });
-            }
-            
-            // Check price range
-            const minPrice = formData.get('min_price');
-            const maxPrice = formData.get('max_price');
-            if (minPrice || maxPrice) {
-                const label = minPrice && maxPrice ? 
-                    `$${minPrice} - $${maxPrice}` : 
-                    minPrice ? `From $${minPrice}` : `Up to $${maxPrice}`;
-                activeFilters.push({
-                    label: label,
-                    remove: () => {
-                        document.querySelector('input[name="min_price"]').value = '';
-                        document.querySelector('input[name="max_price"]').value = '';
-                        form.submit();
-                    }
-                });
-            }
-            
-            // Check colors
-            const colors = formData.get('colors')?.split(',').filter(c => c) || [];
-            if (colors.length) {
-                colors.forEach(color => {
-                    activeFilters.push({
-                        label: color.charAt(0).toUpperCase() + color.slice(1),
-                        remove: () => {
-                            const colorOption = document.querySelector(`.color-option[data-color="${color}"]`);
-                            if (colorOption) colorOption.classList.remove('active');
-                            updateColorInput();
-                            form.submit();
-                        }
-                    });
-                });
-            }
-            
-            // Check availability
-            const availability = formData.getAll('availability[]');
-            if (availability.length) {
-                availability.forEach(value => {
-                    const label = value.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                    activeFilters.push({
-                        label: label,
-                        remove: () => {
-                            const checkbox = document.querySelector(`input[name="availability[]"][value="${value}"]`);
-                            if (checkbox) checkbox.checked = false;
-                            form.submit();
-                        }
-                    });
-                });
-            }
-            
-            // Update display
-            container.innerHTML = '';
-            if (activeFilters.length > 0) {
-                activeFilters.forEach(filter => {
-                    const tag = document.createElement('div');
-                    tag.className = 'filter-tag';
-                    tag.innerHTML = `${filter.label} <i class="fas fa-times"></i>`;
-                    tag.addEventListener('click', filter.remove);
-                    container.appendChild(tag);
-                });
-                container.style.display = 'flex';
-            } else {
-                container.style.display = 'none';
-            }
-        }
-
-        // Price Range Logic
-        const priceRange = document.getElementById('priceRange');
-        const maxPriceInput = document.getElementById('maxPriceInput');
-        const priceOutput = document.getElementById('priceOutput');
-
-        if (priceRange && maxPriceInput) {
-            // Slider updates input and output
-            priceRange.addEventListener('input', function() {
-                maxPriceInput.value = this.value;
-                if(priceOutput) priceOutput.textContent = this.value;
-            });
-
-            // Input updates slider and output
-            maxPriceInput.addEventListener('input', function() {
-                let val = parseInt(this.value);
-                if (val > 1000) val = 1000; // Max limit
-                // if (val < 0) val = 0; // Min limit (optional)
-                
-                priceRange.value = val;
-                if(priceOutput) priceOutput.textContent = val;
-            });
-        }
-    </script>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('frontend/js/shop.js') }}"></script>
+@endpush

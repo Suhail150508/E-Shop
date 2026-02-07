@@ -77,7 +77,8 @@
                                     @foreach($galleryImages as $index => $image)
                                         <button class="thumb-btn border-0 p-1 rounded-3 bg-white shadow-sm {{ $loop->first ? 'active ring-2 ring-primary' : '' }}" 
                                                 onclick="updateMainImage(this, '{{ $image['url'] }}')"
-                                                data-index="{{ $index }}">
+                                                data-index="{{ $index }}"
+                                                data-image-url="{{ $image['url'] }}">
                                             <img src="{{ getImageOrPlaceholder($image['url'], '150x150') }}" 
                                                  alt="{{ __('common.product_thumbnail') }} {{ $index + 1 }}"
                                                  class="w-100 h-100 rounded-2 thumb-img"
@@ -105,14 +106,14 @@
                             <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-4">
                                 <div class="d-flex align-items-center gap-1 text-warning">
                                     @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= round($product->average_rating ?? 0))
+                                        @if($i <= round($product->approved_reviews_avg_rating ?? 0))
                                             <i class="fas fa-star"></i>
                                         @else
                                             <i class="far fa-star text-muted opacity-25"></i>
                                         @endif
                                     @endfor
                                     <a href="#reviews-tab" onclick="document.getElementById('reviews-tab').click()" class="ms-2 text-muted small text-decoration-none hover-primary">
-                                        ({{ $product->reviews_count ?? 0 }} {{ __('common.reviews') }})
+                                        ({{ $product->approved_reviews_count ?? 0 }} {{ __('common.reviews') }})
                                     </a>
                                 </div>
                                 
@@ -197,6 +198,12 @@
                                             <button type="button" class="btn btn-outline-secondary rounded-circle shadow-sm d-flex align-items-center justify-content-center btn-wishlist" onclick="document.getElementById('wishlistForm').requestSubmit()" title="{{ __('common.add_to_wishlist') }}">
                                                 <i class="far fa-heart fs-5"></i>
                                             </button>
+                                            @if($product->is_tryable)
+                                            <button type="button" class="btn btn-outline-primary rounded-pill px-4 py-3 fw-bold shadow-sm try-on-btn" data-id="{{ $product->id }}" data-image="{{ $product->image_url }}" title="{{ __('common.virtual_try_on') }}">
+                                                <i class="fas fa-user-check me-2"></i>
+                                                <span>{{ __('common.try_now') }}</span>
+                                            </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </form>
@@ -218,10 +225,12 @@
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </div>
+                                        @if($product->unit)
                                         <div class="mb-3">
                                             <span class="d-block text-muted text-uppercase fw-bold mb-1 meta-label">{{ __('common.unit') }}</span>
-                                            <span class="text-dark fw-medium">{{ $product->unit }}</span>
+                                            <span class="text-dark fw-medium">{{ $product->unit->name }}</span>
                                         </div>
+                                        @endif
                                         <div>
                                             <span class="d-block text-muted text-uppercase fw-bold mb-1 meta-label">{{ __('common.share') }}</span>
                                             <div class="d-flex gap-2">
@@ -248,7 +257,7 @@
                         <button class="nav-link-custom" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">{{ __('common.additional_info') }}</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link-custom" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">{{ __('common.reviews') }} ({{ $product->reviews_count ?? 0 }})</button>
+                        <button class="nav-link-custom" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">{{ __('common.reviews') }} ({{ $product->approved_reviews_count ?? 0 }})</button>
                     </li>
                 </ul>
 
@@ -368,7 +377,7 @@
 
                                 <!-- Reviews List -->
                                 <div class="reviews-list">
-                                    @forelse($product->reviews as $review)
+                                    @forelse($product->approvedReviews as $review)
                                         <div class="review-item d-flex gap-3 mb-4 pb-4 border-bottom">
                                             <div class="flex-shrink-0">
                                                 <div class="avatar-circle">
@@ -417,140 +426,9 @@
         </div>
     </div>
 
+    {{-- Virtual Try-On modal is in layout (frontend.partials.tryon-modal) so it works from any page --}}
+
     @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('zoomContainer');
-            const img = document.getElementById('mainProductImage');
-            const zoomBtn = document.getElementById('toggleZoomBtn');
-            const rotateBtn = document.getElementById('toggle360Btn');
-            const thumbBtns = document.querySelectorAll('.thumb-btn');
-            
-            let isZoomEnabled = false;
-            let is360Enabled = false;
-            let images = [];
-            
-            // Collect images for 360
-            thumbBtns.forEach(btn => {
-                images.push(btn.querySelector('img').src);
-            });
-            // If only one image, use main image
-            if(images.length === 0 && img) images.push(img.src);
-
-            // Zoom Logic
-            function enableZoom() {
-                isZoomEnabled = true;
-                is360Enabled = false;
-                container.classList.add('zoomed');
-                container.classList.remove('mode-360');
-                if(zoomBtn) zoomBtn.classList.add('active');
-                if(rotateBtn) rotateBtn.classList.remove('active');
-            }
-
-            function disableZoom() {
-                isZoomEnabled = false;
-                container.classList.remove('zoomed');
-                if(zoomBtn) zoomBtn.classList.remove('active');
-                img.style.transform = 'scale(1)';
-                img.style.transformOrigin = 'center center';
-            }
-
-            // 360 Logic
-            function enable360() {
-                if(images.length < 2) return;
-                is360Enabled = true;
-                isZoomEnabled = false;
-                container.classList.add('mode-360');
-                container.classList.remove('zoomed');
-                if(rotateBtn) rotateBtn.classList.add('active');
-                if(zoomBtn) zoomBtn.classList.remove('active');
-                img.style.transform = 'scale(1)'; // Reset zoom
-            }
-
-            function disable360() {
-                is360Enabled = false;
-                container.classList.remove('mode-360');
-                if(rotateBtn) rotateBtn.classList.remove('active');
-            }
-
-            // Event Listeners
-            if(zoomBtn) {
-                zoomBtn.addEventListener('click', function() {
-                    if(isZoomEnabled) disableZoom();
-                    else enableZoom();
-                });
-            }
-
-            if(rotateBtn) {
-                rotateBtn.addEventListener('click', function() {
-                    if(is360Enabled) disable360();
-                    else enable360();
-                });
-            }
-
-            // Mouse Events
-            container.addEventListener('mousemove', function(e) {
-                if(isZoomEnabled) {
-                    const { left, top, width, height } = container.getBoundingClientRect();
-                    const x = e.clientX - left;
-                    const y = e.clientY - top;
-                    
-                    const xPercent = (x / width) * 100;
-                    const yPercent = (y / height) * 100;
-                    
-                    img.style.transformOrigin = `${xPercent}% ${yPercent}%`;
-                    img.style.transform = 'scale(2)';
-                } else if(is360Enabled) {
-                    const { left, width } = container.getBoundingClientRect();
-                    const x = e.clientX - left;
-                    const percent = x / width;
-                    
-                    // Map position to image index
-                    const index = Math.floor(percent * images.length);
-                    const safeIndex = Math.min(Math.max(index, 0), images.length - 1);
-                    
-                    // Update image if changed
-                    if(img.src !== images[safeIndex]) {
-                        img.src = images[safeIndex];
-                        // Update active thumb
-                        thumbBtns.forEach(b => b.classList.remove('active'));
-                        if(thumbBtns[safeIndex]) thumbBtns[safeIndex].classList.add('active');
-                    }
-                }
-            });
-
-            container.addEventListener('mouseleave', function() {
-                if(isZoomEnabled) {
-                    img.style.transform = 'scale(1)';
-                }
-            });
-
-            // Default: Enable Zoom on Hover if not mobile
-            if(window.innerWidth > 992) {
-               enableZoom();
-            }
-        });
-
-        // Global function for thumbs
-        window.updateMainImage = function(btn, src) {
-            document.getElementById('mainProductImage').src = src;
-            document.querySelectorAll('.thumb-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        };
-
-        window.increaseQty = function() {
-            const input = document.getElementById('qtyInput');
-            if(parseInt(input.value) < parseInt(input.getAttribute('max'))) {
-                input.value = parseInt(input.value) + 1;
-            }
-        };
-
-        window.decreaseQty = function() {
-            const input = document.getElementById('qtyInput');
-            if(parseInt(input.value) > 1) {
-                input.value = parseInt(input.value) - 1;
-            }
-        };
-    </script>
+    <script src="{{ asset('frontend/js/product-details.js') }}"></script>
     @endpush
 @endsection

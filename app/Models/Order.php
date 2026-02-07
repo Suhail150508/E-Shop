@@ -91,6 +91,29 @@ class Order extends Model
         return $this->hasMany(Refund::class);
     }
 
+    public function getStatusColorAttribute(): string
+    {
+        return match ($this->status) {
+            self::STATUS_PENDING => 'warning',
+            self::STATUS_PROCESSING => 'info',
+            self::STATUS_SHIPPED => 'primary',
+            self::STATUS_DELIVERED => 'success',
+            self::STATUS_CANCELLED => 'danger',
+            default => 'secondary',
+        };
+    }
+
+    public function getPaymentStatusColorAttribute(): string
+    {
+        return match ($this->payment_status) {
+            self::PAYMENT_PENDING => 'warning',
+            self::PAYMENT_PAID => 'success',
+            self::PAYMENT_FAILED => 'danger',
+            self::PAYMENT_REFUNDED => 'info',
+            default => 'secondary',
+        };
+    }
+
     public function formatPrice($amount)
     {
         $value = $amount * ($this->exchange_rate ?? 1);

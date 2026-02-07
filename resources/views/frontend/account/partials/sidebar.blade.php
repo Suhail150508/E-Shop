@@ -2,11 +2,11 @@
     <div class="d-flex flex-column align-items-center mb-4 pt-3">
         <div class="avatar-container mb-3 position-relative">
             <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold fs-3 sidebar-avatar">
-                {{ substr(Auth::user()->name, 0, 1) }}
+                {{ Str::limit(Auth::user()->name ?? '', 1) }}
             </div>
         </div>
-        <h5 class="fw-bold mb-1">{{ Auth::user()->name }}</h5>
-        <p class="text-muted small mb-0">{{ Auth::user()->email }}</p>
+        <h5 class="fw-bold mb-1">{{ Auth::user()->name ?? __('common.guest') }}</h5>
+        <p class="text-muted small mb-0">{{ Auth::user()->email ?? '' }}</p>
     </div>
 
     <div class="nav flex-column nav-pills custom-sidebar-nav gap-1">

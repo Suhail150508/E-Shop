@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSettingRequest;
 use App\Services\SettingService;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -28,19 +29,25 @@ class SettingController extends Controller
 
         // Handle App Logo
         if ($request->hasFile('app_logo')) {
-            $file = $request->file('app_logo');
-            $filename = 'logo-' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/settings'), $filename);
-            $this->settingService->set('app_logo', 'uploads/settings/' . $filename);
+            $oldLogo = $this->settingService->get('app_logo');
+            if ($oldLogo && Storage::disk('public')->exists($oldLogo)) {
+                Storage::disk('public')->delete($oldLogo);
+            }
+
+            $path = $request->file('app_logo')->store('uploads/settings', 'public');
+            $this->settingService->set('app_logo', $path);
         }
         unset($validated['app_logo']);
 
         // Handle App Favicon
         if ($request->hasFile('app_favicon')) {
-            $file = $request->file('app_favicon');
-            $filename = 'favicon-' . time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/settings'), $filename);
-            $this->settingService->set('app_favicon', 'uploads/settings/' . $filename);
+            $oldFavicon = $this->settingService->get('app_favicon');
+            if ($oldFavicon && Storage::disk('public')->exists($oldFavicon)) {
+                Storage::disk('public')->delete($oldFavicon);
+            }
+
+            $path = $request->file('app_favicon')->store('uploads/settings', 'public');
+            $this->settingService->set('app_favicon', $path);
         }
         unset($validated['app_favicon']);
 

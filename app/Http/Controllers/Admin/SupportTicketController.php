@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\SupportTicket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SupportTicketController extends Controller
 {
@@ -67,10 +69,12 @@ class SupportTicketController extends Controller
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
             $extension = $file->getClientOriginalExtension();
-            $filename = 'ticket-' . $ticket->id . '-' . Auth::id() . '-' . date('Y-m-d-h-i-s') . '-' . rand(999, 9999) . '.' . $extension;
-            $destinationPath = public_path('uploads/custom-images');
-            $file->move($destinationPath, $filename);
-            $attachmentPath = 'uploads/custom-images/' . $filename;
+            $filename = 'ticket-' . $ticket->id . '-' . Str::uuid() . '.' . $extension;
+            
+            // Use Storage facade for better security and path management
+            // This stores in storage/app/public/tickets
+            $path = $file->storeAs('tickets', $filename, 'public');
+            $attachmentPath = $path;
         }
 
         $ticket->messages()->create([

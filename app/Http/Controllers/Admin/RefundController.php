@@ -63,14 +63,17 @@ class RefundController extends Controller
 
         try {
             DB::transaction(function () use ($request, $refund) {
+                // Lock refund row to prevent double approval (e.g. duplicate request)
+                $refund = Refund::where('id', $refund->id)->lockForUpdate()->firstOrFail();
+
                 // Check if we are approving a previously non-approved refund
                 if ($request->status === 'approved' && $refund->status !== 'approved') {
-                    
+
                     // Logic for Wallet Refund
                     // If the order was paid via Wallet, credit the amount back to the user's wallet
                     if ($refund->order->payment_method === 'wallet' && $refund->order->user) {
                         $user = $refund->order->user;
-                        
+
                         // Credit the wallet
                         $user->increment('wallet_balance', $refund->amount);
 

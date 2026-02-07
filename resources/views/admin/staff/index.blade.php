@@ -33,9 +33,9 @@
                         <tr>
                             <td class="ps-4">
                                 <div class="d-flex align-items-center gap-2">
-                                    <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center rounded-circle" style="width: 32px; height: 32px; font-size: 14px;">
-                                        {{ substr($staff->name, 0, 1) }}
-                                    </div>
+                                    <div class="avatar-sm bg-primary text-white d-flex align-items-center justify-content-center rounded-circle">
+                                    {{ substr($staff->name, 0, 1) }}
+                                </div>
                                     <span class="fw-medium">{{ $staff->name }}</span>
                                 </div>
                             </td>
@@ -63,7 +63,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center py-5 text-muted">
+                            <td colspan="5" class="text-center py-5 text-muted">
                                 <i class="fas fa-users-slash fa-2x mb-3 opacity-50"></i>
                                 <p class="mb-0">{{ __('No staff members found.') }}</p>
                             </td>

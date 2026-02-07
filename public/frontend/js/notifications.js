@@ -23,22 +23,24 @@
         const now = new Date();
         const seconds = Math.floor((now - date) / 1000);
 
+        const trans = window.translations?.common || {};
+
         let interval = seconds / 31536000;
-        if (interval > 1) return Math.floor(interval) + " years ago";
+        if (interval > 1) return Math.floor(interval) + " " + (trans.years_ago || "years ago");
         
         interval = seconds / 2592000;
-        if (interval > 1) return Math.floor(interval) + " months ago";
+        if (interval > 1) return Math.floor(interval) + " " + (trans.months_ago || "months ago");
         
         interval = seconds / 86400;
-        if (interval > 1) return Math.floor(interval) + " days ago";
+        if (interval > 1) return Math.floor(interval) + " " + (trans.days_ago || "days ago");
         
         interval = seconds / 3600;
-        if (interval > 1) return Math.floor(interval) + " hours ago";
+        if (interval > 1) return Math.floor(interval) + " " + (trans.hours_ago || "hours ago");
         
         interval = seconds / 60;
-        if (interval > 1) return Math.floor(interval) + " minutes ago";
+        if (interval > 1) return Math.floor(interval) + " " + (trans.minutes_ago || "minutes ago");
         
-        return "Just now";
+        return trans.just_now || "Just now";
     }
 
     /**
@@ -104,6 +106,7 @@
             // Determine data structure (Broadcast vs Database)
             const data = notification.data || notification;
             const id = notification.id;
+            const trans = window.translations?.common || {};
 
             // Update Badge
             this.updateBadgeCount(1, true);
@@ -123,18 +126,19 @@
 
             // Show Toast
             if (typeof toastr !== 'undefined') {
-                toastr.info(data.message, 'New Notification', {
+                toastr.info(data.message, trans.new_notification || 'New Notification', {
                     onclick: () => this.markAsRead(id, data.link)
                 });
             }
         },
 
         renderList(notifications) {
+            const trans = window.translations?.common || {};
             if (notifications.length === 0) {
                 this.list.innerHTML = `
                     <li class="p-4 text-center text-muted empty-state">
                         <i class="far fa-bell-slash fa-2x mb-2"></i>
-                        <p class="mb-0 small">No new notifications</p>
+                        <p class="mb-0 small">${trans.no_new_notifications || 'No new notifications'}</p>
                     </li>
                 `;
                 this.updateBadgeCount(0);
@@ -183,6 +187,7 @@
         },
 
         markAllRead() {
+            const trans = window.translations?.common || {};
             fetch(CONFIG.routes.markAllRead, {
                 method: 'POST',
                 headers: {
@@ -195,7 +200,7 @@
                 if (data.success) {
                     this.renderList([]); // Clear list
                     if (typeof toastr !== 'undefined') {
-                        toastr.success('All notifications marked as read');
+                        toastr.success(trans.notifications_marked_read || 'All notifications marked as read');
                     }
                 }
             });

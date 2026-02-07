@@ -51,4 +51,17 @@ return Application::configure(basePath: dirname(__DIR__))
             return redirect()->back()
                 ->with('error', __('common.post_too_large'));
         });
+
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => __('common.page_not_found_message'),
+                ], 404);
+            }
+            $path = trim($request->path(), '/');
+            if ($path === 'admin' || str_starts_with($path, 'admin/')) {
+                return response()->view('errors.404-admin', [], 404);
+            }
+            return response()->view('errors.404', [], 404);
+        });
     })->create();

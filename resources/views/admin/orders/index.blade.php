@@ -204,40 +204,5 @@
 @endsection
 
 @push('styles')
-<style>
-    .status-tabs::-webkit-scrollbar {
-        height: 4px;
-    }
-    .status-tabs::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-    .status-tabs::-webkit-scrollbar-thumb {
-        background: #ddd;
-        border-radius: 4px;
-    }
-    
-    .btn-soft-primary {
-        color: #0d6efd;
-        background-color: rgba(13, 110, 253, 0.1);
-        border: none;
-    }
-    .btn-soft-primary:hover {
-        color: #fff;
-        background-color: #0d6efd;
-    }
 
-    .btn-soft-secondary {
-        color: #6c757d;
-        background-color: rgba(108, 117, 125, 0.1);
-        border: none;
-    }
-    .btn-soft-secondary:hover {
-        color: #fff;
-        background-color: #6c757d;
-    }
-
-    .btn-white {
-        background-color: #fff;
-    }
-</style>
 @endpush

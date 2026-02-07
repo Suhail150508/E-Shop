@@ -63,23 +63,15 @@ class PageController extends Controller
 
         if ($request->hasFile('image')) {
             if ($page->image) {
-                if (file_exists(public_path($page->image))) {
+                if (Storage::disk('public')->exists($page->image)) {
+                    Storage::disk('public')->delete($page->image);
+                } elseif (file_exists(public_path($page->image))) {
                     @unlink(public_path($page->image));
-                } elseif (! filter_var($page->image, FILTER_VALIDATE_URL)) {
-                    $oldPath = str_replace('storage/', '', $page->image);
-                    Storage::disk('public')->delete($oldPath);
                 }
             }
 
-            $image = $request->file('image');
-            $extension = $image->getClientOriginalExtension();
-            $imageName = Str::slug($request->title ?? $page->title) . date('-Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $extension;
-            $destinationPath = public_path('uploads/custom-images');
-            if (! is_dir($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-            $image->move($destinationPath, $imageName);
-            $data['image'] = 'uploads/custom-images/' . $imageName;
+            $path = $request->file('image')->store('uploads/custom-images', 'public');
+            $data['image'] = $path;
         }
 
         $page->update($data);
@@ -99,15 +91,10 @@ class PageController extends Controller
         ]);
 
         if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            
-            // Save directly to public/uploads/pages for consistency without storage symlink dependency
-            $destinationPath = public_path('uploads/pages');
-            $file->move($destinationPath, $filename);
+            $path = $request->file('file')->store('uploads/pages', 'public');
             
             return response()->json([
-                'location' => asset('uploads/pages/' . $filename)
+                'location' => Storage::url($path)
             ]);
         }
         

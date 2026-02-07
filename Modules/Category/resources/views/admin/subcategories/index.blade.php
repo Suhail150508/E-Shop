@@ -141,28 +141,7 @@
 @endsection
 
 @push('styles')
-<style>
-    .btn-soft-secondary {
-        color: #6c757d;
-        background-color: rgba(108, 117, 125, 0.1);
-        border: none;
-    }
-    .btn-soft-secondary:hover {
-        color: #fff;
-        background-color: #6c757d;
-    }
-    .btn-soft-danger {
-        color: #dc3545;
-        background-color: rgba(220, 53, 69, 0.1);
-        border: none;
-    }
-    .btn-soft-danger:hover {
-        color: #fff;
-        background-color: #dc3545;
-    }
-    
 
-</style>
 @endpush
 
 @push('scripts')

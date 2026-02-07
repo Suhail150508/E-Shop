@@ -24,12 +24,12 @@ class RefundController extends Controller
         }
 
         if ($order->status !== Order::STATUS_DELIVERED) {
-            return back()->with('error', __('Refund request can only be made for delivered orders.'));
+            return back()->with('error', __('common.refund_only_delivered'));
         }
         
         // Check if refund already exists
         if ($order->refunds()->exists()) {
-             return back()->with('error', __('A refund request has already been submitted for this order.'));
+             return back()->with('error', __('common.refund_already_submitted'));
         }
 
         $validReasons = \App\Models\RefundReason::where('status', true)->pluck('reason')->all();
@@ -38,7 +38,7 @@ class RefundController extends Controller
         $validated = $request->validate([
             'reason' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) use ($validReasons) {
                 if (! in_array($value, $validReasons)) {
-                    $fail(__('Invalid refund reason selected.'));
+                    $fail(__('common.invalid_refund_reason'));
                 }
             }],
             'details' => 'nullable|string|max:2000',
@@ -64,6 +64,6 @@ class RefundController extends Controller
             'images' => $imagePaths,
         ]);
 
-        return back()->with('success', __('Refund request submitted successfully.'));
+        return back()->with('success', __('common.refund_request_submitted'));
     }
 }

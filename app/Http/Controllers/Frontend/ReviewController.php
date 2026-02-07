@@ -22,11 +22,8 @@ class ReviewController extends Controller
         $imagePaths = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $image) {
-                $extension = $image->getClientOriginalExtension();
-                $imageName = 'review-' . Auth::id() . '-' . $product->id . '-' . date('Y-m-d-h-i-s') . '-' . $index . '-' . rand(999, 9999) . '.' . $extension;
-                $destinationPath = public_path('uploads/custom-images');
-                $image->move($destinationPath, $imageName);
-                $imagePaths[] = 'uploads/custom-images/' . $imageName;
+                $path = $image->store('uploads/custom-images', 'public');
+                $imagePaths[] = $path;
             }
         }
 

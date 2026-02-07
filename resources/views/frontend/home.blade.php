@@ -34,26 +34,8 @@
                 <div class="col-lg-6">
                     <div class="hero-gallery position-relative">
                         @php
-                            $heroImages = json_decode(setting('home_hero_gallery') ?? '[]', true);
-                            if (empty($heroImages) || !is_array($heroImages)) {
-                                $heroImages = [
-                                    [
-                                        ['image' => null, 'name' => __('Elegant Evening Gown'), 'badge' => __('common.new')],
-                                        ['image' => null, 'name' => __('Velvet Blazer'), 'badge' => __('Trend')],
-                                        ['image' => null, 'name' => __('Designer Outfit'), 'badge' => __('Premium')],
-                                    ],
-                                    [
-                                        ['image' => null, 'name' => __('Floral Maxi Dress'), 'badge' => __('common.sale_badge')],
-                                        ['image' => null, 'name' => __('Summer Dress'), 'badge' => __('Popular')],
-                                        ['image' => null, 'name' => __('Casual Wear'), 'badge' => __('common.new')],
-                                    ],
-                                    [
-                                        ['image' => null, 'name' => __('Vintage Collection'), 'badge' => __('common.hot')],
-                                        ['image' => null, 'name' => __('Chic Top'), 'badge' => __('Limited')],
-                                        ['image' => null, 'name' => __('Fashion Collection'), 'badge' => __('common.hot')],
-                                    ]
-                                ];
-                            }
+                            // Hero images are now passed from controller via $heroImages variable
+                            // Fallback is handled in controller to keep view clean
                         @endphp
 
                         @foreach($heroImages as $positionIndex => $images)
@@ -61,16 +43,16 @@
                                 <div class="image-wrapper">
                                     @foreach($images as $imgIndex => $item)
                                         <img src="{{ getImageOrPlaceholder($item['image'] ?? null, '600x800') }}" 
-                                             alt="{{ $item['name'] ?? __('common.gallery_image') }}" 
+                                             alt="{{ isset($item['name']) ? __('common.'.$item['name']) : __('common.gallery_image') }}" 
                                              class="gallery-img {{ $imgIndex === 0 ? 'active' : '' }}"
                                              data-image-index="{{ $imgIndex }}"
-                                             data-badge="{{ $item['badge'] ?? '' }}"
+                                             data-badge="{{ isset($item['badge']) ? __('common.'.$item['badge']) : '' }}"
                                              loading="{{ $positionIndex === 0 && $imgIndex === 0 ? 'eager' : 'lazy' }}"
                                              onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
                                     @endforeach
                                 </div>
                                 @if(count($images) > 0)
-                                    <div class="gallery-badge">{{ $images[0]['badge'] ?? '' }}</div>
+                                    <div class="gallery-badge">{{ isset($images[0]['badge']) ? __('common.'.$images[0]['badge']) : '' }}</div>
                                 @endif
                             </div>
                         @endforeach
@@ -90,27 +72,16 @@
             </div>
             <div class="mt-5">
                 @if(isset($categories) && $categories->count())
-                    @php
-                        $icons = [
-                            'fas fa-hat-cowboy-side', 
-                            'fas fa-female', 
-                            'fas fa-child', 
-                            'fas fa-tshirt',
-                            'fas fa-shopping-bag',
-                            'fas fa-gem'
-                        ];
-                    @endphp
-                    
                     @if($categories->count() > 4)
                         <div class="marquee-wrapper">
-                            <div class="marquee-content" style="animation-duration: {{ $categories->count() * 10 }}s">
+                            <div class="marquee-content" style="animation-duration: {{ $categories->count() * 10 }}s;">
                                 {{-- Loop 4 times to ensure seamless infinite scroll --}}
                                 @foreach(range(1, 4) as $i)
                                     @foreach($categories as $category)
                                         <div class="marquee-item">
-                                            <a href="{{ route('shop.category', $category) }}" class="category-card fade-in text-decoration-none d-block">
-                                                <div class="category-icon">
-                                                    <i class="{{ $icons[$loop->index % count($icons)] }}"></i>
+                                            <a href="{{ route('shop.category', $category->slug) }}" class="category-card fade-in text-decoration-none">
+                                                <div class="category-image">
+                                                    <img src="{{ getImageOrPlaceholder($category->image, '300x300') }}" alt="{{ $category->name }}" class="img-fluid rounded-circle">
                                                 </div>
                                                 <h3 class="category-name">{{ $category->name }}</h3>
                                                 <p class="category-count">
@@ -130,9 +101,9 @@
                         <div class="row g-4 justify-content-center">
                             @foreach($categories as $category)
                                 <div class="col-md-6 col-lg-3">
-                                    <a href="{{ route('shop.category', $category) }}" class="category-card fade-in text-decoration-none d-block">
-                                        <div class="category-icon">
-                                            <i class="{{ $icons[$loop->index % count($icons)] }}"></i>
+                                    <a href="{{ route('shop.category', $category->slug) }}" class="category-card fade-in text-decoration-none">
+                                        <div class="category-image">
+                                            <img src="{{ getImageOrPlaceholder($category->image, '300x300') }}" alt="{{ $category->name }}" class="img-fluid rounded-circle">
                                         </div>
                                         <h3 class="category-name">{{ $category->name }}</h3>
                                         <p class="category-count">
@@ -150,30 +121,30 @@
                 @else
                     <div class="row g-4 justify-content-center">
                         <div class="col-md-6 col-lg-3">
-                            <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none d-block">
+                            <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none">
                                 <div class="category-icon"><i class="fas fa-hat-wizard"></i></div>
-                                <h3 class="category-name">{{ __('Accessories') }}</h3>
+                                <h3 class="category-name">{{ __('common.accessories') }}</h3>
                                 <p class="category-count">{{ __('common.explore') }}</p>
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
-                            <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none d-block">
+                            <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none">
                                 <div class="category-icon"><i class="fas fa-laptop"></i></div>
-                                <h3 class="category-name">{{ __('Electronics') }}</h3>
+                                <h3 class="category-name">{{ __('common.electronics') }}</h3>
                                 <p class="category-count">{{ __('common.explore') }}</p>
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
-                            <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none d-block">
+                            <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none">
                                 <div class="category-icon"><i class="fas fa-gem"></i></div>
-                                <h3 class="category-name">{{ __('Jewelry') }}</h3>
+                                <h3 class="category-name">{{ __('common.jewelry') }}</h3>
                                 <p class="category-count">{{ __('common.explore') }}</p>
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
-                            <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none d-block">
+                            <a href="{{ route('shop.index') }}" class="category-card fade-in text-decoration-none">
                                 <div class="category-icon"><i class="fas fa-dumbbell"></i></div>
-                                <h3 class="category-name">{{ __('Sports Fashion') }}</h3>
+                                <h3 class="category-name">{{ __('common.sports_fashion') }}</h3>
                                 <p class="category-count">{{ __('common.explore') }}</p>
                             </a>
                         </div>
@@ -295,157 +266,8 @@
         </div>
     </section>
 
-<script>
-(function() {
-    'use strict';
-    
-    /**
-     * Hero Gallery Slider - One-by-One Image Transition
-     * Changes one image at a time every 6 seconds with smooth animation
-     * Cycles through 9 images (3 positions × 3 images each)
-     */
-    
-    function initHeroSlider() {
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        
-        if (galleryItems.length === 0) {
-            return;
-        }
-        
-        // Track current image index for each position (0, 1, 2)
-        const imageIndices = [0, 0, 0];
-        const totalImagesPerPosition = 3;
-        let currentPositionIndex = 0; // Which position to change next (0, 1, 2)
-        let slideInterval = null;
-        const intervalDuration = 6000; // 6 seconds
-        
-        // Initialize: Activate first image in each position
-        function initializeImages() {
-            galleryItems.forEach(function(item, positionIndex) {
-                const images = item.querySelectorAll('.gallery-img');
-                const badge = item.querySelector('.gallery-badge');
-                
-                images.forEach(function(img, imgIndex) {
-                    if (imgIndex === 0) {
-                        img.classList.add('active');
-                        // Update badge text
-                        if (badge && img.dataset.badge) {
-                            badge.textContent = img.dataset.badge;
-                        }
-                    } else {
-                        img.classList.remove('active');
-                    }
-                });
-            });
-        }
-        
-        // Change image in a specific position
-        function changeImageInPosition(positionIndex) {
-            const item = galleryItems[positionIndex];
-            if (!item) return;
-            
-            const images = item.querySelectorAll('.gallery-img');
-            const badge = item.querySelector('.gallery-badge');
-            const currentImgIndex = imageIndices[positionIndex];
-            const nextImgIndex = (currentImgIndex + 1) % totalImagesPerPosition;
-            
-            // Get current and next images
-            const currentImg = images[currentImgIndex];
-            const nextImg = images[nextImgIndex];
-            
-            if (!currentImg || !nextImg) return;
-            
-            // Remove active class from current image (triggers fade out)
-            currentImg.classList.remove('active');
-            
-            // Update badge
-            if (badge && nextImg.dataset.badge) {
-                badge.textContent = nextImg.dataset.badge;
-            }
-            
-            // Add active class to next image (triggers fade in)
-            requestAnimationFrame(function() {
-                nextImg.classList.add('active');
-            });
-            
-            // Update index for this position
-            imageIndices[positionIndex] = nextImgIndex;
-        }
-        
-        // Rotate to next image (one position at a time)
-        function rotateNextImage() {
-            // Change image in current position
-            changeImageInPosition(currentPositionIndex);
-            
-            // Move to next position (with wrapping)
-            currentPositionIndex = (currentPositionIndex + 1) % galleryItems.length;
-        }
-        
-        // Start auto-rotation
-        function startSlider() {
-            if (slideInterval) {
-                clearInterval(slideInterval);
-            }
-            slideInterval = setInterval(rotateNextImage, intervalDuration);
-        }
-        
-        // Pause slider on hover (better UX)
-        function setupHoverPause() {
-            const gallery = document.querySelector('.hero-gallery');
-            if (!gallery) return;
-            
-            gallery.addEventListener('mouseenter', function() {
-                if (slideInterval) {
-                    clearInterval(slideInterval);
-                    slideInterval = null;
-                }
-            });
-            
-            gallery.addEventListener('mouseleave', function() {
-                startSlider();
-            });
-        }
-        
-        // Initialize everything
-        initializeImages();
-        startSlider();
-        setupHoverPause();
-        
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', function() {
-            if (slideInterval) {
-                clearInterval(slideInterval);
-            }
-        });
-    }
-    
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initHeroSlider);
-    } else {
-        initHeroSlider();
-    }
-})();
-
-    /**
-     * Scroll-triggered animations: add .in-view when .fade-in enters viewport
-     */
-    (function() {
-        var fadeEls = document.querySelectorAll('.home-page .fade-in');
-        if (!fadeEls.length) return;
-        var io = typeof IntersectionObserver !== 'undefined' ? new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                }
-            });
-        }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 }) : null;
-        if (io) {
-            fadeEls.forEach(function(el) { io.observe(el); });
-        } else {
-            fadeEls.forEach(function(el) { el.classList.add('in-view'); });
-        }
-    })();
-</script>
-</div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('frontend/js/home.js') }}"></script>
+@endpush

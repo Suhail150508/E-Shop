@@ -46,20 +46,10 @@
                                         {{ $order->formatPrice($order->total) }}
                                     </td>
                                     <td>
-                                        @if($order->payment_status == 'paid')
-                                            <span class="badge rounded-pill bg-success bg-opacity-10 text-success px-3 py-2">{{ __('Paid') }}</span>
-                                        @else
-                                            <span class="badge rounded-pill bg-warning bg-opacity-10 text-warning px-3 py-2">{{ __(ucfirst($order->payment_status)) }}</span>
-                                        @endif
+                                        <span class="badge rounded-pill bg-{{ $order->payment_status_color }} bg-opacity-10 text-{{ $order->payment_status_color }} px-3 py-2">{{ __(ucfirst($order->payment_status)) }}</span>
                                     </td>
                                     <td>
-                                        @php
-                                            $statusColor = 'warning';
-                                            if($order->status == 'delivered') $statusColor = 'success';
-                                            elseif($order->status == 'cancelled') $statusColor = 'danger';
-                                            elseif($order->status == 'pickup') $statusColor = 'info';
-                                        @endphp
-                                        <span class="badge rounded-pill bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} text-capitalize px-3 py-2">
+                                        <span class="badge rounded-pill bg-{{ $order->status_color }} bg-opacity-10 text-{{ $order->status_color }} text-capitalize px-3 py-2">
                                             {{ __(ucfirst($order->status)) }}
                                         </span>
                                     </td>
@@ -71,7 +61,7 @@
                                             <a href="{{ route('customer.orders.invoice', $order) }}" class="btn btn-sm btn-outline-secondary rounded-2 shadow-sm d-flex align-items-center justify-content-center action-btn-circle" data-bs-toggle="tooltip" title="{{ __('Download Invoice') }}">
                                                 <i class="fa-regular fa-file-lines"></i>
                                             </a>
-                                            @if($order->status === 'delivered' && $order->payment_status === 'paid' && !$order->refunds()->exists())
+                                            @if($order->status === 'delivered' && $order->payment_status === 'paid' && $order->refunds->isEmpty())
                                                 <a href="{{ route('customer.orders.show', $order) }}?trigger_refund=1" 
                                                    class="btn btn-sm btn-outline-danger rounded-2 shadow-sm d-flex align-items-center justify-content-center action-btn-circle" data-bs-toggle="tooltip" title="{{ __('Request Refund') }}">
                                                     <i class="fa-solid fa-arrow-rotate-left"></i>
