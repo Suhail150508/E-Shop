@@ -29,7 +29,7 @@
             <div class="w-100 p-4 p-md-5 auth-form-wrapper">
                 <div class="text-center mb-5">
                     <a href="{{ route('home') }}" class="d-inline-block mb-4 text-decoration-none">
-                        <img src="{{ asset('frontend/img/logo.png') }}" alt="{{ config('app.name') }}" height="40" onerror="this.onerror=null; this.src='{{ getImageOrPlaceholder(null, '150x40') }}';">
+                        <img src="{{ getImageOrPlaceholder(setting('app_logo'), '150x40') }}" alt="{{ config('app.name') }}" height="40">
                     </a>
                     <h1 class="h2 fw-bold mb-2">{{ $title }}</h1>
                     <p class="text-muted">{{ $subtitle }}</p>

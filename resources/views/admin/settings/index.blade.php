@@ -5,7 +5,7 @@
 @section('content')
 <div class="card border-0 shadow-sm">
     <div class="card-body">
-        <form action="{{ route('admin.settings.update') }}" method="POST">
+        <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -17,6 +17,35 @@
                 @enderror
             </div>
 
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label for="app_logo" class="form-label">{{ __('App Logo') }}</label>
+                    <input type="file" class="form-control @error('app_logo') is-invalid @enderror" id="app_logo" name="app_logo" accept="image/*">
+                    <div class="form-text">{{ __('Recommended size: 150x50px. Formats: PNG, JPG, SVG.') }}</div>
+                    @error('app_logo')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    @if(isset($settings['app_logo']))
+                        <div class="mt-2 p-2 bg-light rounded d-inline-block">
+                            <img src="{{ asset($settings['app_logo']) }}" alt="App Logo" style="max-height: 50px;">
+                        </div>
+                    @endif
+                </div>
+                <div class="col-md-6">
+                    <label for="app_favicon" class="form-label">{{ __('App Favicon') }}</label>
+                    <input type="file" class="form-control @error('app_favicon') is-invalid @enderror" id="app_favicon" name="app_favicon" accept="image/*">
+                    <div class="form-text">{{ __('Recommended size: 32x32px. Formats: ICO, PNG.') }}</div>
+                    @error('app_favicon')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    @if(isset($settings['app_favicon']))
+                        <div class="mt-2 p-2 bg-light rounded d-inline-block">
+                            <img src="{{ asset($settings['app_favicon']) }}" alt="App Favicon" style="max-height: 32px;">
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             <div class="mb-3">
                 <label for="app_currency" class="form-label">{{ __('Currency Symbol') }}</label>
                 <input type="text" class="form-control @error('app_currency') is-invalid @enderror" id="app_currency" name="app_currency" value="{{ old('app_currency', $settings['app_currency'] ?? '$') }}">
@@ -25,184 +54,45 @@
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="contact_email" class="form-label">{{ __('Contact Email') }}</label>
-                <input type="email" class="form-control @error('contact_email') is-invalid @enderror" id="contact_email" name="contact_email" value="{{ old('contact_email', $settings['contact_email'] ?? '') }}">
-                @error('contact_email')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <h2 class="h6 mb-3">{{ __('Payment Gateway Settings') }}</h2>
-
-            <!-- Cash On Delivery Settings -->
+            <h2 class="h6 mb-3">{{ __('Footer Settings') }}</h2>
+            
             <div class="card mb-4">
                 <div class="card-header bg-light">
-                    <h6 class="mb-0 text-dark"><i class="fas fa-money-bill-wave me-2"></i>{{ __('Cash On Delivery') }}</h6>
+                    <h6 class="mb-0 text-dark"><i class="fas fa-info-circle me-2"></i>{{ __('Footer Information') }}</h6>
                 </div>
                 <div class="card-body">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="payment_cod_enabled" name="payment_cod_enabled" value="1" {{ old('payment_cod_enabled', $settings['payment_cod_enabled'] ?? '1') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="payment_cod_enabled">{{ __('Enable Cash On Delivery') }}</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Wallet Settings -->
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h6 class="mb-0 text-dark"><i class="fas fa-wallet me-2"></i>{{ __('Wallet') }}</h6>
-                </div>
-                <div class="card-body">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="payment_wallet_enabled" name="payment_wallet_enabled" value="1" {{ old('payment_wallet_enabled', $settings['payment_wallet_enabled'] ?? '1') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="payment_wallet_enabled">{{ __('Enable Wallet Payment') }}</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bank Transfer Settings -->
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h6 class="mb-0 text-dark"><i class="fas fa-university me-2"></i>{{ __('Bank Transfer') }}</h6>
-                </div>
-                <div class="card-body">
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch" id="payment_bank_enabled" name="payment_bank_enabled" value="1" {{ old('payment_bank_enabled', $settings['payment_bank_enabled'] ?? '') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="payment_bank_enabled">{{ __('Enable Bank Transfer') }}</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Paystack Settings -->
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h6 class="mb-0 text-dark"><i class="fas fa-money-bill-wave me-2"></i>Paystack</h6>
-                </div>
-                <div class="card-body">
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch" id="payment_paystack_enabled" name="payment_paystack_enabled" value="1" {{ old('payment_paystack_enabled', $settings['payment_paystack_enabled'] ?? '') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="payment_paystack_enabled">{{ __('Enable Paystack Payment') }}</label>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">{{ __('Public Key') }}</label>
-                            <input type="text" class="form-control" name="paystack_public_key" value="{{ old('paystack_public_key', $settings['paystack_public_key'] ?? '') }}">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ __('Secret Key') }}</label>
-                            <input type="text" class="form-control" name="paystack_secret_key" value="{{ old('paystack_secret_key', $settings['paystack_secret_key'] ?? '') }}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Razorpay Settings -->
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h6 class="mb-0 text-dark"><i class="fas fa-rupee-sign me-2"></i>Razorpay</h6>
-                </div>
-                <div class="card-body">
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch" id="payment_razorpay_enabled" name="payment_razorpay_enabled" value="1" {{ old('payment_razorpay_enabled', $settings['payment_razorpay_enabled'] ?? '') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="payment_razorpay_enabled">{{ __('Enable Razorpay Payment') }}</label>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">{{ __('Key ID') }}</label>
-                            <input type="text" class="form-control" name="razorpay_key" value="{{ old('razorpay_key', $settings['razorpay_key'] ?? '') }}">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ __('Key Secret') }}</label>
-                            <input type="text" class="form-control" name="razorpay_secret" value="{{ old('razorpay_secret', $settings['razorpay_secret'] ?? '') }}">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">{{ __('Webhook Secret') }}</label>
-                            <input type="text" class="form-control" name="razorpay_webhook_secret" value="{{ old('razorpay_webhook_secret', $settings['razorpay_webhook_secret'] ?? '') }}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <hr class="my-4">
-
-            <h2 class="h6 mb-3">{{ __('Payment Gateway Settings') }}</h2>
-
-            <!-- Stripe Settings -->
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h6 class="mb-0 text-dark"><i class="fab fa-stripe me-2"></i>Stripe</h6>
-                </div>
-                <div class="card-body">
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch" id="payment_stripe_enabled" name="payment_stripe_enabled" value="1" {{ old('payment_stripe_enabled', $settings['payment_stripe_enabled'] ?? '') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="payment_stripe_enabled">{{ __('Enable Stripe Payment') }}</label>
+                    <div class="mb-3">
+                        <label for="footer_description" class="form-label">{{ __('About/Description') }}</label>
+                        <textarea class="form-control" id="footer_description" name="footer_description" rows="3">{{ old('footer_description', $settings['footer_description'] ?? '') }}</textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">{{ __('Mode') }}</label>
-                        <select class="form-select" name="stripe_mode">
-                            <option value="test" {{ ($settings['stripe_mode'] ?? 'test') === 'test' ? 'selected' : '' }}>Test (Sandbox)</option>
-                            <option value="live" {{ ($settings['stripe_mode'] ?? '') === 'live' ? 'selected' : '' }}>Live (Production)</option>
-                        </select>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">{{ __('Test Public Key') }}</label>
-                            <input type="text" class="form-control" name="stripe_test_public_key" value="{{ old('stripe_test_public_key', $settings['stripe_test_public_key'] ?? '') }}">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ __('Test Secret Key') }}</label>
-                            <input type="text" class="form-control" name="stripe_test_secret_key" value="{{ old('stripe_test_secret_key', $settings['stripe_test_secret_key'] ?? '') }}">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ __('Live Public Key') }}</label>
-                            <input type="text" class="form-control" name="stripe_live_public_key" value="{{ old('stripe_live_public_key', $settings['stripe_live_public_key'] ?? '') }}">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">{{ __('Live Secret Key') }}</label>
-                            <input type="text" class="form-control" name="stripe_live_secret_key" value="{{ old('stripe_live_secret_key', $settings['stripe_live_secret_key'] ?? '') }}">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">{{ __('Webhook Secret') }}</label>
-                            <input type="text" class="form-control" name="stripe_webhook_secret" value="{{ old('stripe_webhook_secret', $settings['stripe_webhook_secret'] ?? '') }}">
-                        </div>
+                        <label for="copyright_text" class="form-label">{{ __('Copyright Text') }}</label>
+                        <input type="text" class="form-control" id="copyright_text" name="copyright_text" value="{{ old('copyright_text', $settings['copyright_text'] ?? '') }}" placeholder="© {{ date('Y') }} {{ config('app.name') }}. All rights reserved.">
                     </div>
                 </div>
             </div>
 
-            <!-- PayPal Settings -->
             <div class="card mb-4">
                 <div class="card-header bg-light">
-                    <h6 class="mb-0 text-dark"><i class="fab fa-paypal me-2"></i>PayPal</h6>
+                    <h6 class="mb-0 text-dark"><i class="fas fa-share-alt me-2"></i>{{ __('Social Media Links') }}</h6>
                 </div>
                 <div class="card-body">
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" role="switch" id="payment_paypal_enabled" name="payment_paypal_enabled" value="1" {{ old('payment_paypal_enabled', $settings['payment_paypal_enabled'] ?? '') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="payment_paypal_enabled">{{ __('Enable PayPal Payment') }}</label>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">{{ __('Mode') }}</label>
-                        <select class="form-select" name="paypal_mode">
-                            <option value="sandbox" {{ ($settings['paypal_mode'] ?? 'sandbox') === 'sandbox' ? 'selected' : '' }}>Sandbox</option>
-                            <option value="live" {{ ($settings['paypal_mode'] ?? '') === 'live' ? 'selected' : '' }}>Live</option>
-                        </select>
-                    </div>
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">{{ __('Sandbox Client ID') }}</label>
-                            <input type="text" class="form-control" name="paypal_sandbox_client_id" value="{{ old('paypal_sandbox_client_id', $settings['paypal_sandbox_client_id'] ?? '') }}">
+                            <label for="social_facebook" class="form-label"><i class="fab fa-facebook text-primary me-1"></i> Facebook</label>
+                            <input type="url" class="form-control" id="social_facebook" name="social_facebook" value="{{ old('social_facebook', $settings['social_facebook'] ?? '') }}" placeholder="https://facebook.com/yourpage">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">{{ __('Sandbox Secret') }}</label>
-                            <input type="text" class="form-control" name="paypal_sandbox_secret" value="{{ old('paypal_sandbox_secret', $settings['paypal_sandbox_secret'] ?? '') }}">
+                            <label for="social_twitter" class="form-label"><i class="fab fa-twitter text-info me-1"></i> Twitter (X)</label>
+                            <input type="url" class="form-control" id="social_twitter" name="social_twitter" value="{{ old('social_twitter', $settings['social_twitter'] ?? '') }}" placeholder="https://twitter.com/yourhandle">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">{{ __('Live Client ID') }}</label>
-                            <input type="text" class="form-control" name="paypal_live_client_id" value="{{ old('paypal_live_client_id', $settings['paypal_live_client_id'] ?? '') }}">
+                            <label for="social_instagram" class="form-label"><i class="fab fa-instagram text-danger me-1"></i> Instagram</label>
+                            <input type="url" class="form-control" id="social_instagram" name="social_instagram" value="{{ old('social_instagram', $settings['social_instagram'] ?? '') }}" placeholder="https://instagram.com/yourhandle">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">{{ __('Live Secret') }}</label>
-                            <input type="text" class="form-control" name="paypal_live_secret" value="{{ old('paypal_live_secret', $settings['paypal_live_secret'] ?? '') }}">
+                            <label for="social_linkedin" class="form-label"><i class="fab fa-linkedin text-primary me-1"></i> LinkedIn</label>
+                            <input type="url" class="form-control" id="social_linkedin" name="social_linkedin" value="{{ old('social_linkedin', $settings['social_linkedin'] ?? '') }}" placeholder="https://linkedin.com/company/yourpage">
                         </div>
                     </div>
                 </div>

@@ -22,7 +22,7 @@ class HomeController extends Controller
         $categories = $this->categoryService->getFeaturedCategories(8);
         $productsData = Cache::remember('home_products', 60 * 60, function () {
             // 1. Featured Products
-            $featuredProducts = Product::with('category')
+            $featuredProducts = Product::with(['category', 'contentTranslations'])
                 ->withAvg('approvedReviews', 'rating')
                 ->withCount('approvedReviews')
                 ->where('is_active', true)
@@ -32,7 +32,7 @@ class HomeController extends Controller
                 ->get();
 
             // 2. Flash Sale Products
-            $flashSaleProducts = Product::with('category')
+            $flashSaleProducts = Product::with(['category', 'contentTranslations'])
                 ->withAvg('approvedReviews', 'rating')
                 ->withCount('approvedReviews')
                 ->where('is_active', true)
@@ -42,7 +42,7 @@ class HomeController extends Controller
                 ->get();
 
             // 3. Latest Products (Fallback or separate section)
-            $latestProducts = Product::with('category')
+            $latestProducts = Product::with(['category', 'contentTranslations'])
                 ->withAvg('approvedReviews', 'rating')
                 ->withCount('approvedReviews')
                 ->where('is_active', true)

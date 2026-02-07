@@ -1,10 +1,10 @@
 @extends('layouts.frontend')
 
 @section('content')
-@include('frontend.partials.breadcrumb', ['title' => $page->title ?? 'About Us', 'bgImage' => $page->image ?? null])
+@include('frontend.partials.breadcrumb', ['title' => $page->translate('title') ?? __('common.about'), 'bgImage' => $page->image ?? null])
 
-@if(isset($page) && $page->content)
-    {!! $page->content !!}
+@if(isset($page) && ($page->translate('content') ?? $page->content))
+    {!! $page->translate('content') ?? $page->content !!}
 @else
     <div class="container py-5">
         <div class="row align-items-center">

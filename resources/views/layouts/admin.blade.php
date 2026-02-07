@@ -7,6 +7,8 @@
     <meta name="is-admin" content="{{ auth()->check() && auth()->user()->isAdmin() ? '1' : '0' }}">
     <title>{{ __('Admin Dashboard') }} | {{ config('app.name') }}</title>
     
+    <link rel="icon" href="{{ getImageOrPlaceholder(setting('app_favicon'), '32x32') }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,10 +44,10 @@
     <aside class="sidebar" id="sidebar">
         <a href="{{ route('admin.dashboard') }}" class="sidebar-brand">
             <div class="brand-logo">
-                <i class="fas fa-shopping-bag"></i>
+                <img src="{{ getImageOrPlaceholder(setting('app_logo'), '150x40') }}" alt="{{ config('app.name') }}" style="max-height: 40px; max-width: 100%;">
             </div>
             <div class="brand-text">
-                <span>{{ config('app.name') }}</span>
+                <span>{{ setting('app_name') ?: config('app.name') }}</span>
             </div>
         </a>
 
@@ -525,6 +527,12 @@
             });
         });
     </script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('global/toastr/toastr.main.js') }}"></script>
+
     @stack('scripts')
     
     <!-- Toastr JS -->

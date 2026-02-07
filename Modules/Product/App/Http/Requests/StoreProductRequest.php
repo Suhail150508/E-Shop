@@ -38,6 +38,10 @@ class StoreProductRequest extends FormRequest
             'colors.*' => 'string|max:50',
             'tags' => 'nullable|array',
             'tags.*' => 'string|max:100',
+            'translations' => 'nullable|array',
+            'translations.*' => 'nullable|array',
+            'translations.*.name' => 'nullable|string|max:255',
+            'translations.*.description' => 'nullable|string',
         ];
     }
 }

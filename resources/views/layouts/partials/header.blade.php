@@ -21,7 +21,9 @@
             </button>
 
             <!-- Logo - Mobile -->
-            <a class="navbar-brand logo d-lg-none" href="{{ route('home') }}">{{ config('app.name') }}</a>
+            <a class="navbar-brand logo d-lg-none" href="{{ route('home') }}">
+                <img src="{{ getImageOrPlaceholder(setting('app_logo'), '120x40') }}" alt="{{ config('app.name') }}" style="max-height: 40px;">
+            </a>
 
             <!-- Categories Button - Visible on mobile -->
             <a href="{{ route('shop.index') }}" class="btn btn-categories d-lg-none ms-auto me-3">
@@ -40,7 +42,9 @@
                     <!-- Top Row: Search Bar and Header Actions -->
                     <div class="nav-top-row d-flex align-items-center justify-content-between">
                         <!-- Logo - Desktop -->
-                        <a class="navbar-brand logo d-none d-lg-block me-3" href="{{ route('home') }}">{{ config('app.name') }}</a>
+                        <a class="navbar-brand logo d-none d-lg-block me-3" href="{{ route('home') }}">
+                            <img src="{{ getImageOrPlaceholder(setting('app_logo'), '150x50') }}" alt="{{ config('app.name') }}" style="max-height: 50px;">
+                        </a>
 
                         <form class="search-form d-flex flex-grow-1 me-lg-4 my-3 my-lg-0"
                               method="GET"

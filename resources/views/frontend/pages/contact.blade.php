@@ -14,8 +14,8 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            @if(isset($page) && $page->content)
-                {!! $page->content !!}
+            @if(isset($page) && ($page->translate('content') ?? $page->content))
+                {!! $page->translate('content') ?? $page->content !!}
             @else
                 <p class="text-center mb-5 lead">{{ __('common.contact_intro') }}</p>
 

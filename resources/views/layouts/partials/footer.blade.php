@@ -29,15 +29,26 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-4">
-                <div class="footer-brand">{{ setting('app_name', config('app.name')) }}</div>
+                <div class="footer-brand">{{ setting('app_name') ?: config('app.name') }}</div>
                 <p class="footer-description">
-                    {{ setting('footer_description', __('common.footer_description')) }}
+                    {{ setting('footer_description') ?: __('common.footer_description') }}
                 </p>
                 <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    @php
+                        $socials = [
+                            'facebook' => ['url' => setting('social_facebook') ?: config('services.social.facebook'), 'icon' => 'fab fa-facebook-f'],
+                            'instagram' => ['url' => setting('social_instagram') ?: config('services.social.instagram'), 'icon' => 'fab fa-instagram'],
+                            'twitter' => ['url' => setting('social_twitter') ?: config('services.social.twitter'), 'icon' => 'fab fa-twitter'],
+                            'linkedin' => ['url' => setting('social_linkedin') ?: config('services.social.linkedin'), 'icon' => 'fab fa-linkedin-in'],
+                        ];
+                    @endphp
+                    @foreach ($socials as $social)
+                        @if ($social['url'])
+                            <a href="{{ $social['url'] }}" class="social-link" target="_blank" rel="noopener noreferrer">
+                                <i class="{{ $social['icon'] }}"></i>
+                            </a>
+                        @endif
+                    @endforeach
                 </div>
             </div>
             
@@ -116,7 +127,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>{{ __('common.copyright', ['year' => date('Y')]) }} | <a href="{{ route('pages.privacy') }}" class="text-white text-decoration-none">{{ __('common.privacy') }}</a> | <a href="{{ route('pages.terms') }}" class="text-white text-decoration-none">{{ __('common.terms') }}</a></p>
+            <p>{{ setting('copyright_text') ?? __('common.copyright', ['year' => date('Y')]) }} | <a href="{{ route('pages.privacy') }}" class="text-white text-decoration-none">{{ __('common.privacy') }}</a> | <a href="{{ route('pages.terms') }}" class="text-white text-decoration-none">{{ __('common.terms') }}</a></p>
         </div>
     </div>
 </footer>

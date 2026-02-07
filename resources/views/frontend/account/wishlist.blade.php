@@ -44,7 +44,7 @@
                                 <!-- Product Image -->
                                 <a href="{{ route('shop.product.show', $product->slug) }}" class="d-block text-center p-4 bg-white">
                                     @if($product->image)
-                                        <img src="{{ getImageOrPlaceholder($product->image, '300x300') }}" alt="{{ $product->name }}" class="img-fluid wishlist-img" onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
+                                        <img src="{{ getImageOrPlaceholder($product->image, '300x300') }}" alt="{{ $product->translate('name') }}" class="img-fluid wishlist-img" onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
                                     @else
                                         <div class="d-flex align-items-center justify-content-center bg-light rounded wishlist-img-placeholder">
                                             <i class="fa-regular fa-image fa-3x text-muted opacity-50"></i>
@@ -73,7 +73,7 @@
 
                                     <!-- Product Name -->
                                     <h6 class="card-title mb-1 wishlist-product-title">
-                                        <a href="{{ route('shop.product.show', $product->slug) }}" class="text-decoration-none text-dark text-truncate-2">{{ $product->name }}</a>
+                                        <a href="{{ route('shop.product.show', $product->slug) }}" class="text-decoration-none text-dark text-truncate-2">{{ $product->translate('name') }}</a>
                                     </h6>
 
                                     <!-- Stock Status -->

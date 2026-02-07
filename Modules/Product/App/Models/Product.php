@@ -5,6 +5,7 @@ namespace Modules\Product\App\Models;
 use App\Models\Brand;
 use App\Models\ProductImage;
 use App\Models\ProductReview;
+use App\Traits\HasContentTranslations;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,8 @@ use Modules\Category\App\Models\Category;
 
 class Product extends Model
 {
+    use HasContentTranslations;
+
     protected $fillable = [
         'category_id',
         'subcategory_id',

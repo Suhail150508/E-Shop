@@ -3,8 +3,8 @@
 @section('content')
 @include('frontend.partials.breadcrumb', ['title' => optional($page)->title ?? __('common.coupons'), 'bgImage' => optional($page)->image ?? getImageOrPlaceholder(null, '1920x400')])
 
-@if(isset($page) && $page->content)
-    {!! $page->content !!}
+@if(isset($page) && ($page->translate('content') ?? $page->content))
+    {!! $page->translate('content') ?? $page->content !!}
 @else
 <div class="container py-5">
     <div class="row justify-content-center">

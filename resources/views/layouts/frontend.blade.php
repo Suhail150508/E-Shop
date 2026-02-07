@@ -10,12 +10,8 @@
 
     <title>@yield('title', config('app.name'))</title>
     @yield('meta') 
-    @php
-        $favicon = ($settings ?? [])['favicon'] ?? null;
-    @endphp
-    @if($favicon)
-        <link rel="shortcut icon" href="{{ asset($favicon) }}" type="image/x-icon">
-    @endif
+
+    <link rel="icon" href="{{ getImageOrPlaceholder(setting('app_favicon'), '32x32') }}">
 
     {{-- Bootstrap via Vite (RTL-aware) --}}
     @if(app()->getLocale() == 'ar')

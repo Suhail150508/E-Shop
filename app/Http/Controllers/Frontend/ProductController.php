@@ -55,7 +55,7 @@ class ProductController extends Controller
 
         $categoryIds = array_merge($categoryIds, $childIds);
 
-        $products = Product::with(['category', 'subcategory'])
+        $products = Product::with(['category', 'subcategory', 'contentTranslations'])
             ->withAvg('approvedReviews', 'rating')
             ->withCount('approvedReviews')
             ->where(function ($query) use ($categoryIds) {
@@ -80,11 +80,11 @@ class ProductController extends Controller
     {
         abort_unless($product->is_active, 404);
 
-        $product->load(['category', 'images', 'brand', 'unit', 'approvedReviews.user'])
+        $product->load(['category', 'images', 'brand', 'unit', 'contentTranslations', 'approvedReviews.user'])
             ->loadAvg('approvedReviews', 'rating')
             ->loadCount('approvedReviews');
 
-        $relatedProducts = Product::with(['category', 'images', 'brand', 'unit'])
+        $relatedProducts = Product::with(['category', 'images', 'brand', 'unit', 'contentTranslations'])
             ->withAvg('approvedReviews', 'rating')
             ->withCount('approvedReviews')
             ->where('is_active', true)

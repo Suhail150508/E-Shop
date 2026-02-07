@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ __('Staff Dashboard') }} | {{ config('app.name') }}</title>
     
+    <link rel="icon" href="{{ getImageOrPlaceholder(setting('app_favicon'), '32x32') }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -469,9 +471,8 @@
 
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
-            <i class="fas fa-id-badge me-2 text-primary"></i>
-            <span>{{ __('Staff Panel') }}</span>
+        <div class="sidebar-brand justify-content-center">
+            <img src="{{ getImageOrPlaceholder(setting('app_logo'), '150x40') }}" alt="{{ config('app.name') }}" style="max-height: 40px; max-width: 100%;">
         </div>
 
         <nav class="sidebar-menu">

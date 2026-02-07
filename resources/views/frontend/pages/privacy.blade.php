@@ -1,11 +1,11 @@
 @extends('layouts.frontend')
 
 @section('content')
-@include('frontend.partials.breadcrumb', ['title' => $page->title ?? 'Privacy Policy', 'bgImage' => $page->image ?? null])
+@include('frontend.partials.breadcrumb', ['title' => $page->translate('title') ?? __('common.privacy'), 'bgImage' => $page->image ?? null])
 
 <div class="container py-5">
-    @if(isset($page) && $page->content)
-        {!! $page->content !!}
+@if(isset($page) && ($page->translate('content') ?? $page->content))
+    {!! $page->translate('content') ?? $page->content !!}
     @else
         <div class="alert alert-info">{{ __('Privacy Policy content is coming soon.') }}</div>
     @endif

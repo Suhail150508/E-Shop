@@ -9,7 +9,7 @@ class PageController extends Controller
 {
     private function getPage($slug)
     {
-        return Page::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        return Page::with('contentTranslations')->where('slug', $slug)->where('is_active', true)->firstOrFail();
     }
 
     public function about()
@@ -32,7 +32,7 @@ class PageController extends Controller
         // I should check if there's a specific contact page content in DB.
         // If not, I'll keep the view static but maybe pass a page object if it exists.
 
-        $page = Page::where('slug', 'contact-us')->where('is_active', true)->first();
+        $page = Page::with('contentTranslations')->where('slug', 'contact-us')->where('is_active', true)->first();
 
         return view('frontend.pages.contact', compact('page'));
     }
@@ -46,14 +46,14 @@ class PageController extends Controller
 
     public function privacy()
     {
-        $page = Page::where('slug', 'privacy-policy')->where('is_active', true)->firstOrFail();
+        $page = Page::with('contentTranslations')->where('slug', 'privacy-policy')->where('is_active', true)->firstOrFail();
 
         return view('frontend.pages.privacy', compact('page'));
     }
 
     public function shipping()
     {
-        $page = Page::where('slug', 'shipping-policy')->where('is_active', true)->firstOrFail();
+        $page = Page::with('contentTranslations')->where('slug', 'shipping-policy')->where('is_active', true)->firstOrFail();
 
         return view('frontend.pages.shipping', compact('page'));
     }
@@ -62,7 +62,7 @@ class PageController extends Controller
     {
         // Coupons page is likely functional (listing coupons).
         // Maybe just a header/banner from dynamic page?
-        $page = Page::where('slug', 'coupons')->where('is_active', true)->first();
+        $page = Page::with('contentTranslations')->where('slug', 'coupons')->where('is_active', true)->first();
 
         return view('frontend.pages.coupons', compact('page'));
     }

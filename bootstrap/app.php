@@ -24,6 +24,22 @@ return Application::configure(basePath: dirname(__DIR__))
             'payment/*/webhook',
             'api/*',
         ]);
+
+        $middleware->redirectUsersTo(function () {
+            $user = \Illuminate\Support\Facades\Auth::user();
+            
+            if ($user?->role === 'admin') {
+                return route('admin.dashboard');
+            }
+            if ($user?->role === 'customer') {
+                return route('customer.dashboard');
+            }
+            if ($user?->role === 'staff') {
+                return route('staff.dashboard');
+            }
+
+            return route('home');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {

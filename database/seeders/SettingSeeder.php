@@ -15,7 +15,6 @@ class SettingSeeder extends Seeder
         $settings = [
             'app_name' => config('app.name'),
             'app_currency' => env('APP_CURRENCY', '$'),
-            'contact_email' => env('MAIL_FROM_ADDRESS'),
         ];
 
         foreach ($settings as $key => $value) {

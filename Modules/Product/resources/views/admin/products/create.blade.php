@@ -16,22 +16,75 @@
     @csrf
     <div class="row g-4">
         <div class="col-lg-8">
+            @if($languages->count() > 1)
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">{{ __("common.switch_to_language_translation") }}</h5>
+                    <ul class="nav nav-tabs nav-tabs-product-lang flex-nowrap overflow-auto pb-1" role="tablist">
+                        @foreach($languages as $lang)
+                        <li class="nav-item flex-shrink-0" role="presentation">
+                            <button class="nav-link {{ $lang->code === $defaultLocale ? 'active' : '' }} product-lang-tab" type="button" data-bs-toggle="tab" data-bs-target="#product-lang-{{ $lang->code }}" data-locale="{{ $lang->code }}" aria-selected="{{ $lang->code === $defaultLocale ? 'true' : 'false' }}">
+                                @if($lang->code === $defaultLocale)<i class="bi bi-eye me-1"></i>@else<i class="bi bi-pencil me-1"></i>@endif
+                                {{ $lang->name }}
+                            </button>
+                        </li>
+                        @endforeach
+                    </ul>
+                    <p class="small text-muted mb-0 mt-2"><span class="product-editing-mode-label">{{ __("common.your_editing_mode") }}: {{ $defaultLanguage?->name ?? $defaultLocale }}</span></p>
+                </div>
+            </div>
+            @endif
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4">
                     <h5 class="fw-bold mb-3">{{ __('Product Information') }}</h5>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">{{ __('Product Name') }} <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-lg @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" placeholder="{{ __('e.g. Wireless Headphones') }}" required>
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">{{ __('Description') }}</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="6">{{ old('description') }}</textarea>
-                        @error('description')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                    <div class="tab-content">
+                        @if($languages->count() > 1)
+                        @foreach($languages as $lang)
+                        @php $locale = $lang->code; @endphp
+                        <div class="tab-pane fade {{ $locale === $defaultLocale ? 'show active' : '' }}" id="product-lang-{{ $locale }}" role="tabpanel">
+                            @if($locale === $defaultLocale)
+                            <div class="mb-3">
+                                <label for="name" class="form-label">{{ __('Product Name') }} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-lg @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" placeholder="{{ __('e.g. Wireless Headphones') }}" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">{{ __('Description') }}</label>
+                                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="6">{{ old('description') }}</textarea>
+                                @error('description')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            @else
+                            <div class="mb-3">
+                                <label for="name_{{ $locale }}" class="form-label">{{ __('Product Name') }} <span class="text-muted">({{ $lang->name }})</span></label>
+                                <input type="text" class="form-control" id="name_{{ $locale }}" name="translations[{{ $locale }}][name]" value="{{ old('translations.'.$locale.'.name') }}" placeholder="{{ __("common.optional_translation") }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description_{{ $locale }}" class="form-label">{{ __('Description') }} <span class="text-muted">({{ $lang->name }})</span></label>
+                                <textarea class="form-control" id="description_{{ $locale }}" name="translations[{{ $locale }}][description]" rows="6" placeholder="{{ __("common.optional_translation") }}">{{ old('translations.'.$locale.'.description') }}</textarea>
+                            </div>
+                            @endif
+                        </div>
+                        @endforeach
+                        @else
+                        <div class="mb-3">
+                            <label for="name" class="form-label">{{ __('Product Name') }} <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" placeholder="{{ __('e.g. Wireless Headphones') }}" required>
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">{{ __('Description') }}</label>
+                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="6">{{ old('description') }}</textarea>
+                            @error('description')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -263,6 +316,14 @@
         </button>
     </div>
 </form>
+@push('styles')
+<style>
+.nav-tabs-product-lang .nav-link { border: 1px solid #dee2e6; margin-right: 4px; border-radius: 6px; font-weight: 500; }
+.nav-tabs-product-lang .nav-link.active { background: #e7f1ff; border-color: #0d6efd; color: #0d6efd; }
+.nav-tabs-product-lang .nav-link:hover:not(.active) { background: #f8f9fa; }
+@media (max-width: 576px) { .nav-tabs-product-lang { overflow-x: auto; -webkit-overflow-scrolling: touch; } .nav-tabs-product-lang .nav-link { font-size: 0.875rem; padding: 0.5rem 0.75rem; } }
+</style>
+@endpush
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
@@ -361,6 +422,15 @@
             if (Array.isArray(existingTags)) {
                 existingTags.forEach(tag => addTag(tag));
             }
+            var productLocaleLabels = @json($languages->pluck('name', 'code')->toArray());
+            document.querySelectorAll('.product-lang-tab').forEach(function(tab) {
+                tab.addEventListener('shown.bs.tab', function() {
+                    var locale = this.getAttribute('data-locale');
+                    var label = productLocaleLabels[locale] || locale;
+                    var el = document.querySelector('.product-editing-mode-label');
+                    if (el) el.textContent = '{{ __("common.your_editing_mode") }}: ' + label;
+                });
+            });
         });
     </script>
 @endpush

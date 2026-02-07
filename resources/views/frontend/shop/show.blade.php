@@ -18,7 +18,7 @@
                     @if($product->category)
                         <li class="breadcrumb-item"><a href="{{ route('shop.category', $product->category->slug) }}" class="text-decoration-none text-muted">{{ $product->category->name }}</a></li>
                     @endif
-                    <li class="breadcrumb-item active text-dark" aria-current="page">{{ $product->name }}</li>
+                    <li class="breadcrumb-item active text-dark" aria-current="page">{{ $product->translate('name') }}</li>
                 </ol>
             </nav>
 
@@ -54,7 +54,7 @@
 
                             <div class="main-image-wrapper mb-4 d-flex align-items-center justify-content-center flex-grow-1" id="zoomContainer">
                                 <img src="{{ getImageOrPlaceholder($mainImage, '800x800') }}" 
-                                     alt="{{ $product->name }}" 
+                                     alt="{{ $product->translate('name') }}" 
                                      id="mainProductImage" 
                                      class="img-fluid rounded-3 main-product-image"
                                      onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
@@ -100,7 +100,7 @@
                                 @endif
                             </div>
 
-                            <h1 class="fw-bold text-dark mb-3 display-6 lh-sm">{{ $product->name }}</h1>
+                            <h1 class="fw-bold text-dark mb-3 display-6 lh-sm">{{ $product->translate('name') }}</h1>
 
                             <div class="d-flex align-items-center gap-3 mb-4 border-bottom pb-4">
                                 <div class="d-flex align-items-center gap-1 text-warning">
@@ -141,7 +141,7 @@
                             </div>
 
                             <div class="product-short-desc text-muted mb-4 leading-relaxed">
-                                {{ Str::limit(strip_tags($product->short_description ?? $product->description), 250) }}
+                                {{ Str::limit(strip_tags($product->short_description ?? $product->translate('description')), 250) }}
                             </div>
 
                             <div class="mt-auto">
@@ -255,7 +255,7 @@
                 <div class="tab-content tab-content-custom" id="productTabsContent">
                     <div class="tab-pane fade show active" id="desc" role="tabpanel">
                         <div class="prose max-w-none">
-                            {!! $product->description !!}
+                            {!! $product->translate('description') !!}
                         </div>
                     </div>
                     

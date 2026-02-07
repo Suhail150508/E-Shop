@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'social' => [
+        'facebook' => '#',
+        'instagram' => '#',
+        'twitter' => '#',
+        'linkedin' => '#',
+    ],
+
 ];

@@ -139,7 +139,7 @@ class ProductService extends BaseService
 
     public function getFrontendProducts(array $filters)
     {
-        $query = Product::with(['category', 'subcategory', 'images', 'brand', 'unit'])
+        $query = Product::with(['category', 'subcategory', 'images', 'brand', 'unit', 'contentTranslations'])
             ->withAvg('approvedReviews', 'rating')
             ->withCount('approvedReviews')
             ->where('is_active', true);
