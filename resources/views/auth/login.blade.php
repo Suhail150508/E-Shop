@@ -20,7 +20,7 @@
             <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div>
             <div class="position-absolute bottom-0 start-0 p-5 text-white w-100 auth-overlay">
                 <h2 class="display-5 fw-bold mb-3">{{ config('app.name') }}</h2>
-                <p class="lead mb-0 text-white-50">Discover a world of elegance and style.</p>
+                <p class="lead mb-0 text-white-50">{{ e(setting('auth_login_overlay_text', __('auth.overlay_text'))) }}</p>
             </div>
         </div>
         

@@ -338,8 +338,8 @@ class TryOnController extends Controller
     }
 
     /**
-     * Calculate overlay size and position: product width = customer image width
-     * so widths match; height from aspect ratio, then fit to frame.
+     * Calculate overlay size and position for face-worn items (e.g. sunglasses).
+     * Overlay is sized to a fraction of image width so it fits the face naturally.
      *
      * @return array{0: int, 1: int, 2: int, 3: int} [targetWidth, targetHeight, offsetX, offsetY]
      */
@@ -347,11 +347,11 @@ class TryOnController extends Controller
     {
         $prodAspect = $prodW / max(1, $prodH);
 
-        // Product width = customer image width (match widths)
-        $targetProdW = $userW;
+        // Face/glasses region is typically ~40-45% of portrait width; size overlay to fit
+        $faceWidthFactor = 0.42;
+        $targetProdW = (int) ($userW * $faceWidthFactor);
         $targetProdH = (int) ($targetProdW / $prodAspect);
 
-        // If height exceeds customer image, scale down to fit
         if ($targetProdH > $userH) {
             $targetProdH = $userH;
             $targetProdW = (int) ($targetProdH * $prodAspect);

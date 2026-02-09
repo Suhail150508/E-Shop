@@ -47,7 +47,7 @@ class LanguageController extends Controller
         Language::create($data);
 
         return redirect()->route('admin.language.index')
-            ->with('success', __('Language created successfully.'));
+            ->with('success', __('common.language_created_success'));
     }
 
     public function edit(Language $language)
@@ -79,18 +79,18 @@ class LanguageController extends Controller
         $language->update($data);
 
         return redirect()->route('admin.language.index')
-            ->with('success', __('Language updated successfully.'));
+            ->with('success', __('common.language_updated_success'));
     }
 
     public function destroy(Language $language)
     {
         if ($language->is_default) {
-            return back()->with('error', __('Default language cannot be deleted.'));
+            return back()->with('error', __('common.default_language_cannot_delete'));
         }
 
         $language->delete();
 
         return redirect()->route('admin.language.index')
-            ->with('success', __('Language deleted successfully.'));
+            ->with('success', __('common.language_deleted_success'));
     }
 }

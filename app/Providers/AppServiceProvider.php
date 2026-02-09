@@ -64,7 +64,11 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.admin', function ($view) {
             try {
-                $view->with('adminPages', \App\Models\Page::select('id', 'title', 'slug')->get());
+                $adminPages = Page::select('id', 'title', 'slug')
+                    ->whereNotIn('slug', config('pages.auth_slugs', []))
+                    ->orderBy('title')
+                    ->get();
+                $view->with('adminPages', $adminPages);
             } catch (\Exception $e) {
                 $view->with('adminPages', collect([]));
             }

@@ -65,7 +65,7 @@ class CurrencyController extends Controller
         Currency::create($data);
 
         return redirect()->route('admin.currency.index')
-            ->with('success', __('Currency created successfully.'));
+            ->with('success', __('common.currency_created_success'));
     }
 
     /**
@@ -113,7 +113,7 @@ class CurrencyController extends Controller
         $currency->update($data);
 
         return redirect()->route('admin.currency.index')
-            ->with('success', __('Currency updated successfully.'));
+            ->with('success', __('common.currency_updated_success'));
     }
 
     /**
@@ -125,12 +125,12 @@ class CurrencyController extends Controller
     public function destroy(Currency $currency)
     {
         if ($currency->is_default) {
-            return back()->with('error', __('Default currency cannot be deleted.'));
+            return back()->with('error', __('common.default_currency_cannot_delete'));
         }
 
         $currency->delete();
 
         return redirect()->route('admin.currency.index')
-            ->with('success', __('Currency deleted successfully.'));
+            ->with('success', __('common.currency_deleted_success'));
     }
 }

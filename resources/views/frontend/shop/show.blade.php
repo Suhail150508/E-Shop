@@ -1,5 +1,18 @@
 @extends('layouts.frontend')
 
+@section('title', $product->meta_title ?: $product->translate('name'))
+
+@push('meta')
+    @php
+        $metaDesc = $product->meta_description
+            ? Str::limit(strip_tags($product->meta_description), 160)
+            : Str::limit(strip_tags($product->translate('description') ?? ''), 160);
+    @endphp
+    <meta name="description" content="{{ e($metaDesc) }}">
+    @if(!empty($product->meta_keywords))
+    <meta name="keywords" content="{{ e($product->meta_keywords) }}">
+    @endif
+@endpush
 
     @push('styles')
         <link rel="stylesheet" href="{{ asset('frontend/css/product-details.css') }}">
@@ -122,7 +135,11 @@
                                 <div class="d-flex align-items-center gap-2">
                                     <i class="fas fa-check-circle {{ $product->stock > 0 ? 'text-success' : 'text-danger' }}"></i>
                                     <span class="{{ $product->stock > 0 ? 'text-success' : 'text-danger' }} fw-medium small text-uppercase">
-                                        {{ $product->stock > 0 ? __('common.in_stock') : __('common.out_of_stock') }}
+                                        @if($product->stock > 0)
+                                            {{ __('common.in_stock_with_count', ['count' => $product->stock]) }}
+                                        @else
+                                            {{ __('common.out_of_stock') }}
+                                        @endif
                                     </span>
                                 </div>
                             </div>
@@ -172,6 +189,32 @@
                                                 <label class="btn btn-outline-light border d-flex align-items-center gap-2 p-2 rounded-3 cursor-pointer" for="color_idx_{{ $index }}">
                                                     <span class="rounded-circle shadow-sm border color-swatch-sm" style="background-color: {{ $color }};"></span>
                                                     <span class="small fw-medium text-dark">{{ $color }}</span>
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    @if($product->size_objects->isNotEmpty())
+                                    <div class="mb-4">
+                                        <label class="form-label fw-bold d-block mb-2 text-uppercase small text-muted">{{ __('common.sizes') }}</label>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @foreach($product->size_objects as $size)
+                                                <input type="radio" class="btn-check" name="size" id="size_{{ $size->id }}" value="{{ $size->name }}" required>
+                                                <label class="btn btn-outline-light d-flex align-items-center gap-2 p-2 pe-3 rounded-pill border size-option-label" for="size_{{ $size->id }}">
+                                                    <span class="small fw-bold text-dark">{{ $size->name }}</span>
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @elseif(!empty($product->sizes) && is_array($product->sizes))
+                                    <div class="mb-4">
+                                        <label class="form-label fw-bold d-block mb-2 text-uppercase small text-muted">{{ __('common.sizes') }}</label>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @foreach($product->sizes as $index => $sizeName)
+                                                <input type="radio" class="btn-check" name="size" id="size_idx_{{ $index }}" value="{{ $sizeName }}" required>
+                                                <label class="btn btn-outline-light border d-flex align-items-center gap-2 p-2 rounded-3 cursor-pointer" for="size_idx_{{ $index }}">
+                                                    <span class="small fw-medium text-dark">{{ $sizeName }}</span>
                                                 </label>
                                             @endforeach
                                         </div>
@@ -309,6 +352,29 @@
                                                           style="background-color: {{ $color }};"></span>
                                                     <span class="small text-muted">{{ $color }}</span>
                                                 </div>
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endif
+                                @if($product->size_objects->isNotEmpty())
+                                <tr>
+                                    <th>{{ __('common.sizes') }}</th>
+                                    <td>
+                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                            @foreach($product->size_objects as $size)
+                                                <span class="badge bg-light text-dark border fw-normal">{{ $size->name }}</span>
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                </tr>
+                                @elseif(!empty($product->sizes) && is_array($product->sizes))
+                                <tr>
+                                    <th>{{ __('common.sizes') }}</th>
+                                    <td>
+                                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                                            @foreach($product->sizes as $sizeName)
+                                                <span class="badge bg-light text-dark border fw-normal">{{ $sizeName }}</span>
                                             @endforeach
                                         </div>
                                     </td>

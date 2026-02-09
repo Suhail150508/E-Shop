@@ -24,13 +24,13 @@ class ReviewController extends Controller
             'is_approved' => $request->boolean('is_approved'),
         ]);
 
-        return back()->with('success', __('Review status updated.'));
+        return back()->with('success', __('common.review_status_updated'));
     }
 
     public function destroy(ProductReview $review)
     {
         $review->delete();
 
-        return back()->with('success', __('Review deleted.'));
+        return back()->with('success', __('common.review_deleted'));
     }
 }

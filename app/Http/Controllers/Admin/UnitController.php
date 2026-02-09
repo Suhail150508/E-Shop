@@ -54,7 +54,7 @@ class UnitController extends Controller
             'is_active' => $request->has('is_active') ? true : false,
         ]);
 
-        return redirect()->route('admin.units.index')->with('success', __('Unit created successfully.'));
+        return redirect()->route('admin.units.index')->with('success', __('common.unit_created_success'));
     }
 
     /**
@@ -81,7 +81,7 @@ class UnitController extends Controller
             'is_active' => $request->has('is_active') ? true : false,
         ]);
 
-        return redirect()->route('admin.units.index')->with('success', __('Unit updated successfully.'));
+        return redirect()->route('admin.units.index')->with('success', __('common.unit_updated_success'));
     }
 
     /**
@@ -91,11 +91,11 @@ class UnitController extends Controller
     {
         // Check if unit is used in products
         if ($unit->products()->count() > 0) {
-            return back()->with('error', __('Cannot delete unit as it is associated with products.'));
+            return back()->with('error', __('common.unit_has_products'));
         }
 
         $unit->delete();
 
-        return back()->with('success', __('Unit deleted successfully.'));
+        return back()->with('success', __('common.unit_deleted_success'));
     }
 }

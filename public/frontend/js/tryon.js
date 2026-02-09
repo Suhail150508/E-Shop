@@ -30,8 +30,8 @@
         var positionControls = document.getElementById('tryonPositionControls');
         var MOVE_STEP = 8;
         var WIDTH_STEP = 0.08;
-        var MIN_OVERLAY_SCALE = 0.5;
-        var MAX_OVERLAY_SCALE = 1.5;
+        var MIN_OVERLAY_SCALE = 0.15;
+        var MAX_OVERLAY_SCALE = 2;
         var tryonState = { adjustMode: false, userBlobUrl: null, userW: 0, userH: 0, overlayUrl: null, baseLeft: 0, baseTop: 0, overlayW: 0, overlayH: 0, offsetX: 0, offsetY: 0, overlayScale: 1, compositeUrl: null, displayScale: 1 };
 
         if (!tryModalEl || !startTryBtn) return;
@@ -132,10 +132,11 @@
             if (positionControls) positionControls.classList.add('d-none');
             startTryBtn.disabled = true;
             var btnText = startTryBtn.querySelector('.btn-text');
-            var spinner = startTryBtn.querySelector('.spinner-border');
+            var loader = startTryBtn.querySelector('.loader-inline');
             if (btnText) btnText.textContent = tryModalEl ? tryModalEl.getAttribute('data-msg-preview') || 'Preview' : 'Preview';
             if (btnText) btnText.classList.remove('d-none');
-            if (spinner) spinner.classList.add('d-none');
+            if (loader) loader.classList.add('d-none');
+            startTryBtn.classList.remove('btn-loading');
         }
 
         var tryonTipsTooltip = null;
@@ -219,9 +220,10 @@
 
             startTryBtn.disabled = true;
             var btnText = startTryBtn.querySelector('.btn-text');
-            var spinner = startTryBtn.querySelector('.spinner-border');
-            if (btnText) { btnText.textContent = msgProcessing; btnText.classList.remove('d-none'); }
-            if (spinner) spinner.classList.remove('d-none');
+            var loader = startTryBtn.querySelector('.loader-inline');
+            if (btnText) { btnText.textContent = msgProcessing; }
+            if (loader) loader.classList.remove('d-none');
+            startTryBtn.classList.add('btn-loading');
 
             var headers = {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -268,8 +270,9 @@
             })
             .finally(function() {
                 startTryBtn.disabled = false;
-                if (btnText) { btnText.textContent = tryModalEl ? (tryModalEl.getAttribute('data-msg-preview') || 'Preview') : 'Preview'; btnText.classList.remove('d-none'); }
-                if (spinner) spinner.classList.add('d-none');
+                if (btnText) { btnText.textContent = tryModalEl ? (tryModalEl.getAttribute('data-msg-preview') || 'Preview') : 'Preview'; }
+                if (loader) loader.classList.add('d-none');
+                startTryBtn.classList.remove('btn-loading');
             });
         });
 

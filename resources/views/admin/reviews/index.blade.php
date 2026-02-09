@@ -26,7 +26,7 @@
                                             {{ $review->product->name }}
                                         </a>
                                     @else
-                                        <span class="text-muted">{{ __('N/A') }}</span>
+                                        <span class="text-muted">{{ __('common.na') }}</span>
                                     @endif
                                 </td>
                                 <td>
@@ -34,7 +34,7 @@
                                         <div>{{ $review->user->name }}</div>
                                         <small class="text-muted">{{ $review->user->email }}</small>
                                     @else
-                                        <span class="text-muted">{{ __('N/A') }}</span>
+                                        <span class="text-muted">{{ __('common.na') }}</span>
                                     @endif
                                 </td>
                                 <td>

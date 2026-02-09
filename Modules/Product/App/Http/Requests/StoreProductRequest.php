@@ -24,6 +24,8 @@ class StoreProductRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'discount_price' => 'nullable|numeric|min:0|lte:price',
             'stock' => 'required|integer|min:0',
+            'weight' => 'nullable|string|max:50',
+            'dimensions' => 'nullable|string|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'gallery_images' => 'nullable|array',
             'gallery_images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',

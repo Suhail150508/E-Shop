@@ -29,7 +29,7 @@ class MenuController extends Controller
             'is_active' => true,
         ]);
 
-        return redirect()->route('admin.menus.builder', $menu->id)->with('success', __('Menu created successfully.'));
+        return redirect()->route('admin.menus.builder', $menu->id)->with('success', __('common.menu_created_success'));
     }
 
     public function update(Request $request, Menu $menu)
@@ -44,14 +44,14 @@ class MenuController extends Controller
             'position' => $request->position,
         ]);
 
-        return redirect()->back()->with('success', __('Menu updated successfully.'));
+        return redirect()->back()->with('success', __('common.menu_updated_success'));
     }
 
     public function destroy(Menu $menu)
     {
         $menu->delete();
 
-        return redirect()->route('admin.menus.index')->with('success', __('Menu deleted successfully.'));
+        return redirect()->route('admin.menus.index')->with('success', __('common.menu_deleted_success'));
     }
 
     public function builder(Menu $menu)

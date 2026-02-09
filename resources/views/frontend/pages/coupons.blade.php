@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-@include('frontend.partials.breadcrumb', ['title' => optional($page)->title ?? __('common.coupons'), 'bgImage' => optional($page)->image ?? getImageOrPlaceholder(null, '1920x400')])
+@include('frontend.partials.breadcrumb', ['title' => (isset($page) && $page ? $page->translate('title') : null) ?? __('common.coupons'), 'bgImage' => optional($page)->image ?? getImageOrPlaceholder(null, '1920x400')])
 
 @if(isset($page) && ($page->translate('content') ?? $page->content))
     {!! $page->translate('content') ?? $page->content !!}

@@ -106,6 +106,7 @@ return [
     'availability' => 'التوفر',
     'to' => 'إلى',
     'in_stock' => 'متوفر',
+    'in_stock_with_count' => ':count متوفر في المخزون',
     'out_of_stock' => 'غير متوفر',
     'sort_by' => 'ترتيب حسب',
     'default_sorting' => 'الترتيب الافتراضي',

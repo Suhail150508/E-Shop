@@ -28,6 +28,8 @@ class Product extends Model
         'price',
         'discount_price',
         'stock',
+        'weight',
+        'dimensions',
         'image',
         'is_active',
         'is_featured',

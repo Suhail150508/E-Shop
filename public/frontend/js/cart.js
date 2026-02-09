@@ -12,7 +12,7 @@ document.addEventListener('submit', function (e) {
     if (submitBtn) {
         originalBtnContent = submitBtn.innerHTML;
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        submitBtn.innerHTML = '<span class="loader-inline" role="status" aria-hidden="true"><span class="block"></span><span class="block"></span><span class="block"></span><span class="block"></span></span>';
     }
 
     // Flying Animation Logic

@@ -13,11 +13,13 @@ class DashboardController extends Controller
 {
     public function index(): View
     {
-        // 1. Total Revenue (Paid orders)
-        $totalRevenue = Order::where('payment_status', Order::PAYMENT_PAID)->sum('total');
+        // 1. Total Revenue (Paid product orders only)
+        $totalRevenue = Order::where('type', '!=', Order::TYPE_WALLET_DEPOSIT)
+            ->where('payment_status', Order::PAYMENT_PAID)
+            ->sum('total');
 
-        // 2. Total Orders
-        $totalOrders = Order::count();
+        // 2. Total Orders (exclude wallet deposits for consistency with orders index)
+        $totalOrders = Order::where('type', '!=', Order::TYPE_WALLET_DEPOSIT)->count();
 
         // 3. Total Customers
         $totalCustomers = User::where('role', User::ROLE_CUSTOMER)->count();
@@ -25,11 +27,16 @@ class DashboardController extends Controller
         // 4. Total Products
         $totalProducts = Product::count();
 
-        // 5. Recent Orders
-        $recentOrders = Order::with('user')->latest()->take(5)->get();
+        // 5. Recent Orders (product orders only)
+        $recentOrders = Order::with('user')
+            ->where('type', '!=', Order::TYPE_WALLET_DEPOSIT)
+            ->latest()
+            ->take(5)
+            ->get();
 
-        // 6. Revenue Chart Data (Last 12 months)
-        $query = Order::where('payment_status', Order::PAYMENT_PAID)
+        // 6. Revenue Chart Data (Last 12 months, product orders only)
+        $query = Order::where('type', '!=', Order::TYPE_WALLET_DEPOSIT)
+            ->where('payment_status', Order::PAYMENT_PAID)
             ->whereYear('created_at', date('Y'));
 
         if (DB::connection()->getDriverName() === 'sqlite') {
@@ -67,8 +74,9 @@ class DashboardController extends Controller
             $chartRevenue[] = (float) ($revenueData[$month] ?? 0);
         }
 
-        // 7. Order Status Chart Data
-        $orderStatusCounts = Order::select('status', DB::raw('count(*) as total'))
+        // 7. Order Status Chart Data (product orders only)
+        $orderStatusCounts = Order::where('type', '!=', Order::TYPE_WALLET_DEPOSIT)
+            ->select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
             ->pluck('total', 'status')
             ->map(fn ($item) => (int) $item)

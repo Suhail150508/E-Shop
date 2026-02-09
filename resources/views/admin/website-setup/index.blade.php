@@ -98,22 +98,6 @@
                         </div>
                     </div>
 
-                    <h5 class="mb-3 text-primary">Flash Sale Section</h5>
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-4">
-                            <label class="form-label">Title</label>
-                            <input type="text" class="form-control" name="home_flash_title" value="{{ $settings['home_flash_title'] ?? '' }}" placeholder="Limited Time Offers">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Subtitle</label>
-                            <input type="text" class="form-control" name="home_flash_subtitle" value="{{ $settings['home_flash_subtitle'] ?? '' }}" placeholder="Don't miss out on these deals...">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Badge Text</label>
-                            <input type="text" class="form-control" name="home_flash_badge" value="{{ $settings['home_flash_badge'] ?? '' }}" placeholder="e.g. OFFERS">
-                        </div>
-                    </div>
-
                     <h5 class="mb-3 text-primary">Promo Banner (Mid-Page)</h5>
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
@@ -184,20 +168,61 @@
                             <label class="form-label">Button Link</label>
                             <input type="text" class="form-control" name="home_banner_btn_link" value="{{ $settings['home_banner_btn_link'] ?? '' }}" placeholder="URL">
                         </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ __('common.banner_rating_label') }}</label>
+                            <input type="text" class="form-control" name="home_banner_rating" value="{{ $settings['home_banner_rating'] ?? '' }}" placeholder="4.9">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">{{ __('common.banner_review_count_label') }}</label>
+                            <input type="text" class="form-control" name="home_banner_review_count" value="{{ $settings['home_banner_review_count'] ?? '' }}" placeholder="15K+">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ __('common.testimonial_1_name_label') }}</label>
+                            <input type="text" class="form-control" name="home_banner_testimonial_1_name" value="{{ $settings['home_banner_testimonial_1_name'] ?? '' }}" placeholder="John D.">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ __('common.testimonial_2_name_label') }}</label>
+                            <input type="text" class="form-control" name="home_banner_testimonial_2_name" value="{{ $settings['home_banner_testimonial_2_name'] ?? '' }}" placeholder="Sarah J.">
+                        </div>
                     </div>
-                    <h5 class="mb-3 text-primary">Featured Products Section</h5>
+
+                    <hr class="my-4">
+                    <h5 class="mb-3 text-primary">{{ __('common.product_sections') }}</h5>
+                    <p class="text-muted small mb-3">{{ __('common.product_sections_hint') }}</p>
+
+                    <h6 class="mb-2 text-secondary">{{ __('common.featured_products') }}</h6>
                     <div class="row g-3 mb-4">
-                        <div class="col-md-4">
-                            <label class="form-label">Title</label>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ __('Title') }}</label>
                             <input type="text" class="form-control" name="home_featured_title" value="{{ $settings['home_featured_title'] ?? '' }}" placeholder="Trending Products">
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Subtitle</label>
-                            <input type="text" class="form-control" name="home_featured_subtitle" value="{{ $settings['home_featured_subtitle'] ?? '' }}" placeholder="Check out what's popular...">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Badge Text</label>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ __('Badge Text') }}</label>
                             <input type="text" class="form-control" name="home_featured_badge" value="{{ $settings['home_featured_badge'] ?? '' }}" placeholder="e.g. LATEST">
+                        </div>
+                    </div>
+
+                    <h6 class="mb-2 text-secondary">{{ __('common.flash_sale') }}</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ __('Title') }}</label>
+                            <input type="text" class="form-control" name="home_flash_title" value="{{ $settings['home_flash_title'] ?? '' }}" placeholder="Limited Time Offers">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ __('Badge Text') }}</label>
+                            <input type="text" class="form-control" name="home_flash_badge" value="{{ $settings['home_flash_badge'] ?? '' }}" placeholder="e.g. OFFERS">
+                        </div>
+                    </div>
+
+                    <h6 class="mb-2 text-secondary">{{ __('common.latest_products') }}</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ __('Title') }}</label>
+                            <input type="text" class="form-control" name="home_latest_title" value="{{ $settings['home_latest_title'] ?? '' }}" placeholder="Latest Products">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ __('Badge Text') }}</label>
+                            <input type="text" class="form-control" name="home_latest_badge" value="{{ $settings['home_latest_badge'] ?? '' }}" placeholder="e.g. NEW ARRIVALS">
                         </div>
                     </div>
                 </div>

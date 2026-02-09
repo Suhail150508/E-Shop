@@ -133,3 +133,104 @@
 .btn-check:checked + .btn .text-dark {
     color: var(--primary-color, #0d6efd) !important;
 }
+
+/* =========================================
+   Related products: same card size as home/shop
+   5 per row on xl
+   ========================================= */
+@media (min-width: 1200px) {
+    .related-products-section .row.g-4 > .product-col {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
+.related-products-section .product-card {
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+    overflow: hidden;
+    max-width: 100%;
+    background: #ffffff;
+}
+
+.related-products-section .product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+    border-color: rgba(209, 122, 92, 0.2);
+}
+
+.related-products-section .product-image-wrapper {
+    border-radius: 10px 10px 0 0;
+    padding-top: 105%;
+    background: #f8f9fa;
+}
+
+.related-products-section .product-card:hover .product-img {
+    transform: scale(1.04);
+}
+
+.related-products-section .product-info {
+    padding: 0.7rem 0.75rem 0.85rem;
+    border-radius: 0 0 10px 10px;
+    background: #ffffff;
+}
+
+.related-products-section .product-title.h6 {
+    font-size: 0.875rem;
+    line-height: 1.35;
+    min-height: 2.6em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.related-products-section .product-category {
+    font-size: 0.7rem;
+}
+
+.related-products-section .product-price {
+    font-size: 0.9rem;
+}
+
+.related-products-section .product-card .btn-outline-primary {
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 0.4rem 0.65rem;
+    font-size: 0.8rem;
+    transition: all 0.25s ease;
+}
+
+.related-products-section .product-card .btn-outline-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 12px rgba(209, 122, 92, 0.25);
+}
+
+.related-products-section .product-badge {
+    border-radius: 5px;
+    top: 7px;
+    left: 7px;
+    font-size: 0.6rem;
+    padding: 3px 7px;
+    font-weight: 700;
+}
+
+.related-products-section .product-actions {
+    top: 7px;
+    right: 7px;
+    gap: 5px;
+}
+
+.related-products-section .product-card-actions {
+    margin-top: 0.45rem;
+}
+
+.related-products-section .product-rating {
+    margin-bottom: 0.3rem;
+}
+
+.related-products-section .product-rating .small {
+    font-size: 0.7rem;
+}

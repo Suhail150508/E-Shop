@@ -10,10 +10,9 @@
 
 @section('content')
 @php
-    $page = \App\Models\Page::where('slug', 'auth-reset-password')->first();
-    $title = $page ? $page->title : __('Reset Password');
-    $subtitle = $page ? $page->content : __('Create a new password for your account.');
-    $image = $page && $page->image ? (filter_var($page->image, FILTER_VALIDATE_URL) ? $page->image : asset($page->image)) : null;
+    $title = setting('auth_reset_title', __('Reset Password'));
+    $subtitle = setting('auth_reset_subtitle', __('Create a new password for your account.'));
+    $image = setting('auth_reset_image', null);
 @endphp
 
 <div class="container-fluid p-0">
@@ -35,7 +34,7 @@
             <div class="w-100 p-4 p-md-5" style="max-width: 550px;">
                 <div class="text-center mb-5">
                     <a href="{{ route('home') }}" class="d-inline-block mb-4 text-decoration-none">
-                        <img src="{{ asset('frontend/img/logo.png') }}" alt="{{ config('app.name') }}" height="40" onerror="this.onerror=null; this.src='{{ getImageOrPlaceholder(null, '150x40') }}';">
+                        <img src="{{ getImageOrPlaceholder(setting('app_logo'), '150x40') }}" alt="{{ config('app.name') }}" height="40">
                     </a>
                     <h1 class="h2 fw-bold mb-2">{{ $title }}</h1>
                     <p class="text-muted">{{ $subtitle }}</p>

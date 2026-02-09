@@ -72,6 +72,11 @@
                                                                         {{ __('common.color') }}: {{ $item['options']['color'] }}
                                                                     </div>
                                                                 @endif
+                                                                @if(isset($item['options']['size']))
+                                                                    <div class="small text-muted mt-1">
+                                                                        {{ __('common.size') }}: {{ $item['options']['size'] }}
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </td>

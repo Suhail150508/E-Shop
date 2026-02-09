@@ -17,7 +17,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = User::where('role', 'customer')
+        $customers = User::where('role', User::ROLE_CUSTOMER)
             ->withCount('orders')
             ->latest()
             ->paginate(10);
@@ -53,11 +53,11 @@ class CustomerController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'customer',
+            'role' => User::ROLE_CUSTOMER,
             'email_verified_at' => now(),
         ]);
 
-        return redirect()->route('admin.customers.index')->with('success', __('Customer created successfully.'));
+        return redirect()->route('admin.customers.index')->with('success', __('common.customer_created_success'));
     }
 
     /**
@@ -68,7 +68,7 @@ class CustomerController extends Controller
      */
     public function edit(User $customer)
     {
-        if ($customer->role !== 'customer') {
+        if ($customer->role !== User::ROLE_CUSTOMER) {
             abort(404);
         }
 
@@ -84,7 +84,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, User $customer)
     {
-        if ($customer->role !== 'customer') {
+        if ($customer->role !== User::ROLE_CUSTOMER) {
             abort(404);
         }
 
@@ -105,7 +105,7 @@ class CustomerController extends Controller
 
         $customer->update($data);
 
-        return redirect()->route('admin.customers.index')->with('success', __('Customer updated successfully.'));
+        return redirect()->route('admin.customers.index')->with('success', __('common.customer_updated_success'));
     }
 
     /**
@@ -116,16 +116,16 @@ class CustomerController extends Controller
      */
     public function destroy(User $customer)
     {
-        if ($customer->role !== 'customer') {
+        if ($customer->role !== User::ROLE_CUSTOMER) {
             abort(404);
         }
 
         if ($customer->orders()->exists()) {
-            return back()->with('error', __('Cannot delete customer with existing orders.'));
+            return back()->with('error', __('common.customer_has_orders'));
         }
 
         $customer->delete();
 
-        return redirect()->route('admin.customers.index')->with('success', __('Customer deleted successfully.'));
+        return redirect()->route('admin.customers.index')->with('success', __('common.customer_deleted_success'));
     }
 }

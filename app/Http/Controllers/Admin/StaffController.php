@@ -12,7 +12,7 @@ class StaffController extends Controller
 {
     public function index()
     {
-        $staffMembers = User::where('role', 'staff')
+        $staffMembers = User::where('role', User::ROLE_STAFF)
             ->withCount('assignedOrders')
             ->latest()
             ->paginate(10);
@@ -37,16 +37,16 @@ class StaffController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'staff',
+            'role' => User::ROLE_STAFF,
             'email_verified_at' => now(),
         ]);
 
-        return redirect()->route('admin.staff.index')->with('success', __('Staff member created successfully.'));
+        return redirect()->route('admin.staff.index')->with('success', __('common.staff_created_success'));
     }
 
     public function edit(User $staff)
     {
-        if ($staff->role !== 'staff') {
+        if ($staff->role !== User::ROLE_STAFF) {
             abort(404);
         }
 
@@ -55,7 +55,7 @@ class StaffController extends Controller
 
     public function update(Request $request, User $staff)
     {
-        if ($staff->role !== 'staff') {
+        if ($staff->role !== User::ROLE_STAFF) {
             abort(404);
         }
 
@@ -76,21 +76,21 @@ class StaffController extends Controller
 
         $staff->update($data);
 
-        return redirect()->route('admin.staff.index')->with('success', __('Staff member updated successfully.'));
+        return redirect()->route('admin.staff.index')->with('success', __('common.staff_updated_success'));
     }
 
     public function destroy(User $staff)
     {
-        if ($staff->role !== 'staff') {
+        if ($staff->role !== User::ROLE_STAFF) {
             abort(404);
         }
 
         if ($staff->assignedOrders()->exists()) {
-            return back()->with('error', __('Cannot delete staff member assigned to orders.'));
+            return back()->with('error', __('common.staff_cannot_delete_assigned'));
         }
 
         $staff->delete();
 
-        return redirect()->route('admin.staff.index')->with('success', __('Staff member deleted successfully.'));
+        return redirect()->route('admin.staff.index')->with('success', __('common.staff_deleted_success'));
     }
 }

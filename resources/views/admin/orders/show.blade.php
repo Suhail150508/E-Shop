@@ -39,11 +39,11 @@
                 </div>
                 <div class="mb-2">
                     <div class="text-muted small">{{ __('Billing address') }}</div>
-                    <div>{{ $order->billing_address ?: __('N/A') }}</div>
+                    <div>{{ $order->billing_address ?: __('common.na') }}</div>
                 </div>
                 <div>
                     <div class="text-muted small">{{ __('Shipping address') }}</div>
-                    <div>{{ $order->shipping_address ?: __('N/A') }}</div>
+                    <div>{{ $order->shipping_address ?: __('common.na') }}</div>
 
                     @if($order->shipping_latitude && $order->shipping_longitude)
                         @inject('settings', 'App\Services\SettingService')
@@ -91,7 +91,7 @@
                 <h3 class="h6 mb-3">{{ __('Payment') }}</h3>
                 <div class="mb-2">
                     <div class="text-muted small">{{ __('Method') }}</div>
-                    <div>{{ $order->payment_method ?: __('N/A') }}</div>
+                    <div>{{ $order->payment_method ?: __('common.na') }}</div>
                 </div>
                 <div class="mb-2">
                     <div class="text-muted small">{{ __('Subtotal') }}</div>

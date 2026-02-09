@@ -3,14 +3,6 @@
 @section('page_title', __('Edit Page'))
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2 class="h4 fw-bold mb-1">{{ __('Edit Page') }}</h2>
-        <p class="text-muted mb-0">{{ __('Update static page content.') }}</p>
-    </div>
-    <a href="{{ route('admin.pages.index') }}" class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i> {{ __('Back to List') }}</a>
-</div>
 
 @php
     $localeLabels = $languages->pluck('name', 'code')->toArray();
@@ -135,12 +127,182 @@
                                 </div>
                             </div>
                         </div>
+                        @if($page->slug === 'about-us')
+                        <hr class="my-4">
+                        <h5 class="mb-3 text-primary">{{ __('common.about_hero_section') }} @if(!$isDefault)<span class="badge bg-secondary">{{ $lang->name }}</span>@endif</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">{{ __('Title') }}</label>
+                                @if($isDefault)
+                                    <input type="text" class="form-control" name="about_hero_title" value="{{ old('about_hero_title', $page->meta['about_hero_title'] ?? '') }}" placeholder="About {{ config('app.name') }}">
+                                @else
+                                    <input type="text" class="form-control" name="translations[{{ $locale }}][about_hero_title]" value="{{ old("translations.{$locale}.about_hero_title", $trans['about_hero_title'] ?? '') }}" placeholder="About {{ config('app.name') }}">
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{{ __('Subtitle') }}</label>
+                                @if($isDefault)
+                                    <input type="text" class="form-control" name="about_hero_subtitle" value="{{ old('about_hero_subtitle', $page->meta['about_hero_subtitle'] ?? '') }}">
+                                @else
+                                    <input type="text" class="form-control" name="translations[{{ $locale }}][about_hero_subtitle]" value="{{ old("translations.{$locale}.about_hero_subtitle", $trans['about_hero_subtitle'] ?? '') }}">
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{{ __('Description') }}</label>
+                                @if($isDefault)
+                                    <textarea class="form-control" name="about_hero_text" rows="3">{{ old('about_hero_text', $page->meta['about_hero_text'] ?? '') }}</textarea>
+                                @else
+                                    <textarea class="form-control" name="translations[{{ $locale }}][about_hero_text]" rows="3">{{ old("translations.{$locale}.about_hero_text", $trans['about_hero_text'] ?? '') }}</textarea>
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{{ __('Hero Image') }}</label>
+                                @php $heroImg = $isDefault ? ($page->meta['about_hero_image'] ?? null) : ($trans['about_hero_image'] ?? null); @endphp
+                                @if(!empty($heroImg))
+                                    <div class="mb-2"><img src="{{ getImageOrPlaceholder($heroImg, '400x200') }}" height="60" class="rounded object-fit-cover"></div>
+                                @endif
+                                @if($isDefault)
+                                    <input type="file" class="form-control" name="about_hero_image">
+                                @else
+                                    <input type="file" class="form-control" name="translations[{{ $locale }}][about_hero_image]">
+                                @endif
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label">{{ __('common.about_story_section') }}</label>
+                            </div>
+                            <div class="col-md-12">
+                                @if($isDefault)
+                                    <input type="text" class="form-control" name="about_story_title" value="{{ old('about_story_title', $page->meta['about_story_title'] ?? '') }}" placeholder="Our Story">
+                                @else
+                                    <input type="text" class="form-control" name="translations[{{ $locale }}][about_story_title]" value="{{ old("translations.{$locale}.about_story_title", $trans['about_story_title'] ?? '') }}" placeholder="Our Story">
+                                @endif
+                            </div>
+                            <div class="col-md-12">
+                                @if($isDefault)
+                                    <input type="text" class="form-control" name="about_story_subtitle" value="{{ old('about_story_subtitle', $page->meta['about_story_subtitle'] ?? '') }}">
+                                @else
+                                    <input type="text" class="form-control" name="translations[{{ $locale }}][about_story_subtitle]" value="{{ old("translations.{$locale}.about_story_subtitle", $trans['about_story_subtitle'] ?? '') }}">
+                                @endif
+                            </div>
+                            @foreach([1, 2, 3] as $i)
+                            <div class="col-md-4">
+                                @php
+                                    $si = 'about_story_'.$i.'_image';
+                                    $sh = 'about_story_'.$i.'_heading';
+                                    $st = 'about_story_'.$i.'_text';
+                                    $storyImg = $isDefault ? ($page->meta[$si] ?? null) : ($trans[$si] ?? null);
+                                @endphp
+                                <label class="form-label">{{ __('Block') }} {{ $i }} {{ __('Image') }}</label>
+                                @if(!empty($storyImg))<div class="mb-2"><img src="{{ getImageOrPlaceholder($storyImg, '300x200') }}" height="50" class="rounded"></div>@endif
+                                @if($isDefault)
+                                    <input type="file" class="form-control" name="about_story_{{ $i }}_image">
+                                    <input type="text" class="form-control mt-2" name="about_story_{{ $i }}_heading" value="{{ old($sh, $page->meta[$sh] ?? '') }}" placeholder="{{ __('Heading') }}">
+                                    <textarea class="form-control mt-2" name="about_story_{{ $i }}_text" rows="2">{{ old($st, $page->meta[$st] ?? '') }}</textarea>
+                                @else
+                                    <input type="file" class="form-control" name="translations[{{ $locale }}][about_story_{{ $i }}_image]">
+                                    <input type="text" class="form-control mt-2" name="translations[{{ $locale }}][about_story_{{ $i }}_heading]" value="{{ old("translations.{$locale}.{$sh}", $trans[$sh] ?? '') }}" placeholder="{{ __('Heading') }}">
+                                    <textarea class="form-control mt-2" name="translations[{{ $locale }}][about_story_{{ $i }}_text]" rows="2">{{ old("translations.{$locale}.{$st}", $trans[$st] ?? '') }}</textarea>
+                                @endif
+                            </div>
+                            @endforeach
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label">{{ __('common.about_mission_section') }}</label>
+                            </div>
+                            <div class="col-md-12">
+                                @if($isDefault)
+                                    <input type="text" class="form-control" name="about_mission_title" value="{{ old('about_mission_title', $page->meta['about_mission_title'] ?? '') }}" placeholder="Our Mission & Vision">
+                                @else
+                                    <input type="text" class="form-control" name="translations[{{ $locale }}][about_mission_title]" value="{{ old("translations.{$locale}.about_mission_title", $trans['about_mission_title'] ?? '') }}">
+                                @endif
+                            </div>
+                            <div class="col-md-12">
+                                @if($isDefault)
+                                    <textarea class="form-control" name="about_mission_intro" rows="2">{{ old('about_mission_intro', $page->meta['about_mission_intro'] ?? '') }}</textarea>
+                                @else
+                                    <textarea class="form-control" name="translations[{{ $locale }}][about_mission_intro]" rows="2">{{ old("translations.{$locale}.about_mission_intro", $trans['about_mission_intro'] ?? '') }}</textarea>
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                @php $m1i = $isDefault ? ($page->meta['about_mission_1_image'] ?? null) : ($trans['about_mission_1_image'] ?? null); @endphp
+                                <label class="form-label">{{ __('Block') }} 1 {{ __('Image') }}</label>
+                                @if(!empty($m1i))<div class="mb-2"><img src="{{ getImageOrPlaceholder($m1i, '400x300') }}" height="60" class="rounded"></div>@endif
+                                @if($isDefault)
+                                    <input type="file" class="form-control" name="about_mission_1_image">
+                                    <textarea class="form-control mt-2" name="about_mission_1_text" rows="3">{{ old('about_mission_1_text', $page->meta['about_mission_1_text'] ?? '') }}</textarea>
+                                @else
+                                    <input type="file" class="form-control" name="translations[{{ $locale }}][about_mission_1_image]">
+                                    <textarea class="form-control mt-2" name="translations[{{ $locale }}][about_mission_1_text]" rows="3">{{ old("translations.{$locale}.about_mission_1_text", $trans['about_mission_1_text'] ?? '') }}</textarea>
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                @php $m2i = $isDefault ? ($page->meta['about_mission_2_image'] ?? null) : ($trans['about_mission_2_image'] ?? null); @endphp
+                                <label class="form-label">{{ __('Block') }} 2 {{ __('Image') }}</label>
+                                @if(!empty($m2i))<div class="mb-2"><img src="{{ getImageOrPlaceholder($m2i, '400x300') }}" height="60" class="rounded"></div>@endif
+                                @if($isDefault)
+                                    <input type="file" class="form-control" name="about_mission_2_image">
+                                    <textarea class="form-control mt-2" name="about_mission_2_text" rows="3">{{ old('about_mission_2_text', $page->meta['about_mission_2_text'] ?? '') }}</textarea>
+                                @else
+                                    <input type="file" class="form-control" name="translations[{{ $locale }}][about_mission_2_image]">
+                                    <textarea class="form-control mt-2" name="translations[{{ $locale }}][about_mission_2_text]" rows="3">{{ old("translations.{$locale}.about_mission_2_text", $trans['about_mission_2_text'] ?? '') }}</textarea>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label">{{ __('common.about_testimonial_section') }}</label>
+                            </div>
+                            <div class="col-md-12">
+                                @if($isDefault)
+                                    <input type="text" class="form-control mb-2" name="about_testimonial_title" value="{{ old('about_testimonial_title', $page->meta['about_testimonial_title'] ?? '') }}" placeholder="Testimonials & Success Stories">
+                                    <input type="text" class="form-control" name="about_testimonial_subtitle" value="{{ old('about_testimonial_subtitle', $page->meta['about_testimonial_subtitle'] ?? '') }}">
+                                @else
+                                    <input type="text" class="form-control mb-2" name="translations[{{ $locale }}][about_testimonial_title]" value="{{ old("translations.{$locale}.about_testimonial_title", $trans['about_testimonial_title'] ?? '') }}">
+                                    <input type="text" class="form-control" name="translations[{{ $locale }}][about_testimonial_subtitle]" value="{{ old("translations.{$locale}.about_testimonial_subtitle", $trans['about_testimonial_subtitle'] ?? '') }}">
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                @php $t1a = $isDefault ? ($page->meta['about_testimonial_1_avatar'] ?? null) : ($trans['about_testimonial_1_avatar'] ?? null); @endphp
+                                <label class="form-label">{{ __('Testimonial') }} 1 {{ __('Avatar') }}</label>
+                                @if(!empty($t1a))<div class="mb-2"><img src="{{ getImageOrPlaceholder($t1a, '80x80') }}" width="50" height="50" class="rounded-circle object-fit-cover"></div>@endif
+                                @if($isDefault)
+                                    <input type="file" class="form-control" name="about_testimonial_1_avatar">
+                                    <input type="text" class="form-control mt-2" name="about_testimonial_1_name" value="{{ old('about_testimonial_1_name', $page->meta['about_testimonial_1_name'] ?? '') }}" placeholder="Name">
+                                    <input type="text" class="form-control mt-2" name="about_testimonial_1_role" value="{{ old('about_testimonial_1_role', $page->meta['about_testimonial_1_role'] ?? '') }}" placeholder="Role">
+                                    <textarea class="form-control mt-2" name="about_testimonial_1_quote" rows="2">{{ old('about_testimonial_1_quote', $page->meta['about_testimonial_1_quote'] ?? '') }}</textarea>
+                                @else
+                                    <input type="file" class="form-control" name="translations[{{ $locale }}][about_testimonial_1_avatar]">
+                                    <input type="text" class="form-control mt-2" name="translations[{{ $locale }}][about_testimonial_1_name]" value="{{ old("translations.{$locale}.about_testimonial_1_name", $trans['about_testimonial_1_name'] ?? '') }}">
+                                    <input type="text" class="form-control mt-2" name="translations[{{ $locale }}][about_testimonial_1_role]" value="{{ old("translations.{$locale}.about_testimonial_1_role", $trans['about_testimonial_1_role'] ?? '') }}">
+                                    <textarea class="form-control mt-2" name="translations[{{ $locale }}][about_testimonial_1_quote]" rows="2">{{ old("translations.{$locale}.about_testimonial_1_quote", $trans['about_testimonial_1_quote'] ?? '') }}</textarea>
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                @php $t2a = $isDefault ? ($page->meta['about_testimonial_2_avatar'] ?? null) : ($trans['about_testimonial_2_avatar'] ?? null); @endphp
+                                <label class="form-label">{{ __('Testimonial') }} 2 {{ __('Avatar') }}</label>
+                                @if(!empty($t2a))<div class="mb-2"><img src="{{ getImageOrPlaceholder($t2a, '80x80') }}" width="50" height="50" class="rounded-circle object-fit-cover"></div>@endif
+                                @if($isDefault)
+                                    <input type="file" class="form-control" name="about_testimonial_2_avatar">
+                                    <input type="text" class="form-control mt-2" name="about_testimonial_2_name" value="{{ old('about_testimonial_2_name', $page->meta['about_testimonial_2_name'] ?? '') }}">
+                                    <input type="text" class="form-control mt-2" name="about_testimonial_2_role" value="{{ old('about_testimonial_2_role', $page->meta['about_testimonial_2_role'] ?? '') }}">
+                                    <textarea class="form-control mt-2" name="about_testimonial_2_quote" rows="2">{{ old('about_testimonial_2_quote', $page->meta['about_testimonial_2_quote'] ?? '') }}</textarea>
+                                @else
+                                    <input type="file" class="form-control" name="translations[{{ $locale }}][about_testimonial_2_avatar]">
+                                    <input type="text" class="form-control mt-2" name="translations[{{ $locale }}][about_testimonial_2_name]" value="{{ old("translations.{$locale}.about_testimonial_2_name", $trans['about_testimonial_2_name'] ?? '') }}">
+                                    <input type="text" class="form-control mt-2" name="translations[{{ $locale }}][about_testimonial_2_role]" value="{{ old("translations.{$locale}.about_testimonial_2_role", $trans['about_testimonial_2_role'] ?? '') }}">
+                                    <textarea class="form-control mt-2" name="translations[{{ $locale }}][about_testimonial_2_quote]" rows="2">{{ old("translations.{$locale}.about_testimonial_2_quote", $trans['about_testimonial_2_quote'] ?? '') }}</textarea>
+                                @endif
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
 
             <div class="d-flex justify-content-end gap-2 mt-4">
-                <a href="{{ route('admin.pages.index') }}" class="btn btn-light">{{ __('Cancel') }}</a>
                 <button type="submit" class="btn btn-primary px-4">
                     <i class="bi bi-save me-1"></i> {{ __('Update Page') }}
                 </button>

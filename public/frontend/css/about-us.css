@@ -1,0 +1,5 @@
+.about-page { background: linear-gradient(180deg, #f0f4ff 0%, #faf8ff 100%); }
+.about-hero-title span { color: var(--bs-primary); }
+.about-section-title { font-weight: 700; margin-bottom: 0.5rem; }
+.about-testimonial-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.08); padding: 1.5rem; }
+.about-testimonial-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }

@@ -21,44 +21,17 @@ class HomeController extends Controller
     {
         $categories = $this->categoryService->getFeaturedCategories(8);
         $productsData = Cache::remember('home_products', 60 * 60, function () {
-            // 1. Featured Products
-            $featuredProducts = Product::with(['category', 'contentTranslations'])
-                ->withAvg('approvedReviews', 'rating')
-                ->withCount('approvedReviews')
-                ->where('is_active', true)
-                ->where('is_featured', true)
-                ->latest()
-                ->take(4)
-                ->get();
-
-            // 2. Flash Sale Products
-            $flashSaleProducts = Product::with(['category', 'contentTranslations'])
-                ->withAvg('approvedReviews', 'rating')
-                ->withCount('approvedReviews')
-                ->where('is_active', true)
-                ->where('is_flash_sale', true)
-                ->latest()
-                ->take(16)
-                ->get();
-
-            // 3. Latest Products (Fallback or separate section)
-            $latestProducts = Product::with(['category', 'contentTranslations'])
-                ->withAvg('approvedReviews', 'rating')
-                ->withCount('approvedReviews')
-                ->where('is_active', true)
-                ->latest()
-                ->take(16)
-                ->get();
-
-            // Highlight product (first featured or filtering logic)
-            $highlightProduct = $featuredProducts->first() ?? $latestProducts->first();
-
-            return compact('featuredProducts', 'flashSaleProducts', 'latestProducts', 'highlightProduct');
+            return $this->getHomeProducts();
         });
+        // If cache returned empty product lists, clear and refetch once (e.g. after seed)
+        $hasAnyProducts = ($productsData['featuredProducts']->count() ?? 0) + ($productsData['flashSaleProducts']->count() ?? 0) + ($productsData['latestProducts']->count() ?? 0) > 0;
+        if (! $hasAnyProducts) {
+            Cache::forget('home_products');
+            $productsData = $this->getHomeProducts();
+        }
 
-        // Hero Images Fallback
         $heroImages = json_decode(setting('home_hero_gallery') ?? '[]', true);
-        if (empty($heroImages) || !is_array($heroImages)) {
+        if (empty($heroImages) || ! is_array($heroImages)) {
             $heroImages = [
                 [
                     ['image' => null, 'name' => 'Elegant Evening Gown', 'badge' => 'new'],
@@ -74,10 +47,62 @@ class HomeController extends Controller
                     ['image' => null, 'name' => 'Vintage Collection', 'badge' => 'hot'],
                     ['image' => null, 'name' => 'Chic Top', 'badge' => 'limited'],
                     ['image' => null, 'name' => 'Fashion Collection', 'badge' => 'hot'],
-                ]
+                ],
             ];
         }
 
-        return view('frontend.home', array_merge(['categories' => $categories, 'heroImages' => $heroImages], $productsData));
+        return view('frontend.home', array_merge(
+            ['categories' => $categories, 'heroImages' => $heroImages],
+            $productsData
+        ));
+    }
+
+    /**
+     * Fetch product collections for home page. Safe to run inside cache callback.
+     */
+    protected function getHomeProducts(): array
+    {
+        try {
+            $baseQuery = function () {
+                return Product::with(['category', 'contentTranslations'])
+                    ->withAvg('approvedReviews', 'rating')
+                    ->withCount('approvedReviews')
+                    ->where('is_active', true);
+            };
+
+            $featuredProducts = $baseQuery()
+                ->where('is_featured', true)
+                ->latest()
+                ->take(8)
+                ->get();
+
+            $flashSaleProducts = $baseQuery()
+                ->where('is_flash_sale', true)
+                ->latest()
+                ->take(16)
+                ->get();
+
+            $latestProducts = $baseQuery()
+                ->latest()
+                ->take(12)
+                ->get();
+
+            $highlightProduct = $featuredProducts->first() ?? $latestProducts->first();
+
+            return [
+                'featuredProducts' => $featuredProducts,
+                'flashSaleProducts' => $flashSaleProducts,
+                'latestProducts' => $latestProducts,
+                'highlightProduct' => $highlightProduct,
+            ];
+        } catch (\Throwable $e) {
+            report($e);
+            return [
+                'featuredProducts' => collect([]),
+                'flashSaleProducts' => collect([]),
+                'latestProducts' => collect([]),
+                'highlightProduct' => null,
+            ];
+        }
     }
 }

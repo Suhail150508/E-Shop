@@ -4,6 +4,10 @@ return [
     'home' => 'Home',
     'shop' => 'Shop',
     'about' => 'About Us',
+    'about_hero_section' => 'About Page – Hero',
+    'about_story_section' => 'About Page – Our Story',
+    'about_mission_section' => 'About Page – Mission & Vision',
+    'about_testimonial_section' => 'About Page – Testimonials',
     'contact' => 'Contact Us',
     'terms' => 'Terms & Conditions',
     'privacy' => 'Privacy Policy',
@@ -29,8 +33,11 @@ return [
     'featured_products' => 'Featured Products',
     'flash_sale' => 'Flash Sale',
     'latest_products' => 'Latest Products',
+    'product_sections' => 'Product Sections',
+    'product_sections_hint' => 'These sections appear on the home page: Featured, Flash Sale, Latest.',
     'view_all' => 'View All',
     'read_more' => 'Read More',
+    'loading' => 'Loading',
     'submit' => 'Submit',
     'cancel' => 'Cancel',
     'save' => 'Save',
@@ -112,6 +119,7 @@ return [
     'availability' => 'Availability',
     'to' => 'to',
     'in_stock' => 'In Stock',
+    'in_stock_with_count' => ':count in stock',
     'out_of_stock' => 'Out of Stock',
     'sort_by' => 'Sort By',
     'default_sorting' => 'Default Sorting',
@@ -306,6 +314,10 @@ return [
     'crafted_with_care' => 'Crafted with Care, Designed for You',
     'testimonials_paragraph' => 'Every piece in our collection tells a story of craftsmanship, sustainability, and timeless design. We believe in creating fashion that enhances your personal style.',
     'reviews_count' => ':count Reviews',
+    'banner_rating_label' => 'Rating (e.g. 4.9)',
+    'banner_review_count_label' => 'Review Count (e.g. 15K+)',
+    'testimonial_1_name_label' => 'Testimonial 1 Name',
+    'testimonial_2_name_label' => 'Testimonial 2 Name',
     'gallery_image' => 'Gallery Image',
     'virtual_try_on' => 'Virtual Try-On',
     'try_now' => 'Try Now',
@@ -405,4 +417,90 @@ return [
     // Customer panel – support
     'support_ticket_created_success' => 'Support ticket created successfully.',
     'support_ticket_reply_success' => 'Reply sent successfully.',
+
+    // Admin panel – refunds
+    'refund_updated_success' => 'Refund request updated successfully.',
+
+    // Admin panel – orders
+    'order_updated_success' => 'Order updated successfully.',
+
+    // Admin panel – settings
+    'settings_updated_success' => 'Settings updated successfully.',
+
+    // Admin panel – staff
+    'staff_created_success' => 'Staff member created successfully.',
+    'staff_updated_success' => 'Staff member updated successfully.',
+    'staff_deleted_success' => 'Staff member deleted successfully.',
+    'staff_cannot_delete_assigned' => 'Cannot delete staff member assigned to orders.',
+
+    // Admin panel – contact
+    'message_deleted_success' => 'Message deleted successfully.',
+    'reply_saved_email_failed' => 'Reply saved but email could not be sent. Please try again later.',
+    'reply_sent_success' => 'Reply sent successfully.',
+
+    // Admin panel – brands
+    'brand_created_success' => 'Brand created successfully.',
+    'brand_updated_success' => 'Brand updated successfully.',
+    'brand_deleted_success' => 'Brand deleted successfully.',
+    'brand_has_active_products' => 'Cannot delete brand because it has active products.',
+    'no_items_selected' => 'No items selected.',
+    'brands_have_active_products' => 'Cannot delete some brands because they have active products.',
+    'selected_brands_deleted' => 'Selected brands deleted successfully.',
+
+    // Admin panel – customers
+    'customer_created_success' => 'Customer created successfully.',
+    'customer_updated_success' => 'Customer updated successfully.',
+    'customer_deleted_success' => 'Customer deleted successfully.',
+    'customer_has_orders' => 'Cannot delete customer with existing orders.',
+
+    // Admin panel – pages
+    'page_updated_success' => 'Page updated successfully.',
+    'no_file_uploaded' => 'No file uploaded.',
+
+    // Admin panel – support tickets
+    'ticket_updated_success' => 'Ticket updated successfully.',
+    'main_navigation' => 'Main navigation',
+    'toggle_sidebar' => 'Toggle sidebar',
+    'admin_dashboard' => 'Admin Dashboard',
+    'visit_site' => 'Visit Site',
+    'administrator' => 'Administrator',
+    'sign_out' => 'Sign out',
+    'sign_out_section' => 'Sign Out',
+    'search_menu_placeholder' => 'Search menu...',
+
+    // Admin panel – other modules
+    'payment_method_updated_success' => 'Payment method updated successfully.',
+    'website_settings_updated_success' => 'Website settings updated successfully.',
+    'coupon_created_success' => 'Coupon created successfully.',
+    'coupon_updated_success' => 'Coupon updated successfully.',
+    'coupon_deleted_success' => 'Coupon deleted successfully.',
+    'subscriber_deleted_success' => 'Subscriber deleted successfully.',
+    'menu_created_success' => 'Menu created successfully.',
+    'menu_updated_success' => 'Menu updated successfully.',
+    'menu_deleted_success' => 'Menu deleted successfully.',
+    'color_created_success' => 'Color created successfully.',
+    'color_updated_success' => 'Color updated successfully.',
+    'color_deleted_success' => 'Color deleted successfully.',
+    'unit_created_success' => 'Unit created successfully.',
+    'unit_updated_success' => 'Unit updated successfully.',
+    'unit_deleted_success' => 'Unit deleted successfully.',
+    'unit_has_products' => 'Cannot delete unit as it is associated with products.',
+    'email_config_updated_success' => 'Email configuration updated successfully.',
+    'email_template_updated_success' => 'Email template updated successfully.',
+    'currency_created_success' => 'Currency created successfully.',
+    'currency_updated_success' => 'Currency updated successfully.',
+    'currency_deleted_success' => 'Currency deleted successfully.',
+    'default_currency_cannot_delete' => 'Default currency cannot be deleted.',
+    'language_created_success' => 'Language created successfully.',
+    'language_updated_success' => 'Language updated successfully.',
+    'language_deleted_success' => 'Language deleted successfully.',
+    'default_language_cannot_delete' => 'Default language cannot be deleted.',
+    'refund_reason_created_success' => 'Refund reason created successfully.',
+    'refund_reason_updated_success' => 'Refund reason updated successfully.',
+    'refund_reason_deleted_success' => 'Refund reason deleted successfully.',
+    'department_created_success' => 'Department created successfully.',
+    'department_updated_success' => 'Department updated successfully.',
+    'department_deleted_success' => 'Department deleted successfully.',
+    'review_status_updated' => 'Review status updated.',
+    'review_deleted' => 'Review deleted.',
 ];

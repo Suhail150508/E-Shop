@@ -26,6 +26,7 @@
 
     {{-- Shared Frontend CSS --}}
     <link rel="stylesheet" href="{{ asset('frontend/css/frontend-shared.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/loader.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/tryon-modal.css') }}">
 
     {{-- Toastr --}}
@@ -38,6 +39,7 @@
 
 <body id="top">
 
+@include('layouts.partials.loader')
 @include('layouts.partials.header')
 
 <main>
@@ -93,5 +95,18 @@
 @include('frontend.partials.tryon-modal')
 @stack('modals')
 @stack('scripts')
+<script>
+(function() {
+    function hideLoader() {
+        var el = document.getElementById('appLoader');
+        if (el) el.classList.add('hidden');
+    }
+    if (document.readyState === 'complete') {
+        hideLoader();
+    } else {
+        window.addEventListener('load', hideLoader);
+    }
+})();
+</script>
 </body>
 </html>

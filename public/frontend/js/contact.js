@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const form = this;
             const btn = form.querySelector('#contactBtn');
             const btnText = btn.querySelector('.btn-text');
-            const spinner = btn.querySelector('.spinner-border');
+            const loader = btn.querySelector('.loader-inline');
             
             // Reset errors
             const invalidInputs = form.querySelectorAll('.is-invalid');
@@ -15,8 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Loading state
             btn.disabled = true;
+            btn.classList.add('btn-loading');
             btnText.classList.add('d-none');
-            spinner.classList.remove('d-none');
+            if (loader) loader.classList.remove('d-none');
             
             const formData = new FormData(form);
             
@@ -58,8 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
             .finally(() => {
                 // Reset state
                 btn.disabled = false;
+                btn.classList.remove('btn-loading');
                 btnText.classList.remove('d-none');
-                spinner.classList.add('d-none');
+                if (loader) loader.classList.add('d-none');
             });
         });
     }

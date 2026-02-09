@@ -19,8 +19,8 @@
             </div>
             <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div>
             <div class="position-absolute bottom-0 start-0 p-5 text-white w-100 auth-overlay">
-                <h2 class="display-5 fw-bold mb-3">{{ __('Join Our Community') }}</h2>
-                <p class="lead mb-0 text-white-50">{{ __('Experience the best shopping experience with exclusive benefits.') }}</p>
+                <h2 class="display-5 fw-bold mb-3">{{ e(setting('auth_register_overlay_title', __('Join Our Community'))) }}</h2>
+                <p class="lead mb-0 text-white-50">{{ e(setting('auth_register_overlay_text', __('Experience the best shopping experience with exclusive benefits.'))) }}</p>
             </div>
         </div>
         
@@ -31,8 +31,8 @@
                     <a href="{{ route('home') }}" class="d-inline-block mb-4 text-decoration-none">
                         <img src="{{ getImageOrPlaceholder(setting('app_logo'), '150x40') }}" alt="{{ config('app.name') }}" height="40">
                     </a>
-                    <h1 class="h2 fw-bold mb-2">{{ $title }}</h1>
-                    <p class="text-muted">{{ $subtitle }}</p>
+                    <h1 class="h2 fw-bold mb-2">{{ e(setting('auth_register_title', $title)) }}</h1>
+                    <p class="text-muted">{{ e(setting('auth_register_subtitle', $subtitle)) }}</p>
                 </div>
                 
                 <form method="POST" action="{{ route('register') }}">

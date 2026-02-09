@@ -56,6 +56,6 @@ class SettingController extends Controller
         }
 
         return redirect()->route('admin.settings.index')
-            ->with('success', __('Settings updated successfully.'));
+            ->with('success', __('common.settings_updated_success'));
     }
 }

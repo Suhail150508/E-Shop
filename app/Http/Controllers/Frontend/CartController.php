@@ -57,11 +57,20 @@ class CartController extends Controller
 
     public function store(Request $request, Product $product): JsonResponse|RedirectResponse
     {
-        $quantity = (int) $request->input('quantity', 1);
-        $options = [];
+        $validated = $request->validate([
+            'quantity' => ['sometimes', 'integer', 'min:1', 'max:999'],
+            'color' => ['nullable', 'string', 'max:100'],
+            'size' => ['nullable', 'string', 'max:100'],
+        ]);
 
-        if ($request->has('color')) {
-            $options['color'] = $request->input('color');
+        $quantity = (int) ($validated['quantity'] ?? $request->input('quantity', 1));
+        $quantity = max(1, min(999, $quantity));
+        $options = [];
+        if (! empty($validated['color'] ?? $request->input('color'))) {
+            $options['color'] = $validated['color'] ?? $request->input('color');
+        }
+        if (! empty($validated['size'] ?? $request->input('size'))) {
+            $options['size'] = $validated['size'] ?? $request->input('size');
         }
 
         $this->cart->add($product, $quantity, $options);
@@ -81,7 +90,10 @@ class CartController extends Controller
 
     public function update(Request $request, string $id): JsonResponse|RedirectResponse
     {
-        $quantity = (int) $request->input('quantity', 1);
+        $validated = $request->validate([
+            'quantity' => ['sometimes', 'integer', 'min:1', 'max:999'],
+        ]);
+        $quantity = max(1, min(999, (int) ($validated['quantity'] ?? $request->input('quantity', 1))));
 
         $this->cart->update($id, $quantity);
 

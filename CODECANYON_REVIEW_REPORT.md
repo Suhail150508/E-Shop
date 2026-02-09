@@ -149,6 +149,30 @@ This document summarizes the review performed against CodeCanyon standards and t
 
 ---
 
+## 8. Admin Panel Review (Step-by-Step)
+
+### 8.1 Code Quality & Structure
+- **Routes:** All admin routes under `Route::prefix('admin')` with `middleware(['auth', 'role:admin'])`.
+- **Controllers:** MVC; `OrderService`, `SettingService` used where appropriate; no commented junk or debug in admin controllers.
+- **Naming:** Role checks use `User::ROLE_STAFF`, `User::ROLE_CUSTOMER`.
+
+### 8.2 Localization & Static Text
+- **Lang keys:** All admin flash/error messages in `common.php` (refund, order, settings, staff, contact, brands, customers, pages, support tickets, payment, website, coupon, newsletter, menu, color, unit, email, currency, language, refund reason, department, review).
+- **Controllers:** All admin success/error/warning use `__('common.xxx')`.
+- **Views:** Admin refunds, orders, reviews, contact use `__('common.na')` / `__('common.guest')`; refund list null-safe `$refund->user?->name`.
+
+### 8.3 Error Handling & Data Safety
+- **Dashboard:** Revenue, orders, recent orders, chart exclude `Order::TYPE_WALLET_DEPOSIT`; `$order->created_at?->format()`.
+- **Order update:** Status `in:pending,processing,shipped,delivered,cancelled`; `staff_id` `Rule::exists(..., role=staff)`; Refund `admin_note` max 2000; lock before approval.
+
+### 8.4 Security
+- **Route protection:** `auth` + `role:admin`. **Validation:** Refund, Order, Support reply, Contact reply, Settings (UpdateSettingRequest), Page upload, Brand/Support search LIKE escaped. **File uploads:** Settings, Pages, Brand validated. **CSRF** on forms.
+
+### 8.5 Database & Refund / Wallet Logic (Admin)
+- **Dashboard:** Excludes wallet deposits. **Refund approval:** Lock row; wallet credit + WalletTransaction + order payment_status in one transaction. **OrderService:** Status validation; staff_id optional; cancellation/restore and wallet deposit handling.
+
+---
+
 ## Summary of Files Touched
 
 | File | Change |
@@ -168,6 +192,18 @@ This document summarizes the review performed against CodeCanyon standards and t
 | `resources/views/frontend/account/partials/sidebar.blade.php` | Null-safe name/email/avatar initial |
 | `resources/views/frontend/orders/show.blade.php` | Payment method → `__('common.na')`; `created_at?->`, `updated_at?->` |
 | `resources/views/frontend/account/support_ticket/show.blade.php` | `department?->name`, `created_at?->format()` |
+| **Admin panel** | |
+| `resources/lang/en/common.php` | Added admin flash keys (refund, order, settings, staff, contact, brands, customers, pages, tickets, payment, website, coupon, newsletter, menu, color, unit, email, currency, language, refund reason, department, review) |
+| `app/Http/Controllers/Admin/RefundController.php` | admin_note max:2000; flash → `__('common.xxx')` |
+| `app/Http/Controllers/Admin/OrderController.php` | status + staff_id validation; staff_id Rule::exists(role=staff); flash → common |
+| `app/Http/Controllers/Admin/DashboardController.php` | Exclude TYPE_WALLET_DEPOSIT from revenue, orders, recent orders, chart |
+| `app/Http/Controllers/Admin/SettingController.php`, Staff, Contact, Brand, Customer, Page, SupportTicket, PaymentMethod, WebsiteSetup, Coupon, Newsletter, Menu, Color, Unit, EmailConfiguration, Currency, Language, RefundReason, SupportDepartment, ReviewController | Flash/error → `__('common.xxx')` |
+| `app/Http/Controllers/Admin/StaffController.php`, CustomerController | Role checks use User::ROLE_STAFF / User::ROLE_CUSTOMER |
+| `app/Http/Controllers/Admin/BrandController.php` | Search LIKE escape; flash → common |
+| `app/Http/Controllers/Admin/SupportTicketController.php` | Search LIKE escape; message max 10000; flash → common |
+| `resources/views/admin/refunds/index.blade.php` | `user?->name`, `user?->email`, common.na, common.guest |
+| `resources/views/admin/reviews/index.blade.php`, contact/index, orders/show | `__('common.na')` |
+| `resources/views/admin/dashboard.blade.php` | `created_at?->format()` |
 
 ---
 
@@ -181,5 +217,8 @@ This document summarizes the review performed against CodeCanyon standards and t
 - [x] Customer panel: ownership checks on address, order, refund, support ticket
 - [x] Customer panel: all flash messages via `__('common.xxx')`; views null-safe where needed
 - [x] Customer panel: file upload validation (refund images, support attachment) and message max length
+- [x] Admin panel: all routes under auth + role:admin; flash messages via `__('common.xxx')`
+- [x] Admin panel: order status and staff_id validated; refund admin_note max length; LIKE search escaped (brand, support ticket)
+- [x] Admin panel: dashboard and refund logic exclude wallet deposits where appropriate; refund lock prevents double wallet credit
 - [ ] Optional: full project scan for remaining hardcoded strings
 - [ ] Optional: add rate limiting on `/virtual-try` if required by reviewer

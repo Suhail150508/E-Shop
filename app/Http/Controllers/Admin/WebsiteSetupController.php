@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\SettingService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -53,12 +54,15 @@ class WebsiteSetupController extends Controller
         $allowedKeys = [
             'home_hero_title', 'home_hero_subtitle',
             'home_category_title', 'home_category_subtitle', 'home_category_badge',
-            'home_flash_title', 'home_flash_subtitle', 'home_flash_badge',
+            'home_flash_title', 'home_flash_badge',
             'home_promo_title', 'home_promo_subtitle', 'home_promo_badge',
             'home_promo_btn1_text', 'home_promo_btn1_link', 'home_promo_btn2_text', 'home_promo_btn2_link',
             'home_banner_title', 'home_banner_badge', 'home_banner_text',
             'home_banner_btn_text', 'home_banner_btn_link',
-            'home_featured_title', 'home_featured_subtitle', 'home_featured_badge',
+            'home_banner_rating', 'home_banner_review_count',
+            'home_banner_testimonial_1_name', 'home_banner_testimonial_2_name',
+            'home_featured_title', 'home_featured_badge',
+            'home_latest_title', 'home_latest_badge',
             'shop_page_title', 'shop_breadcrumb', 'shop_header_title', 'shop_header_subtitle',
             'category_default_subtitle',
             'product_related_title',
@@ -124,9 +128,9 @@ class WebsiteSetupController extends Controller
 
         foreach ($inputs as $key => $value) {
             if ($request->hasFile($key)) {
-                // Delete old image
+                // Delete old image only if it is in storage (do not delete public placeholder paths)
                 $oldImage = $this->settingService->get($key);
-                if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+                if ($oldImage && is_string($oldImage) && Storage::disk('public')->exists($oldImage)) {
                     Storage::disk('public')->delete($oldImage);
                 }
 
@@ -135,17 +139,36 @@ class WebsiteSetupController extends Controller
             }
         }
 
+        // Keys that are text/content: do not overwrite with empty so one section edit doesn't blank others
+        $contentKeys = [
+            'home_hero_title', 'home_hero_subtitle', 'home_category_title', 'home_category_subtitle', 'home_category_badge',
+            'home_flash_title', 'home_flash_badge', 'home_promo_title', 'home_promo_subtitle', 'home_promo_badge',
+            'home_promo_btn1_text', 'home_promo_btn1_link', 'home_promo_btn2_text', 'home_promo_btn2_link',
+            'home_banner_title', 'home_banner_badge', 'home_banner_text', 'home_banner_btn_text', 'home_banner_btn_link',
+            'home_banner_rating', 'home_banner_review_count', 'home_banner_testimonial_1_name', 'home_banner_testimonial_2_name',
+            'home_featured_title', 'home_featured_badge',
+            'home_latest_title', 'home_latest_badge',
+            'shop_page_title', 'shop_breadcrumb', 'shop_header_title', 'shop_header_subtitle', 'category_default_subtitle',
+            'product_related_title', 'auth_login_title', 'auth_login_subtitle', 'auth_register_title', 'auth_register_subtitle',
+            'auth_forgot_title', 'auth_forgot_subtitle', 'auth_reset_title', 'auth_reset_subtitle',
+            'cart_breadcrumb', 'cart_title', 'cart_subtitle', 'checkout_shipping_title', 'checkout_payment_title',
+        ];
+
         foreach ($inputs as $key => $value) {
+            if (in_array($key, $contentKeys) && $value !== null && (string) $value === '') {
+                continue; // preserve existing value when form sends empty for this key
+            }
             if (is_array($value)) {
                 $value = json_encode($value);
             }
             $this->settingService->set($key, $value);
         }
 
-        // Clear all settings cache so frontend home page shows updated content immediately
+        // Clear settings cache and home page product/section cache so frontend updates immediately
         $this->settingService->clearCache();
+        Cache::forget('home_products');
 
-        return redirect()->back()->with('success', __('Website settings updated successfully.'));
+        return redirect()->back()->with('success', __('common.website_settings_updated_success'));
     }
 
     /**

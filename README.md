@@ -2,6 +2,25 @@
 
 A modern, clean, and performant Single Vendor eCommerce application built with Laravel 11 and Bootstrap 5. This project is designed for easy customization and CodeCanyon compliance.
 
+## Full Documentation
+
+**Complete documentation** for buyers and reviewers is in the **[docs/](docs/README.md)** folder. It includes:
+
+- **Getting Started** – Requirements, installation, first login  
+- **Admin Panel & Settings** – Dashboard, General Settings, Email, Payment Methods, Website Setup  
+- **Product Management** – Categories, Brands, Products, Reviews, Virtual Try-On  
+- **Order Management** – Orders, Refunds, Coupons  
+- **Customers, Staff & Content** – Manage Pages, Menu Builder, Contact, Newsletter  
+- **Support & Live Chat** – Support Tickets, Live Chat module  
+- **Frontend – Customer Journey** – Shopping, Cart, Checkout, Account  
+- **Multi-Currency & Language** – Currencies, Languages, RTL  
+- **Virtual Try-On** – How it works, admin setup, customer use  
+- **Payment & Wallet** – Stripe, PayPal, Razorpay, Paystack, Bank, COD, Wallet  
+
+Start with **[docs/README.md](docs/README.md)** for the full index and quick reference.
+
+---
+
 ## 1. Installation
 
 1.  **Clone the repository:**

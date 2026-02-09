@@ -30,6 +30,8 @@ class UpdateProductRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'discount_price' => 'nullable|numeric|min:0|lte:price',
             'stock' => 'required|integer|min:0',
+            'weight' => 'nullable|string|max:50',
+            'dimensions' => 'nullable|string|max:100',
             'colors' => 'nullable|array',
             'colors.*' => 'string|max:50',
             'sizes' => 'nullable|array',

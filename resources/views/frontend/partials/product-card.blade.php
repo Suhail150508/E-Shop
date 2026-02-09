@@ -1,11 +1,11 @@
-<div class="col-6 col-md-4 col-lg-3">
-    <div class="product-card h-100 position-relative">
+<div class="col-6 col-md-4 col-lg-3 product-col">
+    <article class="product-card h-100 position-relative" itemscope itemtype="https://schema.org/Product">
         @if(isset($badge) && $badge)
             <div class="product-badge {{ $badge === 'SALE' ? 'bg-danger' : ($badge === 'NEW' ? 'bg-success' : 'bg-warning text-dark') }}">
                 @if($badge === 'SALE' && $product->discount_price && $product->price > 0 && $product->discount_price < $product->price)
                     -{{ round((($product->price - $product->discount_price) / $product->price) * 100) }}%
                 @else
-                    {{ __($badge) }}
+                    {{ $badge === 'SALE' ? __('common.sale_badge') : ($badge === 'NEW' ? __('common.new') : __('common.hot')) }}
                 @endif
             </div>
         @elseif($product->is_flash_sale)
@@ -21,12 +21,14 @@
         @endif
 
         <div class="product-image-wrapper">
-            <a href="{{ route('shop.product.show', $product->slug) }}">
-                <img src="{{ getImageOrPlaceholder($product->image_url, '500x450') }}" 
-                     alt="{{ $product->translate('name') ?: __('common.product_thumbnail') }}" 
+            <a href="{{ route('shop.product.show', $product->slug) }}" class="product-image-link">
+                <img src="{{ getImageOrPlaceholder($product->image_url, '400x360') }}" 
+                     alt="{{ $product->translate('name') ? e($product->translate('name')) : __('common.product_thumbnail') }}" 
                      class="product-img"
+                     width="400"
+                     height="360"
                      loading="lazy"
-                     onerror="this.src='{{ asset('backend/images/placeholder.svg') }}'">
+                     onerror="this.onerror=null; this.src='{{ route('placeholder', ['size' => '400x360']) }}';">
             </a>
             <div class="product-actions">
                 @if($product->is_tryable ?? false)
@@ -46,14 +48,13 @@
             </div>
         </div>
         
-        <div class="product-info p-3">
+        <div class="product-info">
             @if($product->category)
-                <div class="product-category text-muted small mb-1">{{ $product->category->name }}</div>
+                <div class="product-category text-muted small mb-1">{{ e($product->category->name) }}</div>
             @endif
-            
             <h3 class="product-title h6 mb-2">
-                <a href="{{ route('shop.product.show', $product->slug) }}" class="text-decoration-none text-dark">
-                    {{ Str::limit($product->translate('name') ?? '', 40) }}
+                <a href="{{ route('shop.product.show', $product->slug) }}" class="text-decoration-none text-dark" itemprop="url">
+                    <span itemprop="name">{{ e(Str::limit($product->translate('name') ?? '', 35)) }}</span>
                 </a>
             </h3>
             
@@ -94,6 +95,6 @@
                 </form>
             </div>
         </div>
-    </div>
+    </article>
 </div>
 

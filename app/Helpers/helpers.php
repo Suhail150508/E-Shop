@@ -15,9 +15,9 @@ if (! function_exists('getImageOrPlaceholder')) {
             $size = '300x300';
         }
 
-        $placeholder = route('placeholder', ['size' => $size]);
+        $placeholder = route('placeholder', ['size' => $size]) . '?v=2';
 
-        if (! $path) {
+        if ($path === null || $path === '' || (is_string($path) && trim($path) === '')) {
             return $placeholder;
         }
 

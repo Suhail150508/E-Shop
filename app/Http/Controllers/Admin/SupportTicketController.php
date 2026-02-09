@@ -24,12 +24,13 @@ class SupportTicketController extends Controller
         }
 
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('ticket_number', 'like', '%'.$request->search.'%')
-                    ->orWhere('subject', 'like', '%'.$request->search.'%')
-                    ->orWhereHas('user', function ($q) use ($request) {
-                        $q->where('name', 'like', '%'.$request->search.'%')
-                            ->orWhere('email', 'like', '%'.$request->search.'%');
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $request->input('search'));
+            $query->where(function ($q) use ($search) {
+                $q->where('ticket_number', 'like', '%'.$search.'%')
+                    ->orWhere('subject', 'like', '%'.$search.'%')
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->where('name', 'like', '%'.$search.'%')
+                            ->orWhere('email', 'like', '%'.$search.'%');
                     });
             });
         }
@@ -55,14 +56,14 @@ class SupportTicketController extends Controller
 
         $supportTicket->update($request->only('status', 'priority'));
 
-        return back()->with('success', __('Ticket updated successfully.'));
+        return back()->with('success', __('common.ticket_updated_success'));
     }
 
     public function reply(Request $request, SupportTicket $ticket)
     {
         $request->validate([
-            'message' => 'required|string',
-            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'message' => ['required', 'string', 'max:10000'],
+            'attachment' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf,doc,docx', 'max:2048'],
         ]);
 
         $attachmentPath = null;
@@ -85,6 +86,6 @@ class SupportTicketController extends Controller
 
         $ticket->update(['status' => 'replied']);
 
-        return back()->with('success', __('Reply sent successfully.'));
+        return back()->with('success', __('common.support_ticket_reply_success'));
     }
 }

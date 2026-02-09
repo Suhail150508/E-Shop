@@ -37,11 +37,13 @@ body {
     height: var(--header-height);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 0 1.5rem;
+    margin: 1rem 0;
     background-color: var(--sidebar-dark);
     color: #fff;
     text-decoration: none;
+    border-radius: 8px;
 }
 
 .brand-logo {

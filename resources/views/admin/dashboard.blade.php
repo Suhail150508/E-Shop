@@ -122,7 +122,7 @@
                                     <span>{{ $order->user?->name ?? $order->customer_name }}</span>
                                 </div>
                             </td>
-                            <td class="text-muted">{{ $order->created_at->format('M d, Y') }}</td>
+                            <td class="text-muted">{{ $order->created_at?->format('M d, Y') }}</td>
                             <td class="fw-bold">{{ format_price($order->total ?? 0) }}</td>
                             <td>
                                 <span class="badge bg-{{ $order->status_color }}-subtle text-{{ $order->status_color }} px-3 py-2 rounded-pill text-capitalize">

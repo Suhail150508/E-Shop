@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\OrderService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
@@ -136,8 +137,8 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|string',
-            'staff_id' => 'nullable|exists:users,id',
+            'status' => ['required', 'string', 'in:pending,processing,shipped,delivered,cancelled'],
+            'staff_id' => ['nullable', Rule::exists('users', 'id')->where('role', User::ROLE_STAFF)],
         ]);
 
         $status = $request->input('status');
@@ -146,7 +147,7 @@ class OrderController extends Controller
         $this->orderService->changeStatus($order, $status, $staffId);
 
         return redirect()->route('admin.orders.show', $order)
-            ->with('success', __('Order updated successfully.'));
+            ->with('success', __('common.order_updated_success'));
     }
 
     /**

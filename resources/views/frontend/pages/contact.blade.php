@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-@include('frontend.partials.breadcrumb', ['title' => optional($page)->title ?? __('common.contact'), 'bgImage' => optional($page)->image ?? getImageOrPlaceholder(null, '1920x400')])
+@include('frontend.partials.breadcrumb', ['title' => (isset($page) && $page ? $page->translate('title') : null) ?? __('common.contact'), 'bgImage' => optional($page)->image ?? getImageOrPlaceholder(null, '1920x400')])
 
 <div class="container py-5">
     <div class="row justify-content-center">
@@ -71,9 +71,9 @@
                                 <textarea name="message" class="form-control" rows="5" placeholder="{{ __('common.your_message') }}" required></textarea>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-terracotta text-white" id="contactBtn">
+                                <button type="submit" class="btn btn-terracotta text-white position-relative" id="contactBtn">
                                     <span class="btn-text">{{ __('common.send_message_btn') }}</span>
-                                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    <span class="loader-inline d-none" role="status" aria-hidden="true"><span class="block"></span><span class="block"></span><span class="block"></span><span class="block"></span></span>
                                 </button>
                             </div>
                         </div>

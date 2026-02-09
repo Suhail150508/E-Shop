@@ -33,7 +33,7 @@ class ContactController extends Controller
         $message = ContactMessage::findOrFail($id);
         $message->delete();
 
-        return back()->with('success', __('Message deleted successfully.'));
+        return back()->with('success', __('common.message_deleted_success'));
     }
 
     public function reply(Request $request, $id)
@@ -52,9 +52,9 @@ class ContactController extends Controller
             Mail::to($message->email)->send(new ContactReplyMail($message));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::warning('Contact reply email failed', ['message_id' => $message->id, 'error' => $e->getMessage()]);
-            return back()->with('warning', __('Reply saved but email could not be sent. Please try again later.'));
+            return back()->with('warning', __('common.reply_saved_email_failed'));
         }
 
-        return back()->with('success', __('Reply sent successfully.'));
+        return back()->with('success', __('common.reply_sent_success'));
     }
 }

@@ -24,7 +24,7 @@ class SupportDepartmentController extends Controller
 
         SupportDepartment::create($request->all());
 
-        return back()->with('success', __('Department created successfully.'));
+        return back()->with('success', __('common.department_created_success'));
     }
 
     public function update(Request $request, SupportDepartment $supportDepartment)
@@ -36,13 +36,13 @@ class SupportDepartmentController extends Controller
 
         $supportDepartment->update($request->all());
 
-        return back()->with('success', __('Department updated successfully.'));
+        return back()->with('success', __('common.department_updated_success'));
     }
 
     public function destroy(SupportDepartment $supportDepartment)
     {
         $supportDepartment->delete();
 
-        return back()->with('success', __('Department deleted successfully.'));
+        return back()->with('success', __('common.department_deleted_success'));
     }
 }

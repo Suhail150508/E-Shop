@@ -69,13 +69,13 @@
                                 </td>
                                 <td data-label="{{ __('Invoice No') }}">
                                     <a href="{{ route('admin.orders.show', $refund->order_id) }}" class="font-monospace text-dark text-decoration-none fw-bold">
-                                        {{ $refund->order?->order_number ?? __('N/A') }}
+                                        {{ $refund->order?->order_number ?? __('common.na') }}
                                     </a>
                                 </td>
                                 <td data-label="{{ __('Customer') }}">
                                     <div class="d-flex flex-column">
-                                        <span class="fw-bold text-dark">{{ $refund->user->name ?? __('Guest') }}</span>
-                                        <small class="text-muted">{{ $refund->user->email ?? '' }}</small>
+                                        <span class="fw-bold text-dark">{{ $refund->user?->name ?? __('common.guest') }}</span>
+                                        <small class="text-muted">{{ $refund->user?->email ?? '' }}</small>
                                     </div>
                                 </td>
                                 <td data-label="{{ __('Amount') }}">

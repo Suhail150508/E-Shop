@@ -121,6 +121,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="weight" class="form-label">{{ __('common.weight') }}</label>
+                                <input type="text" class="form-control @error('weight') is-invalid @enderror" id="weight" name="weight" value="{{ old('weight', $product->weight) }}" placeholder="{{ __('e.g. 0.5 kg') }}">
+                                @error('weight')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="dimensions" class="form-label">{{ __('common.dimensions') }}</label>
+                                <input type="text" class="form-control @error('dimensions') is-invalid @enderror" id="dimensions" name="dimensions" value="{{ old('dimensions', $product->dimensions) }}" placeholder="{{ __('e.g. 10 x 20 x 5 cm') }}">
+                                @error('dimensions')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card border-0 shadow-sm rounded-4 mb-4">
@@ -302,25 +322,34 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">{{ __('Gallery Images') }}</label>
+                        <p class="form-text small text-muted mb-2">{{ __('JPEG, PNG or WebP. Max 2MB per image.') }}</p>
                         @if($product->images && count($product->images) > 0)
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                @foreach($product->images as $image)
-                                    <div class="position-relative">
-                                        <img src="{{ $image->image_url }}" class="rounded border" style="width: 60px; height: 60px; object-fit: cover;">
-                                    </div>
-                                @endforeach
+                            <div class="gallery-existing mb-3">
+                                <span class="small text-muted d-block mb-2">{{ __('Current gallery') }}</span>
+                                <div class="d-flex flex-wrap gap-2 gallery-existing-list">
+                                    @foreach($product->images as $image)
+                                        <div class="gallery-thumb-wrap rounded border bg-white shadow-sm position-relative overflow-hidden" style="width: 72px; height: 72px;">
+                                            <img src="{{ $image->image_url }}" alt="" class="w-100 h-100 object-fit-cover">
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         @endif
-                        <div class="card border border-dashed bg-light text-center">
-                            <div class="card-body py-3">
-                                <i class="bi bi-images fs-2 text-muted mb-2"></i>
-                                <div class="small text-muted mb-2">{{ __('Upload additional images') }}</div>
-                                <input type="file" class="form-control form-control-sm @error('gallery_images') is-invalid @enderror @error('gallery_images.*') is-invalid @enderror" id="gallery_images" name="gallery_images[]" multiple>
-                                @error('gallery_images')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                        <div class="gallery-drop-zone rounded-3 border border-2 bg-light position-relative overflow-hidden" id="galleryDropZone" role="button" tabindex="0" data-remove-title="{{ __("common.remove") }}">
+                            <input type="file" class="d-none @error('gallery_images') is-invalid @enderror @error('gallery_images.*') is-invalid @enderror" id="gallery_images" name="gallery_images[]" multiple accept="image/jpeg,image/png,image/jpg,image/webp">
+                            <div class="gallery-drop-zone-inner text-center py-4 px-3">
+                                <i class="bi bi-cloud-arrow-up display-5 text-primary mb-2"></i>
+                                <div class="fw-semibold text-dark mb-1">{{ __('Drag & drop images here') }}</div>
+                                <div class="small text-muted">{{ __('or click to browse') }}</div>
                             </div>
+                            @error('gallery_images')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                            @error('gallery_images.*')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
+                        <div class="gallery-preview-list d-flex flex-wrap gap-2 mt-3" id="galleryPreviewList"></div>
                     </div>
                 </div>
             </div>
@@ -336,6 +365,7 @@
     </div>
 </form>
 @push('styles')
+<link rel="stylesheet" href="{{ asset('backend/css/gallery-upload.css') }}">
 <style>
 .nav-tabs-product-lang .nav-link { border: 1px solid #dee2e6; margin-right: 4px; border-radius: 6px; font-weight: 500; }
 .nav-tabs-product-lang .nav-link.active { background: #e7f1ff; border-color: #0d6efd; color: #0d6efd; }
@@ -345,6 +375,7 @@
 @endpush
 @push('scripts')
     <script src="{{ asset('backend/vendor/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('backend/js/gallery-drag-drop.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof tinymce !== 'undefined') {

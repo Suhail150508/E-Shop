@@ -27,6 +27,6 @@ class NewsletterController extends Controller
         $subscriber = Newsletter::findOrFail($id);
         $subscriber->delete();
 
-        return back()->with('success', __('Subscriber deleted successfully.'));
+        return back()->with('success', __('common.subscriber_deleted_success'));
     }
 }

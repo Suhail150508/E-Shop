@@ -107,6 +107,7 @@ return [
     'availability' => 'প্রাপ্যতা',
     'to' => 'থেকে',
     'in_stock' => 'স্টকে আছে',
+    'in_stock_with_count' => ':count টি স্টকে আছে',
     'out_of_stock' => 'স্টকে নেই',
     'sort_by' => 'সাজান',
     'default_sorting' => 'ডিফল্ট সাজানো',

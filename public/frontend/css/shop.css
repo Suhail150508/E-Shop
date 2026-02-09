@@ -1,3 +1,50 @@
+/* =========================================
+   Shop & Category: Page header responsive
+   Fixed navbar ke clear korte top padding
+   ========================================= */
+.page-header {
+    padding-top: clamp(5.5rem, 14vw, 8.5rem);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+    padding-left: clamp(1rem, 3vw, 1.5rem);
+    padding-right: clamp(1rem, 3vw, 1.5rem);
+    text-align: center;
+}
+
+.page-title {
+    font-size: clamp(1.5rem, 5vw, 2.75rem);
+    margin-bottom: 0.5rem;
+    line-height: 1.25;
+    word-wrap: break-word;
+}
+
+.page-subtitle {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.breadcrumb {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+    font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+    margin-bottom: 0.75rem;
+}
+
+@media (max-width: 767px) {
+    .page-header {
+        padding-top: 5.5rem;
+        padding-bottom: 1.75rem;
+    }
+    .page-title {
+        font-size: 1.5rem;
+    }
+    .shop-container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}
+
 /* Shop Index */
 .sub-category-indent {
     margin-left: 1.5rem !important;
@@ -19,4 +66,105 @@
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+/* =========================================
+   Unified product card (same as home page)
+   Shop & Category: 5 per row on xl, same card size
+   ========================================= */
+@media (min-width: 1200px) {
+    #productsGrid > .product-col {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
+#productsGrid .product-card {
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+    overflow: hidden;
+    max-width: 100%;
+    background: #ffffff;
+}
+
+#productsGrid .product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+    border-color: rgba(209, 122, 92, 0.2);
+}
+
+#productsGrid .product-image-wrapper {
+    border-radius: 10px 10px 0 0;
+    padding-top: 105%;
+    background: #f8f9fa;
+}
+
+#productsGrid .product-card:hover .product-img {
+    transform: scale(1.04);
+}
+
+#productsGrid .product-info {
+    padding: 0.7rem 0.75rem 0.85rem;
+    border-radius: 0 0 10px 10px;
+    background: #ffffff;
+}
+
+#productsGrid .product-title.h6 {
+    font-size: 0.875rem;
+    line-height: 1.35;
+    min-height: 2.6em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+#productsGrid .product-category {
+    font-size: 0.7rem;
+}
+
+#productsGrid .product-price {
+    font-size: 0.9rem;
+}
+
+#productsGrid .product-card .btn-outline-primary {
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 0.4rem 0.65rem;
+    font-size: 0.8rem;
+    transition: all 0.25s ease;
+}
+
+#productsGrid .product-card .btn-outline-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 12px rgba(209, 122, 92, 0.25);
+}
+
+#productsGrid .product-badge {
+    border-radius: 5px;
+    top: 7px;
+    left: 7px;
+    font-size: 0.6rem;
+    padding: 3px 7px;
+    font-weight: 700;
+}
+
+#productsGrid .product-actions {
+    top: 7px;
+    right: 7px;
+    gap: 5px;
+}
+
+#productsGrid .product-card-actions {
+    margin-top: 0.45rem;
+}
+
+#productsGrid .product-rating {
+    margin-bottom: 0.3rem;
+}
+
+#productsGrid .product-rating .small {
+    font-size: 0.7rem;
 }

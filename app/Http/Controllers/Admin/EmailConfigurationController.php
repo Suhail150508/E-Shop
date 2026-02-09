@@ -62,7 +62,7 @@ class EmailConfigurationController extends Controller
             $this->settingService->set($key, $value);
         }
 
-        return redirect()->back()->with('success', __('Email configuration updated successfully.'));
+        return redirect()->back()->with('success', __('common.email_config_updated_success'));
     }
 
     /**
@@ -116,7 +116,7 @@ class EmailConfigurationController extends Controller
             'message' => $request->message,
         ]);
 
-        return redirect()->route('admin.email-configuration.templates')->with('success', __('Email template updated successfully.'));
+        return redirect()->route('admin.email-configuration.templates')->with('success', __('common.email_template_updated_success'));
     }
 
     private function seedTemplates()

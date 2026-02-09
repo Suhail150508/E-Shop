@@ -58,7 +58,7 @@ class RefundController extends Controller
     {
         $request->validate([
             'status' => 'required|in:pending,approved,rejected',
-            'admin_note' => 'nullable|string',
+            'admin_note' => ['nullable', 'string', 'max:2000'],
         ]);
 
         try {
@@ -101,11 +101,11 @@ class RefundController extends Controller
                 ]);
             });
 
-            return back()->with('success', __('Refund request updated successfully.'));
+            return back()->with('success', __('common.refund_updated_success'));
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Refund update failed', ['id' => $refund->id, 'error' => $e->getMessage()]);
-            return back()->with('error', __('Something went wrong. Please try again.'));
+            return back()->with('error', __('common.error_generic'));
         }
     }
 }

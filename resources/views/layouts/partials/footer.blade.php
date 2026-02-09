@@ -12,9 +12,9 @@
                     <div class="col-md-8 col-lg-6">
                         <div class="input-group newsletter-input-group">
                             <input type="email" name="email" class="form-control newsletter-input" placeholder="{{ __('common.enter_email') }}" required aria-label="Email">
-                            <button class="btn newsletter-btn" type="submit" id="newsletterBtn">
+                            <button class="btn newsletter-btn position-relative" type="submit" id="newsletterBtn">
                                 <span class="btn-text">{{ __('common.subscribe') }}</span>
-                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <span class="loader-inline d-none" role="status" aria-hidden="true"><span class="block"></span><span class="block"></span><span class="block"></span><span class="block"></span></span>
                             </button>
                         </div>
                     </div>

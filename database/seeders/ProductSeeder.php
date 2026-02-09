@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Brand;
+use App\Models\Unit;
 use Modules\Category\App\Models\Category;
 use Modules\Product\App\Models\Product;
 use Illuminate\Database\Seeder;
@@ -12,11 +13,14 @@ class ProductSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * Uses only category/subcategory slugs from CategorySeeder. Sets unit_id and ensures featured/flash_sale for home display.
      */
     public function run(): void
     {
+        $defaultUnit = Unit::where('is_active', true)->first();
+        $unitId = $defaultUnit ? $defaultUnit->id : null;
+
         $products = [
-            // --- Men's Fashion ---
             [
                 'name' => 'Classic Oxford White Shirt',
                 'brand_slug' => 'classic-fit',
@@ -24,28 +28,32 @@ class ProductSeeder extends Seeder
                 'sub_slug' => 'shirts-mens-fashion',
                 'price' => 55.00,
                 'discount_price' => 45.00,
-                'description' => 'Experience timeless elegance with our Classic Oxford White Shirt. Crafted from premium cotton, this shirt offers breathable comfort and a tailored fit perfect for both office wear and casual outings. Features a button-down collar and durable stitching.',
+                'description' => 'Timeless elegance with premium cotton. Breathable, tailored fit with button-down collar and durable stitching. Ideal for office and casual wear.',
+                'is_featured' => true,
+                'is_flash_sale' => true,
             ],
             [
-                'name' => 'Slim Fit Navy Chinos',
+                'name' => 'Slim Fit Denim Jacket',
                 'brand_slug' => 'urban-vogue',
                 'cat_slug' => 'mens-fashion',
-                'sub_slug' => 'pants-mens-fashion',
-                'price' => 60.00,
+                'sub_slug' => 'jackets-mens-fashion',
+                'price' => 89.00,
                 'discount_price' => null,
-                'description' => 'Upgrade your wardrobe with these versatile Slim Fit Navy Chinos. Designed for modern style and flexibility, they pair effortlessly with shirts or tees. Made with stretch fabric for all-day comfort.',
+                'description' => 'Versatile slim fit denim jacket. Modern style, comfortable for all-day wear. Pairs well with shirts or tees.',
+                'is_featured' => true,
+                'is_flash_sale' => false,
             ],
             [
-                'name' => 'Premium Charcoal Suit',
+                'name' => 'Premium Cotton T-Shirt Pack',
                 'brand_slug' => 'luxe-threads',
                 'cat_slug' => 'mens-fashion',
-                'sub_slug' => 'suits-mens-fashion',
-                'price' => 450.00,
-                'discount_price' => 399.00,
-                'description' => 'Make a statement with this Premium Charcoal Suit. Expertly tailored from high-quality wool blend, it features a sleek silhouette, structured shoulders, and a refined finish suitable for weddings, business meetings, and formal events.',
+                'sub_slug' => 't-shirts-mens-fashion',
+                'price' => 29.00,
+                'discount_price' => 24.00,
+                'description' => 'Soft premium cotton t-shirts in a pack of two. Relaxed fit, perfect for everyday comfort.',
+                'is_featured' => true,
+                'is_flash_sale' => true,
             ],
-         
-            // --- Women's Fashion ---
             [
                 'name' => 'Elegant Evening Silk Gown',
                 'brand_slug' => 'luxe-threads',
@@ -53,7 +61,9 @@ class ProductSeeder extends Seeder
                 'sub_slug' => 'dresses-womens-fashion',
                 'price' => 250.00,
                 'discount_price' => 199.99,
-                'description' => 'Shine at any special occasion with our Elegant Evening Silk Gown. The luxurious silk fabric drapes beautifully, while the intricate design details add a touch of sophistication and glamour.',
+                'description' => 'Luxurious silk gown for special occasions. Beautiful drape and refined details for a sophisticated look.',
+                'is_featured' => true,
+                'is_flash_sale' => true,
             ],
             [
                 'name' => 'Summer Floral Maxi Dress',
@@ -62,71 +72,98 @@ class ProductSeeder extends Seeder
                 'sub_slug' => 'dresses-womens-fashion',
                 'price' => 85.00,
                 'discount_price' => null,
-                'description' => 'Embrace the summer vibes with this airy Floral Maxi Dress. Lightweight and breathable, it features a vibrant print that is perfect for beach vacations or garden parties.',
+                'description' => 'Lightweight floral maxi dress. Breathable fabric, ideal for summer and outdoor events.',
+                'is_featured' => false,
+                'is_flash_sale' => true,
             ],
             [
-                'name' => 'Boho Style Lace Dress',
-                'brand_slug' => 'urban-vogue',
-                'cat_slug' => 'womens-fashion',
-                'sub_slug' => 'dresses-womens-fashion',
-                'price' => 110.00,
-                'discount_price' => null,
-                'description' => 'Capture the bohemian spirit with this exquisite Lace Dress. Detailed lacework and a relaxed fit make it a charming choice for casual gatherings or festivals.',
-            ],
-            [
-                'name' => 'Chic Floral Print Maxi',
+                'name' => 'Chic Lace Top',
                 'brand_slug' => 'classic-fit',
                 'cat_slug' => 'womens-fashion',
-                'sub_slug' => 'dresses-womens-fashion',
-                'price' => 95.00,
-                'discount_price' => 85.00,
-                'description' => 'Stay stylish and comfortable with our Chic Floral Print Maxi. The soft fabric and flattering cut ensure you look your best while feeling great all day long.',
+                'sub_slug' => 'tops-womens-fashion',
+                'price' => 45.00,
+                'discount_price' => 38.00,
+                'description' => 'Elegant lace top with a relaxed fit. Pairs well with skirts or jeans for a polished look.',
+                'is_featured' => false,
+                'is_flash_sale' => true,
             ],
             [
-                'name' => 'White Lace Summer Dress',
-                'brand_slug' => 'luxe-threads',
-                'cat_slug' => 'womens-fashion',
-                'sub_slug' => 'dresses-womens-fashion',
-                'price' => 130.00,
-                'discount_price' => null,
-                'description' => 'A perfect blend of elegance and simplicity, this White Lace Summer Dress is a wardrobe essential. Ideal for warm weather, it pairs well with sandals or heels.',
-            ],
-            [
-                'name' => 'Vintage Floral Wrap Dress',
+                'name' => 'A-Line Midi Skirt',
                 'brand_slug' => 'urban-vogue',
                 'cat_slug' => 'womens-fashion',
-                'sub_slug' => 'dresses-womens-fashion',
-                'price' => 75.00,
-                'discount_price' => 60.00,
-                'description' => 'Channel vintage charm with this Floral Wrap Dress. The wrap design offers a customizable fit, making it flattering for all body types.',
+                'sub_slug' => 'skirts-womens-fashion',
+                'price' => 52.00,
+                'discount_price' => null,
+                'description' => 'Classic A-line midi skirt in quality fabric. Comfortable waist and flattering silhouette.',
+                'is_featured' => false,
+                'is_flash_sale' => false,
+            ],
+            [
+                'name' => 'Ethnic Embroidered Kurti',
+                'brand_slug' => 'luxe-threads',
+                'cat_slug' => 'womens-fashion',
+                'sub_slug' => 'ethnic-wear-womens-fashion',
+                'price' => 65.00,
+                'discount_price' => 55.00,
+                'description' => 'Traditional ethnic kurti with delicate embroidery. Comfortable and stylish for festive or casual wear.',
+                'is_featured' => true,
+                'is_flash_sale' => true,
+            ],
+            [
+                'name' => 'Boys Casual Shirt',
+                'brand_slug' => 'classic-fit',
+                'cat_slug' => 'kids-fashion',
+                'sub_slug' => 'boys-kids-fashion',
+                'price' => 28.00,
+                'discount_price' => null,
+                'description' => 'Comfortable casual shirt for boys. Easy-care fabric, perfect for school and play.',
+                'is_featured' => false,
+                'is_flash_sale' => false,
+            ],
+            [
+                'name' => 'Girls Party Dress',
+                'brand_slug' => 'urban-vogue',
+                'cat_slug' => 'kids-fashion',
+                'sub_slug' => 'girls-kids-fashion',
+                'price' => 42.00,
+                'discount_price' => 35.00,
+                'description' => 'Pretty party dress for girls. Soft fabric and cheerful design for special occasions.',
+                'is_featured' => false,
+                'is_flash_sale' => true,
             ],
         ];
 
         foreach ($products as $productData) {
             $brand = Brand::where('slug', $productData['brand_slug'])->first();
             $category = Category::where('slug', $productData['cat_slug'])->first();
-            $subcategory = isset($productData['sub_slug']) ? Category::where('slug', $productData['sub_slug'])->first() : null;
+            $subcategory = isset($productData['sub_slug'])
+                ? Category::where('slug', $productData['sub_slug'])->first()
+                : null;
 
-            if (!$brand || !$category) {
-                continue; // Skip if dependencies not found
+            if (! $brand || ! $category) {
+                continue;
             }
 
+            $slug = Str::slug($productData['name']);
+            $description = $productData['description'] ?? 'Quality product for everyday use.';
+
             Product::updateOrCreate(
-                ['slug' => Str::slug($productData['name'])],
+                ['slug' => $slug],
                 [
                     'name' => $productData['name'],
                     'brand_id' => $brand->id,
                     'category_id' => $category->id,
-                    'subcategory_id' => $subcategory ? $subcategory->id : null,
-                    'sku' => strtoupper(Str::random(8)), // Generate random SKU if new
-                    'description' => $productData['description'] ?? 'This is a premium quality product designed to meet your needs. It offers exceptional durability, style, and value. Perfect for daily use or special occasions.',
+                    'subcategory_id' => $subcategory?->id,
+                    'unit_id' => $unitId,
+                    'sku' => 'SKU-' . strtoupper(Str::random(6)),
+                    'description' => $description,
                     'price' => $productData['price'],
-                    'discount_price' => $productData['discount_price'],
-                    'stock' => 100, // Default stock
-                    'image' => null, // Will use placeholder
+                    'discount_price' => $productData['discount_price'] ?? null,
+                    'stock' => 100,
+                    'image' => null,
                     'is_active' => true,
-                    'is_featured' => rand(0, 1) == 1,
-                    'is_flash_sale' => rand(0, 1) == 1,
+                    'is_featured' => $productData['is_featured'] ?? false,
+                    'is_flash_sale' => $productData['is_flash_sale'] ?? false,
                 ]
             );
         }

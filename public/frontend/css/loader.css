@@ -1,0 +1,96 @@
+/**
+ * Global Loader - 2x2 colored blocks with staggered pulse animation
+ * Professional, smooth; full-page and inline button states.
+ */
+
+/* Full-page overlay */
+.app-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+.app-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* 2x2 grid of blocks - full page */
+.loader-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px;
+    width: 52px;
+    height: 52px;
+}
+.loader-blocks .block {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    animation: loader-pulse 0.9s ease-in-out infinite both;
+    will-change: transform;
+}
+.loader-blocks .block:nth-child(1) { background: #7c3aed; animation-delay: 0s; }
+.loader-blocks .block:nth-child(2) { background: #f97316; animation-delay: 0.12s; }
+.loader-blocks .block:nth-child(3) { background: #7c3aed; animation-delay: 0.24s; }
+.loader-blocks .block:nth-child(4) { background: #ec4899; animation-delay: 0.36s; }
+
+/* Staggered pulse: each block scales up then back in sequence */
+@keyframes loader-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+}
+
+/* Inline / small loader (buttons) */
+.loader-inline {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2px;
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+}
+.loader-inline .block {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    animation: loader-pulse 0.9s ease-in-out infinite both;
+    will-change: transform;
+}
+.loader-inline .block:nth-child(1) { background: #7c3aed; animation-delay: 0s; }
+.loader-inline .block:nth-child(2) { background: #f97316; animation-delay: 0.12s; }
+.loader-inline .block:nth-child(3) { background: #7c3aed; animation-delay: 0.24s; }
+.loader-inline .block:nth-child(4) { background: #ec4899; animation-delay: 0.36s; }
+
+/* Reduce motion (accessibility) */
+@media (prefers-reduced-motion: reduce) {
+    .loader-blocks .block,
+    .loader-inline .block {
+        animation: none;
+        transform: scale(1);
+    }
+}
+
+/* Button loading state */
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+}
+.btn-loading .btn-text,
+.btn-loading .btn-icon {
+    visibility: hidden;
+}
+.btn-loading .loader-inline {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}

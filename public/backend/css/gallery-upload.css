@@ -1,0 +1,56 @@
+/**
+ * Gallery drag-and-drop upload zone styles
+ * Use with gallery-drag-drop.js on admin product create/edit or any gallery upload form.
+ */
+.gallery-drop-zone {
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+    border-style: dotted !important;
+}
+.gallery-drop-zone:hover,
+.gallery-drop-zone.drag-over {
+    border-color: #0d6efd !important;
+    background-color: #e7f1ff !important;
+}
+.gallery-drop-zone .gallery-drop-zone-inner {
+    pointer-events: none;
+}
+.gallery-preview-list .gallery-preview-item {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    position: relative;
+}
+.gallery-preview-list .gallery-preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.gallery-preview-list .gallery-preview-item .gallery-preview-remove {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0;
+}
+.gallery-preview-list .gallery-preview-item .gallery-preview-remove:hover {
+    background: #dc3545;
+}
+.gallery-thumb-wrap img.object-fit-cover,
+.gallery-preview-list .gallery-preview-item img {
+    object-fit: cover;
+}

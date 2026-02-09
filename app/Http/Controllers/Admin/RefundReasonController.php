@@ -23,7 +23,7 @@ class RefundReasonController extends Controller
 
         RefundReason::create($request->all());
 
-        return back()->with('success', __('Refund reason created successfully.'));
+        return back()->with('success', __('common.refund_reason_created_success'));
     }
 
     public function update(Request $request, RefundReason $refundReason)
@@ -35,12 +35,12 @@ class RefundReasonController extends Controller
 
         $refundReason->update($request->all());
 
-        return back()->with('success', __('Refund reason updated successfully.'));
+        return back()->with('success', __('common.refund_reason_updated_success'));
     }
 
     public function destroy(RefundReason $refundReason)
     {
         $refundReason->delete();
-        return back()->with('success', __('Refund reason deleted successfully.'));
+        return back()->with('success', __('common.refund_reason_deleted_success'));
     }
 }

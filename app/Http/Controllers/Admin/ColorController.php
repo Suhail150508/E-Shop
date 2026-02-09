@@ -60,7 +60,7 @@ class ColorController extends Controller
         Color::create($data);
 
         return redirect()->route('admin.colors.index')
-            ->with('success', __('Color created successfully.'));
+            ->with('success', __('common.color_created_success'));
     }
 
     /**
@@ -89,7 +89,7 @@ class ColorController extends Controller
         $color->update($data);
 
         return redirect()->route('admin.colors.index')
-            ->with('success', __('Color updated successfully.'));
+            ->with('success', __('common.color_updated_success'));
     }
 
     /**
@@ -103,6 +103,6 @@ class ColorController extends Controller
         $color->delete();
 
         return redirect()->route('admin.colors.index')
-            ->with('success', __('Color deleted successfully.'));
+            ->with('success', __('common.color_deleted_success'));
     }
 }

@@ -24,7 +24,8 @@ class BrandController extends Controller
         $query = Brand::withCount('products')->latest();
 
         if ($search) {
-            $query->where('name', 'like', "%{$search}%");
+            $searchEscaped = str_replace(['%', '_'], ['\\%', '\\_'], $search);
+            $query->where('name', 'like', '%'.$searchEscaped.'%');
         }
 
         if ($status !== null && $status !== '') {
@@ -71,7 +72,7 @@ class BrandController extends Controller
 
         Brand::create($data);
 
-        return redirect()->route('admin.brands.index')->with('success', __('Brand created successfully.'));
+        return redirect()->route('admin.brands.index')->with('success', __('common.brand_created_success'));
     }
 
     /**
@@ -121,7 +122,7 @@ class BrandController extends Controller
 
         $brand->update($data);
 
-        return redirect()->route('admin.brands.index')->with('success', __('Brand updated successfully.'));
+        return redirect()->route('admin.brands.index')->with('success', __('common.brand_updated_success'));
     }
 
     /**
@@ -133,7 +134,7 @@ class BrandController extends Controller
     public function destroy(Brand $brand)
     {
         if ($brand->products()->where('is_active', true)->exists()) {
-            return redirect()->back()->with('error', __('Cannot delete brand because it has active products.'));
+            return redirect()->back()->with('error', __('common.brand_has_active_products'));
         }
 
         if ($brand->image) {
@@ -146,7 +147,7 @@ class BrandController extends Controller
         }
         $brand->delete();
 
-        return redirect()->route('admin.brands.index')->with('success', __('Brand deleted successfully.'));
+        return redirect()->route('admin.brands.index')->with('success', __('common.brand_deleted_success'));
     }
 
     /**
@@ -160,7 +161,7 @@ class BrandController extends Controller
         $ids = $request->input('ids');
 
         if (!is_array($ids) || count($ids) === 0) {
-            return response()->json(['error' => __('No items selected.')], 400);
+            return response()->json(['error' => __('common.no_items_selected')], 400);
         }
 
         $brands = Brand::whereIn('id', $ids)
@@ -171,7 +172,7 @@ class BrandController extends Controller
 
         foreach ($brands as $brand) {
             if ($brand->products_count > 0) {
-                return response()->json(['error' => __('Cannot delete some brands because they have active products.')], 400);
+                return response()->json(['error' => __('common.brands_have_active_products')], 400);
             }
         }
 
@@ -187,6 +188,6 @@ class BrandController extends Controller
             $brand->delete();
         }
 
-        return response()->json(['success' => __('Selected brands deleted successfully.')]);
+        return response()->json(['success' => __('common.selected_brands_deleted')]);
     }
 }

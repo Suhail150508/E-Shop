@@ -242,7 +242,7 @@
 
                 applyBtn.disabled = true;
                 const originalText = applyBtn.innerHTML;
-                applyBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                applyBtn.innerHTML = '<span class="loader-inline" role="status" aria-hidden="true"><span class="block"></span><span class="block"></span><span class="block"></span><span class="block"></span></span>';
                 messageDiv.innerHTML = '';
 
                 fetch('{{ route("checkout.coupon.apply") }}', {
@@ -302,7 +302,7 @@
                 if(submitBtn && !submitBtn.disabled) {
                     submitBtn.disabled = true;
                     const originalText = submitBtn.innerHTML;
-                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> {{ __("Processing...") }}';
+                    submitBtn.innerHTML = '<span class="loader-inline me-2" role="status" aria-hidden="true"><span class="block"></span><span class="block"></span><span class="block"></span><span class="block"></span></span> {{ __("Processing...") }}';
                     
                     // Re-enable after 15s in case of error/timeout to allow retry
                     setTimeout(() => {

@@ -38,9 +38,9 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" id="startTryBtn" class="btn btn-primary tryon-btn-preview w-100 mt-4" disabled>
+                    <button type="button" id="startTryBtn" class="btn btn-primary tryon-btn-preview w-100 mt-4 position-relative" disabled>
                         <span class="btn-text">{{ __('common.preview') }}</span>
-                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        <span class="loader-inline d-none" role="status" aria-hidden="true"><span class="block"></span><span class="block"></span><span class="block"></span><span class="block"></span></span>
                     </button>
                 </div>
                 <div id="tryonResultStep" class="tryon-step d-none tryon-result-step-layout">

@@ -24,22 +24,25 @@ class PlaceholderController extends Controller
         $width = max(10, min($width, 2000));
         $height = max(10, min($height, 2000));
 
-        $backgroundColor = '#f8f9fa';
-        $textColor = '#6c757d';
-        $fontSize = min($width, $height) / 5;
-        $text = "{$width}x{$height}";
+        $backgroundColor = '#e8e8e8';
+        $textColor = '#9e9e9e';
+        $dimensionText = $width . 'x' . $height;
+        $fontSize = (int) min($width, $height) * 0.08;
+        $fontSize = max(12, min($fontSize, 72));
+        $cx = (int) ($width / 2);
+        $cy = (int) ($height / 2);
 
         $svg = <<<SVG
 <svg width="{$width}" height="{$height}" xmlns="http://www.w3.org/2000/svg">
     <rect width="100%" height="100%" fill="{$backgroundColor}"/>
-    <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="{$fontSize}" fill="{$textColor}" text-anchor="middle" dy=".3em">{$text}</text>
-    <rect width="100%" height="100%" fill="none" stroke="#dee2e6" stroke-width="2"/>
+    <text x="{$cx}" y="{$cy}" font-family="Arial, sans-serif" font-size="{$fontSize}" fill="{$textColor}" text-anchor="middle" dominant-baseline="middle">{$dimensionText}</text>
 </svg>
 SVG;
 
         return Response::make($svg, 200, [
             'Content-Type' => 'image/svg+xml',
-            'Cache-Control' => 'public, max-age=31536000',
+            'Cache-Control' => 'no-cache, max-age=0, must-revalidate',
+            'Pragma' => 'no-cache',
         ]);
     }
 }

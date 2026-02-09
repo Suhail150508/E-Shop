@@ -60,7 +60,7 @@ class CouponController extends Controller
         Coupon::create($request->all());
 
         return redirect()->route('admin.coupons.index')
-            ->with('success', __('Coupon created successfully.'));
+            ->with('success', __('common.coupon_created_success'));
     }
 
     /**
@@ -105,7 +105,7 @@ class CouponController extends Controller
         $coupon->update($request->all());
 
         return redirect()->route('admin.coupons.index')
-            ->with('success', __('Coupon updated successfully.'));
+            ->with('success', __('common.coupon_updated_success'));
     }
 
     /**
@@ -119,6 +119,6 @@ class CouponController extends Controller
         $coupon->delete();
 
         return redirect()->route('admin.coupons.index')
-            ->with('success', __('Coupon deleted successfully.'));
+            ->with('success', __('common.coupon_deleted_success'));
     }
 }
