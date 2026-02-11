@@ -50,7 +50,7 @@ class BankPaymentService implements PaymentService
 
             return redirect()
                 ->route('customer.wallet.index')
-                ->with('success', __('Bank transfer instructions have been provided. Please complete the transfer.'));
+                ->with('success', __('paymentgateway::payment.bank_transfer_instructions'));
         }
 
         // We can redirect to the order confirmation page or show page with a success message
@@ -59,7 +59,7 @@ class BankPaymentService implements PaymentService
 
         return redirect()
             ->route('checkout.confirmation', $order)
-            ->with('success', __('Order placed successfully. Please proceed with the bank transfer.'));
+            ->with('success', __('paymentgateway::payment.bank_transfer_submitted'));
     }
 
     public function handleSuccess(Order $order, Request $request): RedirectResponse
@@ -78,7 +78,7 @@ class BankPaymentService implements PaymentService
 
         return redirect()
             ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-            ->with('error', __('Payment cancelled.'));
+            ->with('error', __('paymentgateway::payment.payment_cancelled'));
     }
 
     public function handleWebhook(Request $request): Response

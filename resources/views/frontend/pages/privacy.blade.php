@@ -7,7 +7,7 @@
 @if(isset($page) && ($page->translate('content') ?? $page->content))
     {!! $page->translate('content') ?? $page->content !!}
     @else
-        <div class="alert alert-info">{{ __('Privacy Policy content is coming soon.') }}</div>
+        <div class="alert alert-info">{{ __('common.privacy_coming_soon') }}</div>
     @endif
 </div>
 

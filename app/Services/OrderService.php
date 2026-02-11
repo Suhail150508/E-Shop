@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Events\OrderCreated;
 use App\Events\OrderStatusUpdated;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderStatusHistory;
@@ -13,7 +14,9 @@ use App\Notifications\NewOrderNotification;
 use App\Notifications\OrderStatusNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Modules\PaymentGateway\App\Models\WalletTransaction;
 use Modules\PaymentGateway\App\Services\WalletService;
 
 class OrderService extends BaseService
@@ -46,10 +49,15 @@ class OrderService extends BaseService
         return DB::transaction(function () use ($items, $user, $customerData) {
             $subtotal = $this->cart->subtotal();
 
-            $shippingRate = (float) $this->settings->get('shipping_flat_rate', 0);
-            $taxPercent = (float) $this->settings->get('tax_percent', 0);
+            // Check if shipping cost is passed in customerData, otherwise calculate/default
+            if (isset($customerData['shipping_cost'])) {
+                $shipping = (float) $customerData['shipping_cost'];
+            } else {
+                $shippingRate = (float) $this->settings->get('shipping_flat_rate', 0);
+                $shipping = $shippingRate > 0 ? $shippingRate : 0;
+            }
 
-            $shipping = $shippingRate > 0 ? $shippingRate : 0;
+            $taxPercent = (float) $this->settings->get('tax_percent', 0);
             $tax = $taxPercent > 0 ? round($subtotal * $taxPercent / 100, 2) : 0;
 
             $discountTotal = $this->cart->discount();
@@ -93,7 +101,7 @@ class OrderService extends BaseService
             // Increment coupon usage
             $couponData = $this->cart->getCoupon();
             if ($couponData) {
-                $coupon = \App\Models\Coupon::find($couponData['id']);
+                $coupon = Coupon::find($couponData['id']);
                 if ($coupon) {
                     $coupon->increment('used_count');
                 }
@@ -144,7 +152,7 @@ class OrderService extends BaseService
                 Notification::send($admins, new NewOrderNotification($order));
 
             } catch (\Exception $e) {
-                \Illuminate\Support\Facades\Log::error('Order created notification failed: '.$e->getMessage());
+                Log::error('Order created notification failed: '.$e->getMessage());
             }
 
             return $order->fresh(['items', 'user']);
@@ -188,7 +196,7 @@ class OrderService extends BaseService
                 'changed_by_id' => $user->id,
             ]);
 
-            \App\Models\OrderItem::create([
+            OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => null, // No product for deposit
                 'product_name' => 'Wallet Deposit',
@@ -198,7 +206,7 @@ class OrderService extends BaseService
             ]);
 
             // Create Pending Wallet Transaction
-            \Modules\PaymentGateway\App\Models\WalletTransaction::create([
+            WalletTransaction::create([
                 'user_id' => $user->id,
                 'amount' => $amount,
                 'type' => 'credit',
@@ -243,11 +251,25 @@ class OrderService extends BaseService
                     if ($previousStatus === Order::STATUS_DELIVERED) {
                         $order->user->decrement('wallet_balance', $order->total);
                         
-                        \Modules\PaymentGateway\App\Models\WalletTransaction::where('payment_transaction_id', $order->order_number)
+                        WalletTransaction::where('payment_transaction_id', $order->order_number)
                             ->update(['status' => 'cancelled']);
                     }
                 } else {
                     $this->restoreStock($order);
+
+                    // Refund if paid
+                    if ($order->payment_status === Order::PAYMENT_PAID && $order->user) {
+                        try {
+                            $this->wallet->credit(
+                                $order->user,
+                                $order->total,
+                                __('common.refund_for_cancelled_order') . $order->order_number
+                            );
+                            $order->payment_status = Order::PAYMENT_REFUNDED;
+                        } catch (\Exception $e) {
+                            Log::error('Refund failed for order ' . $order->order_number . ': ' . $e->getMessage());
+                        }
+                    }
                 }
             } 
             // Handle Restoration from Cancelled (Stock Reduction / Wallet Credit)
@@ -257,7 +279,7 @@ class OrderService extends BaseService
                     if ($status === Order::STATUS_DELIVERED || $status === Order::STATUS_PROCESSING) {
                         $order->user->increment('wallet_balance', $order->total);
                         
-                        \Modules\PaymentGateway\App\Models\WalletTransaction::where('payment_transaction_id', $order->order_number)
+                        WalletTransaction::where('payment_transaction_id', $order->order_number)
                             ->update(['status' => 'approved']);
                             
                         $status = Order::STATUS_DELIVERED;
@@ -274,7 +296,7 @@ class OrderService extends BaseService
                     $order->user->increment('wallet_balance', $order->total);
 
                     // Update Pending Transaction to Approved
-                    \Modules\PaymentGateway\App\Models\WalletTransaction::where('payment_transaction_id', $order->order_number)
+                    WalletTransaction::where('payment_transaction_id', $order->order_number)
                         ->where('status', 'pending')
                         ->update(['status' => 'approved']);
 
@@ -303,7 +325,7 @@ class OrderService extends BaseService
                     $order->user->notify(new OrderStatusNotification($order, $status));
                 }
             } catch (\Exception $e) {
-                \Illuminate\Support\Facades\Log::error('Order status notification failed: '.$e->getMessage());
+                Log::error('Order status notification failed: '.$e->getMessage());
             }
 
             return $order->fresh(['items', 'user', 'staff']);

@@ -3,19 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Staff\StoreStaffRequest;
+use App\Http\Requests\Admin\Staff\UpdateStaffRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class StaffController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $staffMembers = User::where('role', User::ROLE_STAFF)
-            ->withCount('assignedOrders')
+        $query = User::where('role', User::ROLE_STAFF);
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $staffMembers = $query->withCount('assignedOrders')
             ->latest()
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('admin.staff.index', compact('staffMembers'));
     }
@@ -25,14 +37,8 @@ class StaffController extends Controller
         return view('admin.staff.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreStaffRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -41,7 +47,8 @@ class StaffController extends Controller
             'email_verified_at' => now(),
         ]);
 
-        return redirect()->route('admin.staff.index')->with('success', __('common.staff_created_success'));
+        return redirect()->route('admin.staff.index')
+            ->with('success', __('staff.created_success'));
     }
 
     public function edit(User $staff)
@@ -53,17 +60,11 @@ class StaffController extends Controller
         return view('admin.staff.edit', compact('staff'));
     }
 
-    public function update(Request $request, User $staff)
+    public function update(UpdateStaffRequest $request, User $staff)
     {
         if ($staff->role !== User::ROLE_STAFF) {
             abort(404);
         }
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($staff->id)],
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
 
         $data = [
             'name' => $request->name,
@@ -76,7 +77,8 @@ class StaffController extends Controller
 
         $staff->update($data);
 
-        return redirect()->route('admin.staff.index')->with('success', __('common.staff_updated_success'));
+        return redirect()->route('admin.staff.index')
+            ->with('success', __('staff.updated_success'));
     }
 
     public function destroy(User $staff)
@@ -85,12 +87,18 @@ class StaffController extends Controller
             abort(404);
         }
 
+        // Prevent self-deletion
+        if ($staff->id === Auth::id()) {
+            return back()->with('error', __('staff.cannot_delete_self'));
+        }
+
         if ($staff->assignedOrders()->exists()) {
-            return back()->with('error', __('common.staff_cannot_delete_assigned'));
+            return back()->with('error', __('staff.cannot_delete_assigned'));
         }
 
         $staff->delete();
 
-        return redirect()->route('admin.staff.index')->with('success', __('common.staff_deleted_success'));
+        return redirect()->route('admin.staff.index')
+            ->with('success', __('staff.deleted_success'));
     }
 }

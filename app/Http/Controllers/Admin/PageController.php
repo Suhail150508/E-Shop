@@ -7,7 +7,6 @@ use App\Models\Language;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
@@ -76,11 +75,13 @@ class PageController extends Controller
 
         $data = [
             'title' => $request->input('title'),
-            'content' => $request->input('content'),
             'meta_title' => $request->input('meta_title'),
             'meta_description' => $request->input('meta_description'),
             'is_active' => $request->has('is_active'),
         ];
+        if ($page->slug !== 'about-us') {
+            $data['content'] = $request->input('content');
+        }
 
         if ($request->hasFile('image')) {
             if ($page->image && is_string($page->image) && Storage::disk('public')->exists($page->image)) {

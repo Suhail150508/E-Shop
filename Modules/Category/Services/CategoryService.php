@@ -88,8 +88,14 @@ class CategoryService
      */
     public function delete(Category $category, bool $checkProducts = true): void
     {
-        if ($checkProducts && $category->products()->where('is_active', true)->exists()) {
-            throw new \Exception(__('Cannot delete category because it has active products.'));
+        // Check for children (subcategories)
+        if ($category->children()->count() > 0) {
+            throw new \Exception(__('category::category.error_has_subcategories'));
+        }
+
+        // Check for products (active or inactive)
+        if ($checkProducts && $category->products()->exists()) {
+            throw new \Exception(__('category::category.error_has_products'));
         }
 
         if ($category->image) {
@@ -106,17 +112,18 @@ class CategoryService
     public function bulkDelete(array $ids): void
     {
         $categories = Category::whereIn('id', $ids)
-            ->withCount(['products' => function ($query) {
-                $query->where('is_active', true);
-            }])
+            ->withCount(['products', 'children'])
             ->get();
 
         foreach ($categories as $category) {
             if ($category->products_count > 0) {
-                 // Skip throwing exception to allow partial success, or throw to stop all? 
-                 // The original behavior was throw on first failure. I'll stick to that but optimized.
-                 throw new \Exception(__('Cannot delete category because it has active products.'));
+                 throw new \Exception(__('category::category.error_bulk_has_products', ['name' => $category->name]));
             }
+            
+            if ($category->children_count > 0) {
+                 throw new \Exception(__('category::category.error_bulk_has_subcategories', ['name' => $category->name]));
+            }
+
             $this->delete($category, false);
         }
     }

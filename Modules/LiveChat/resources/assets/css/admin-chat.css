@@ -1,0 +1,30 @@
+.cursor-pointer { cursor: pointer; }
+.conversation-item:hover { background-color: #f8f9fa; }
+.conversation-item.active { background-color: #eef2ff; border-left: 3px solid var(--bs-primary); }
+
+.message-bubble {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.message-bubble.customer {
+    background-color: #e9ecef; /* Light gray */
+    color: #333;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+
+.message-bubble.admin {
+    background-color: #4f46e5; /* Primary */
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+#admin-chat-messages {
+    display: flex;
+    flex-direction: column;
+}

@@ -97,25 +97,17 @@ class LiveChatController extends Controller
         ]);
     }
 
-    public function sendMessage(Request $request)
+    public function sendMessage(\Modules\LiveChat\App\Http\Requests\SendMessageRequest $request)
     {
-        if (! Auth::check()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
         // Early detect oversized payloads (beyond PHP limits) to return JSON error rather than silent failure
         if ($this->isPayloadTooLarge($request)) {
-            return response()->json(['error' => 'Uploaded file exceeds the server allowed size (post_max_size).'], 413);
+            return response()->json(['error' => __('livechat::livechat.payload_too_large')], 413);
         }
 
-        $request->validate([
-            'conversation_id' => 'required|exists:live_chat_conversations,id',
-            'message' => 'nullable|string',
-            'attachment' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf,doc,docx,webp|max:2048',
-        ]);
+        $validated = $request->validated();
 
         if (! $request->message && ! $request->hasFile('attachment')) {
-            return response()->json(['error' => 'Message or attachment required'], 422);
+            return response()->json(['error' => __('livechat::livechat.message_or_attachment_required')], 422);
         }
 
         $conversation = Conversation::where('id', $request->conversation_id)

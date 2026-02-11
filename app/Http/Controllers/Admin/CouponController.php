@@ -47,7 +47,7 @@ class CouponController extends Controller
                 'min:0',
                 function ($attribute, $value, $fail) use ($request) {
                     if ($request->type === 'percent' && $value > 100) {
-                        $fail(__('The percentage value cannot exceed 100.'));
+                        $fail(__('common.coupon_percentage_max'));
                     }
                 },
             ],
@@ -92,7 +92,7 @@ class CouponController extends Controller
                 'min:0',
                 function ($attribute, $value, $fail) use ($request) {
                     if ($request->type === 'percent' && $value > 100) {
-                        $fail(__('The percentage value cannot exceed 100.'));
+                        $fail(__('common.coupon_percentage_max'));
                     }
                 },
             ],

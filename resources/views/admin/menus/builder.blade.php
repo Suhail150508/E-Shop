@@ -176,7 +176,7 @@
             const parentId = $('#custom-parent').val();
             
             if(!title) {
-                toastr.error('Link text is required');
+                toastr.error('{{ __('common.link_text_required') }}');
                 return;
             }
 
@@ -226,18 +226,18 @@
                         // Add to dropdown
                         $('#custom-parent').append(new Option(res.item.title, res.item.id));
                         
-                        toastr.success('Item added');
+                        toastr.success('{{ __('common.item_added') }}');
                     }
                 },
                 error: function() {
-                    toastr.error('Failed to add item');
+                    toastr.error('{{ __('common.item_add_failed') }}');
                 }
             });
         }
 
         // Delete Item
         $(document).on('click', '.delete-item-btn', function() {
-            if(!confirm('Delete this item?')) return;
+            if(!confirm('{{ __('common.delete_item_confirm') }}')) return;
             
             const btn = $(this);
             const id = btn.data('id');
@@ -249,7 +249,7 @@
                 success: function(res) {
                     if(res.success) {
                         btn.closest('.dd-item').remove();
-                        toastr.success('Item deleted');
+                        toastr.success('{{ __('common.item_deleted') }}');
                     }
                 }
             });
@@ -289,7 +289,7 @@
                         btn.data('target', data.target);
                         
                         $('#editItemModal').modal('hide');
-                        toastr.success('Item updated');
+                        toastr.success('{{ __('common.item_updated') }}');
                     }
                 }
             });

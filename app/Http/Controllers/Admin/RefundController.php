@@ -7,10 +7,18 @@ use App\Models\Order;
 use App\Models\Refund;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Modules\PaymentGateway\App\Models\WalletTransaction;
+use Illuminate\Support\Facades\Log;
+use Modules\PaymentGateway\App\Services\WalletService;
 
 class RefundController extends Controller
 {
+    protected $walletService;
+
+    public function __construct(WalletService $walletService)
+    {
+        $this->walletService = $walletService;
+    }
+
     /**
      * Display a listing of the refund requests.
      *
@@ -69,24 +77,21 @@ class RefundController extends Controller
                 // Check if we are approving a previously non-approved refund
                 if ($request->status === 'approved' && $refund->status !== 'approved') {
 
-                    // Logic for Wallet Refund
-                    // If the order was paid via Wallet, credit the amount back to the user's wallet
-                    if ($refund->order->payment_method === 'wallet' && $refund->order->user) {
-                        $user = $refund->order->user;
+                    // Check if order is already refunded to prevent double refund
+                    if ($refund->order->payment_status === Order::PAYMENT_REFUNDED) {
+                        throw new \Exception(__('common.refund_already_processed'));
+                    }
 
-                        // Credit the wallet
-                        $user->increment('wallet_balance', $refund->amount);
-
-                        // Create Wallet Transaction History
-                        WalletTransaction::create([
-                            'user_id' => $user->id,
-                            'amount' => $refund->amount,
-                            'type' => 'refund',
-                            'description' => 'Refund for Order #' . $refund->order->order_number,
-                            'payment_method' => 'wallet',
-                            'payment_transaction_id' => $refund->order->id, // Reference: Order ID
-                            'status' => 'approved',
-                        ]);
+                    // Logic for Wallet Refund (Store Credit)
+                    // We credit the wallet regardless of payment method (as Store Credit)
+                    if ($refund->order->user) {
+                        $this->walletService->credit(
+                            $refund->order->user,
+                            $refund->amount,
+                            __('common.refund_for_order') . ' #' . $refund->order->order_number,
+                            'refund', // Type
+                            $refund->order->order_number // Transaction ID
+                        );
                     }
 
                     // Update order payment status to refunded
@@ -104,7 +109,7 @@ class RefundController extends Controller
             return back()->with('success', __('common.refund_updated_success'));
 
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Refund update failed', ['id' => $refund->id, 'error' => $e->getMessage()]);
+            Log::error('Refund update failed', ['id' => $refund->id, 'error' => $e->getMessage()]);
             return back()->with('error', __('common.error_generic'));
         }
     }

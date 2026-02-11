@@ -23,7 +23,7 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="bg-light">
                             <tr>
-                                <th class="ps-4 border-0 text-muted small text-uppercase fw-semibold">{{ __('SL') }}</th>
+                                <th class="ps-4 border-0 text-muted small text-uppercase fw-semibold">{{ __('common.sl') }}</th>
                                 <th class="border-0 text-muted small text-uppercase fw-semibold">{{ __('Order ID') }}</th>
                                 <th class="border-0 text-muted small text-uppercase fw-semibold">{{ __('Order Date') }}</th>
                                 <th class="border-0 text-muted small text-uppercase fw-semibold">{{ __('Order Amount') }}</th>
@@ -46,11 +46,11 @@
                                         {{ $order->formatPrice($order->total) }}
                                     </td>
                                     <td>
-                                        <span class="badge rounded-pill bg-{{ $order->payment_status_color }} bg-opacity-10 text-{{ $order->payment_status_color }} px-3 py-2">{{ __(ucfirst($order->payment_status)) }}</span>
+                                        <span class="badge rounded-pill bg-{{ $order->payment_status_color }} bg-opacity-10 text-{{ $order->payment_status_color }} px-3 py-2">{{ __('common.' . $order->payment_status) }}</span>
                                     </td>
                                     <td>
                                         <span class="badge rounded-pill bg-{{ $order->status_color }} bg-opacity-10 text-{{ $order->status_color }} text-capitalize px-3 py-2">
-                                            {{ __(ucfirst($order->status)) }}
+                                            {{ __('common.' . $order->status) }}
                                         </span>
                                     </td>
                                     <td class="text-end pe-4">

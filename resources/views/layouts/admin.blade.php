@@ -37,11 +37,16 @@
 </head>
 <body class="admin-layout">
 
+    <!-- Loader -->
     @include('layouts.partials.loader')
     <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+    
+    <!-- Sidebar -->
     @include('layouts.partials.admin-sidebar')
 
+    <!-- Main Wrapper -->
     <main class="main-wrapper">
+        <!-- Top Header -->
         <header class="top-header">
             <div class="d-flex align-items-center">
                 <button type="button" class="toggle-sidebar border-0 bg-transparent p-0" id="sidebarToggle" aria-label="{{ __('common.toggle_sidebar') }}" aria-expanded="false" aria-controls="sidebar">
@@ -53,10 +58,12 @@
             </div>
 
             <div class="header-right">
+                <!-- Visit Site Button -->
                 <a href="{{ route('home') }}" target="_blank" rel="noopener noreferrer" class="btn btn-light btn-sm d-none d-md-flex align-items-center gap-2">
                     <i class="fas fa-external-link-alt" aria-hidden="true"></i> {{ __('common.visit_site') }}
                 </a>
 
+                <!-- Notifications -->
                 <div class="dropdown notification-dropdown">
                     <button type="button" class="notification-btn border-0 bg-transparent p-0" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ __('common.notifications') }}" id="notificationDropdownBtn">
                         <i class="fas fa-bell" aria-hidden="true"></i>
@@ -76,6 +83,7 @@
                     </div>
                 </div>
 
+                <!-- User Dropdown -->
                 <div class="dropdown user-dropdown">
                     @php $authUser = auth()->user(); @endphp
                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" id="userMenuDropdown">

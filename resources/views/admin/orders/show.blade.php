@@ -46,40 +46,13 @@
                     <div>{{ $order->shipping_address ?: __('common.na') }}</div>
 
                     @if($order->shipping_latitude && $order->shipping_longitude)
-                        @inject('settings', 'App\Services\SettingService')
-                        @php
-                            $googleMapsApiKey = $settings->get('google_maps_api_key') ?: config('services.google.maps_api_key');
-                            $googleMapsEnabled = (bool) $settings->get('google_maps_enabled', false);
-                        @endphp
-
-                        @if($googleMapsEnabled && $googleMapsApiKey)
                         <div class="mt-3">
                             <div class="text-muted small mb-1">{{ __('Delivery Location') }}</div>
-                            <div id="admin-map" style="height: 200px; width: 100%; border-radius: 4px; border: 1px solid #dee2e6;"></div>
-                            <a href="https://www.google.com/maps/search/?api=1&query={{ $order->shipping_latitude }},{{ $order->shipping_longitude }}" target="_blank" class="btn btn-sm btn-outline-secondary mt-2 w-100">
+                            <div id="admin-order-map" class="rounded border" style="height: 200px; width: 100%;"></div>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ $order->shipping_latitude }},{{ $order->shipping_longitude }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary mt-2 w-100">
                                 <i class="fas fa-external-link-alt me-1"></i> {{ __('Open in Google Maps') }}
                             </a>
-                            
-                            @push('scripts')
-                            <script src="https://maps.googleapis.com/maps/api/js?key={{ $googleMapsApiKey }}&callback=initAdminMap" async defer></script>
-                            <script>
-                                function initAdminMap() {
-                                    const pos = { lat: {{ $order->shipping_latitude }}, lng: {{ $order->shipping_longitude }} };
-                                    const map = new google.maps.Map(document.getElementById("admin-map"), {
-                                        zoom: 15,
-                                        center: pos,
-                                        disableDefaultUI: true,
-                                        zoomControl: true
-                                    });
-                                    new google.maps.Marker({
-                                        position: pos,
-                                        map: map
-                                    });
-                                }
-                            </script>
-                            @endpush
                         </div>
-                        @endif
                     @endif
                 </div>
             </div>
@@ -209,3 +182,21 @@
 </div>
 @endsection
 
+@if($order->shipping_latitude && $order->shipping_longitude)
+@push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+@endpush
+@push('scripts')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var el = document.getElementById('admin-order-map');
+            if (el && typeof L !== 'undefined') {
+                var map = L.map(el).setView([{{ $order->shipping_latitude }}, {{ $order->shipping_longitude }}], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+                L.marker([{{ $order->shipping_latitude }}, {{ $order->shipping_longitude }}]).addTo(map);
+            }
+        });
+    </script>
+@endpush
+@endif

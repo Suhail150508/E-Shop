@@ -12,6 +12,7 @@ use Modules\LiveChat\App\Models\Message;
 
 class AdminLiveChatController extends Controller
 {
+    // Display a list of conversations
     public function index()
     {
         $conversations = Conversation::with(['messages' => function ($q) {
@@ -23,6 +24,7 @@ class AdminLiveChatController extends Controller
         return view('livechat::admin.index', compact('conversations'));
     }
 
+    // Show a specific conversation with messages
     public function show(Conversation $conversation)
     {
         $conversation->update(['is_read_by_admin' => true]);
@@ -34,18 +36,16 @@ class AdminLiveChatController extends Controller
         ]);
     }
 
-    public function reply(Request $request, Conversation $conversation)
+    // Reply to a conversation
+    public function reply(\Modules\LiveChat\App\Http\Requests\ReplyMessageRequest $request, Conversation $conversation)
     {
-        $validated = $request->validate([
-            'message' => 'nullable|string|max:5000',
-            'attachment' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp,pdf,doc,docx|max:2048',
-        ]);
+        $validated = $request->validated();
 
         $messageText = $request->filled('message') ? $validated['message'] : null;
 
         if (! $messageText && ! $request->hasFile('attachment')) {
             return response()->json([
-                'error' => __('common.message_or_attachment_required'),
+                'error' => __('livechat::livechat.message_or_attachment_required'),
             ], 422);
         }
 
@@ -59,7 +59,7 @@ class AdminLiveChatController extends Controller
                 Log::warning('LiveChat: attachment store failed', ['conversation_id' => $conversation->id]);
 
                 return response()->json([
-                    'error' => __('common.failed_to_save_attachment'),
+                    'error' => __('livechat::livechat.attachment_store_failed'),
                 ], 500);
             }
         }
@@ -90,6 +90,7 @@ class AdminLiveChatController extends Controller
         ]);
     }
 
+    // Poll for new conversations
     public function pollConversations()
     {
         $conversations = Conversation::where('is_read_by_admin', false)->count();

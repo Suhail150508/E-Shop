@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('Service Unavailable') }}</title>
+    <title>{{ __('common.service_unavailable') }}</title>
     
     {{-- Fonts & Icons --}}
-    <link rel="stylesheet" href="{{ asset('backend/css/font-awesome-all.min.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('backend/css/all.min.css') }}">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"> -->
 
     {{-- Bootstrap via Vite (RTL-aware) --}}
     @if(app()->getLocale() == 'ar')
@@ -67,8 +67,8 @@
         <div class="icon-wrapper">
             <i class="fas fa-tools"></i>
         </div>
-        <h1>{{ __('Under Maintenance') }}</h1>
-        <p>{{ __('We are currently performing scheduled maintenance to improve our services. We should be back shortly. Thank you for your patience.') }}</p>
+        <h1>{{ __('common.under_maintenance') }}</h1>
+        <p>{{ __('common.maintenance_message') }}</p>
     </div>
 </body>
 </html>

@@ -11,8 +11,8 @@
         </h2>
         <div class="flex-grow-1 mx-md-4" style="max-width: 500px;">
             <form action="{{ route('admin.refund-requests.index') }}" method="GET" class="position-relative">
-                <input type="text" name="search" value="{{ request('search') }}" 
-                    class="form-control border-0 bg-white shadow-sm rounded-pill py-2 ps-4 pe-5" 
+                <input type="text" name="search" value="{{ request('search') }}"
+                    class="form-control border-0 bg-white shadow-sm rounded-pill py-2 ps-4 pe-5"
                     placeholder="{{ __('Search by invoice no...') }}">
                 <button type="submit" class="btn position-absolute top-50 end-0 translate-middle-y me-2 text-primary">
                     <i class="bi bi-search"></i>
@@ -105,7 +105,7 @@
                                             <i class="bi bi-eye"></i>
                                         </button>
                                     </div>
-                                    
+
                                     <!-- Refund Modal -->
                                     <div class="modal fade" id="refundModal{{ $refund->id }}" tabindex="-1" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
@@ -125,7 +125,7 @@
                                                         <p class="mb-0 bg-light p-3 rounded-3">{{ $refund->details }}</p>
                                                     </div>
                                                     @endif
-                                                    
+
                                                     @if($refund->images)
                                                     <div class="mb-3">
                                                         <label class="form-label text-muted small">{{ __('Attachments') }}</label>
@@ -189,26 +189,3 @@
 </div>
 @endsection
 
-@push('styles')
-<style>
-    .btn-soft-primary {
-        color: #0d6efd;
-        background-color: rgba(13, 110, 253, 0.1);
-        border: none;
-    }
-    .btn-soft-primary:hover {
-        color: #fff;
-        background-color: #0d6efd;
-    }
-
-    .btn-soft-secondary {
-        color: #6c757d;
-        background-color: rgba(108, 117, 125, 0.1);
-        border: none;
-    }
-    .btn-soft-secondary:hover {
-        color: #fff;
-        background-color: #6c757d;
-    }
-</style>
-@endpush

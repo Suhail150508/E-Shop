@@ -31,13 +31,19 @@ class RazorpayPaymentService implements PaymentService
 
     public function isEnabled(): bool
     {
-        return (bool) $this->settings->get('payment_razorpay_enabled', false)
-            && $this->getKey()
-            && $this->getSecret();
+        return (bool) $this->settings->get('payment_razorpay_enabled', false);
     }
 
     public function createPayment(Order $order, array $data = []): RedirectResponse
     {
+        if (! $this->getKey() || ! $this->getSecret()) {
+            $redirectRoute = $order->type === Order::TYPE_WALLET_DEPOSIT ? 'customer.wallet.index' : 'customer.orders.show';
+
+            return redirect()
+                ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
+                ->with('error', __('paymentgateway::payment.razorpay_not_configured'));
+        }
+
         $response = Http::withBasicAuth($this->getKey(), $this->getSecret())
             ->post('https://api.razorpay.com/v1/payment_links', [
                 'amount' => (int) round($order->total * 100), // Amount in paise
@@ -144,6 +150,11 @@ class RazorpayPaymentService implements PaymentService
             if ($orderId) {
                 $order = Order::find($orderId);
                 if ($order && $order->user) {
+                    // Prevent double refund if already processed
+                    if ($order->payment_status === Order::PAYMENT_REFUNDED) {
+                        return new Response('Already Refunded');
+                    }
+
                     $amount = $refund['amount'] / 100;
                     DB::transaction(function () use ($order, $amount) {
                         $user = $order->user;

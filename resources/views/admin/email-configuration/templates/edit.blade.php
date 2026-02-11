@@ -4,18 +4,6 @@
 
 @push('styles')
 <link href="{{ asset('backend/vendor/summernote/summernote-lite.min.css') }}" rel="stylesheet">
-<style>
-    /*
-    .note-editor .note-toolbar {
-        background-color: #f8fafc;
-        border-bottom: 1px solid #e2e8f0;
-    }
-    .note-editor.note-frame {
-        border-color: #e2e8f0;
-        border-radius: 0.5rem;
-    }
-    */
-</style>
 @endpush
 
 @section('content')

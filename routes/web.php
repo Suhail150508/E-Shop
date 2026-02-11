@@ -247,6 +247,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/orders', [CustomerOrderController::class, 'index'])->name('customer.orders.index');
     Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('customer.orders.show');
     Route::get('/orders/{order}/invoice', [CustomerOrderController::class, 'invoice'])->name('customer.orders.invoice');
+    Route::post('/orders/{order}/cancel', [CustomerOrderController::class, 'cancel'])->name('customer.orders.cancel');
     Route::post('/orders/{order}/refund', [CustomerRefundController::class, 'store'])->name('customer.orders.refund.store');
 
     Route::get('/account/wishlist', [CustomerWishlistController::class, 'index'])->name('customer.wishlist.index');

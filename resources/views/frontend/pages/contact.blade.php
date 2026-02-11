@@ -4,17 +4,13 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/contact.css') }}">
 @endpush
 
-@push('scripts')
-    <script src="{{ asset('frontend/js/contact.js') }}"></script>
-@endpush
-
 @section('content')
 @include('frontend.partials.breadcrumb', ['title' => (isset($page) && $page ? $page->translate('title') : null) ?? __('common.contact'), 'bgImage' => optional($page)->image ?? getImageOrPlaceholder(null, '1920x400')])
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            @if(isset($page) && ($page->translate('content') ?? $page->content))
+            @if(isset($page) && $page && ($page->translate('content') ?? $page->content))
                 {!! $page->translate('content') ?? $page->content !!}
             @else
                 <p class="text-center mb-5 lead">{{ __('common.contact_intro') }}</p>
@@ -25,21 +21,21 @@
                             <i class="fas fa-map-marker-alt fa-2x text-terracotta"></i>
                         </div>
                         <h5>{{ __('common.visit_us') }}</h5>
-                        <p class="text-muted">123 Fashion Street,<br>New York, NY 10001</p>
+                        <p class="text-muted">{{ __('common.contact_address_default') }}</p>
                     </div>
                     <div class="col-md-4 text-center">
                         <div class="mb-3">
                             <i class="fas fa-envelope fa-2x text-terracotta"></i>
                         </div>
                         <h5>{{ __('common.email_us') }}</h5>
-                        <p class="text-muted">support@luxe-store.com<br>info@luxe-store.com</p>
+                        <p class="text-muted">{{ __('common.contact_email_default') }}</p>
                     </div>
                     <div class="col-md-4 text-center">
                         <div class="mb-3">
                             <i class="fas fa-phone fa-2x text-terracotta"></i>
                         </div>
                         <h5>{{ __('common.call_us') }}</h5>
-                        <p class="text-muted">+1 (555) 123-4567<br>Mon-Fri, 9am-6pm</p>
+                        <p class="text-muted">{{ __('common.contact_phone_default') }}</p>
                     </div>
                 </div>
             @endif
@@ -85,3 +81,6 @@
 </div>
 
 @endsection
+@push('scripts')
+    <script src="{{ asset('frontend/js/contact.js') }}"></script>
+@endpush

@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <title>{{ __('Invoice') }} #{{ $order->order_number }}</title>
+    <title>{{ __('common.invoice') }} #{{ $order->order_number }}</title>
     <style>
         body {
             font-family: DejaVu Sans, Arial, Helvetica, sans-serif;
@@ -123,19 +123,19 @@
             <div>
                 <div class="invoice-title">{{ config('app.name') }}</div>
                 <div class="invoice-meta">
-                    {{ __('Invoice') }} #{{ $order->order_number }}<br>
+                    {{ __('common.invoice') }} #{{ $order->order_number }}<br>
                     {{ $order->created_at?->format('Y-m-d H:i') }}
                 </div>
             </div>
             <div class="invoice-meta">
-                <div>{{ __('Status') }}: {{ ucfirst($order->status) }}</div>
-                <div>{{ __('Payment') }}: {{ ucfirst($order->payment_status) }}</div>
+                <div>{{ __('common.status') }}: {{ ucfirst($order->status) }}</div>
+                <div>{{ __('common.payment') }}: {{ ucfirst($order->payment_status) }}</div>
             </div>
         </div>
 
         <div class="grid">
             <div class="grid-col">
-                <div class="section-title">{{ __('Billed to') }}</div>
+                <div class="section-title">{{ __('common.billed_to') }}</div>
                 <div class="value">
                     {{ $order->customer_name ?? $order->user?->name }}<br>
                     {{ $order->customer_email ?? $order->user?->email }}<br>
@@ -144,27 +144,27 @@
                     @endif
                 </div>
                 @if($order->billing_address)
-                    <div class="label" style="margin-top: 6px;">{{ __('Billing address') }}</div>
+                    <div class="label" style="margin-top: 6px;">{{ __('common.billing_address') }}</div>
                     <div class="value">
                         {!! nl2br(e($order->billing_address)) !!}
                     </div>
                 @endif
             </div>
             <div class="grid-col">
-                <div class="section-title">{{ __('Shipping address') }}</div>
+                <div class="section-title">{{ __('common.shipping_address') }}</div>
                 <div class="value">
                     @if($order->shipping_address)
                         {!! nl2br(e($order->shipping_address)) !!}
                     @else
-                        {{ __('Same as billing address') }}
+                        {{ __('common.same_as_billing') }}
                     @endif
                 </div>
             </div>
             <div class="grid-col">
-                <div class="section-title">{{ __('Order details') }}</div>
-                <div class="label">{{ __('Payment method') }}</div>
-                <div class="value">{{ $order->payment_method ?: __('N/A') }}</div>
-                <div class="label" style="margin-top: 6px;">{{ __('Placed on') }}</div>
+                <div class="section-title">{{ __('common.order_details') }}</div>
+                <div class="label">{{ __('common.payment_method') }}</div>
+                <div class="value">{{ $order->payment_method ?: __('common.na') }}</div>
+                <div class="label" style="margin-top: 6px;">{{ __('common.placed_on') }}</div>
                 <div class="value">{{ $order->created_at?->format('Y-m-d H:i') }}</div>
             </div>
         </div>
@@ -172,11 +172,11 @@
         <table>
             <thead>
                 <tr>
-                    <th>{{ __('Product') }}</th>
-                    <th class="text-center">{{ __('Quantity') }}</th>
-                    <th class="text-right">{{ __('Unit price') }}</th>
-                    <th class="text-right">{{ __('Discount') }}</th>
-                    <th class="text-right">{{ __('Line total') }}</th>
+                    <th>{{ __('common.product') }}</th>
+                    <th class="text-center">{{ __('common.quantity_label') }}</th>
+                    <th class="text-right">{{ __('common.unit_price_label') }}</th>
+                    <th class="text-right">{{ __('common.discount') }}</th>
+                    <th class="text-right">{{ __('common.line_total') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -185,7 +185,7 @@
                         <td>
                             <div class="value">{{ $item->product_name }}</div>
                             @if($item->product_sku)
-                                <div class="label">{{ __('SKU') }}: {{ $item->product_sku }}</div>
+                                <div class="label">{{ __('common.sku') }}: {{ $item->product_sku }}</div>
                             @endif
                         </td>
                         <td class="text-center">{{ $item->quantity }}</td>
@@ -205,48 +205,36 @@
 
         <table class="totals">
             <tr>
-                <th class="text-right">{{ __('Subtotal') }}</th>
-                <td class="text-right">
-                    {{ $order->currency ?? '' }}{{ number_format($order->subtotal, 2) }}
-                </td>
+                <th>{{ __('common.subtotal') }}</th>
+                <td class="text-right">{{ $order->currency ?? '' }}{{ number_format($order->sub_total, 2) }}</td>
             </tr>
-            <tr>
-                <th class="text-right">{{ __('Discounts') }}</th>
-                <td class="text-right">
-                    {{ $order->currency ?? '' }}{{ number_format($order->discount_total, 2) }}
-                </td>
-            </tr>
-            <tr>
-                <th class="text-right">{{ __('Shipping') }}</th>
-                <td class="text-right">
-                    {{ $order->currency ?? '' }}{{ number_format($order->shipping_total, 2) }}
-                </td>
-            </tr>
-            <tr>
-                <th class="text-right">{{ __('Tax') }}</th>
-                <td class="text-right">
-                    {{ $order->currency ?? '' }}{{ number_format($order->tax_total, 2) }}
-                </td>
-            </tr>
+            @if($order->shipping_cost > 0)
+                <tr>
+                    <th>{{ __('common.shipping_cost') }}</th>
+                    <td class="text-right">{{ $order->currency ?? '' }}{{ number_format($order->shipping_cost, 2) }}</td>
+                </tr>
+            @endif
+            @if($order->tax_amount > 0)
+                <tr>
+                    <th>{{ __('common.tax') }}</th>
+                    <td class="text-right">{{ $order->currency ?? '' }}{{ number_format($order->tax_amount, 2) }}</td>
+                </tr>
+            @endif
+            @if($order->discount_amount > 0)
+                <tr>
+                    <th>{{ __('common.discount') }}</th>
+                    <td class="text-right">-{{ $order->currency ?? '' }}{{ number_format($order->discount_amount, 2) }}</td>
+                </tr>
+            @endif
             <tr class="total-row">
-                <th class="text-right">{{ __('Total') }}</th>
-                <td class="text-right">
-                    {{ $order->currency ?? '' }}{{ number_format($order->total, 2) }}
-                </td>
+                <th>{{ __('common.grand_total') }}</th>
+                <td class="text-right">{{ $order->currency ?? '' }}{{ number_format($order->total, 2) }}</td>
             </tr>
         </table>
 
-        @if($order->notes)
-            <div class="section-title">{{ __('Notes') }}</div>
-            <div class="value">
-                {!! nl2br(e($order->notes)) !!}
-            </div>
-        @endif
-
         <div class="footer-note">
-            {{ __('Thank you for your purchase.') }}
+            {{ __('common.thank_you_for_business') }}
         </div>
     </div>
 </body>
 </html>
-

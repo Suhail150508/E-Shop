@@ -166,7 +166,7 @@
                                 <form action="{{ route('cart.store', $product->id) }}" method="POST" class="add-to-cart-form">
                                     @csrf
                                     
-                                    @if($product->color_objects->isNotEmpty())
+                                    @if($product->color_objects && $product->color_objects->isNotEmpty())
                                     <div class="mb-4">
                                         <label class="form-label fw-bold d-block mb-2 text-uppercase small text-muted">{{ __('common.colors') }}</label>
                                         <div class="d-flex flex-wrap gap-2">
@@ -180,7 +180,7 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    @elseif(!empty($product->colors) && is_array($product->colors))
+                                    @elseif(!empty($product->colors) && is_array($product->colors) && count($product->colors) > 0)
                                     <div class="mb-4">
                                         <label class="form-label fw-bold d-block mb-2 text-uppercase small text-muted">{{ __('common.colors') }}</label>
                                         <div class="d-flex flex-wrap gap-2">
@@ -195,7 +195,7 @@
                                     </div>
                                     @endif
 
-                                    @if($product->size_objects->isNotEmpty())
+                                    @if($product->size_objects && $product->size_objects->isNotEmpty())
                                     <div class="mb-4">
                                         <label class="form-label fw-bold d-block mb-2 text-uppercase small text-muted">{{ __('common.sizes') }}</label>
                                         <div class="d-flex flex-wrap gap-2">
@@ -207,7 +207,7 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    @elseif(!empty($product->sizes) && is_array($product->sizes))
+                                    @elseif(!empty($product->sizes) && is_array($product->sizes) && count($product->sizes) > 0)
                                     <div class="mb-4">
                                         <label class="form-label fw-bold d-block mb-2 text-uppercase small text-muted">{{ __('common.sizes') }}</label>
                                         <div class="d-flex flex-wrap gap-2">
@@ -235,7 +235,7 @@
         
                                             <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow-sm flex-grow-1 text-uppercase tracking-wide" {{ $product->stock <= 0 ? 'disabled' : '' }}>
                                                 <i class="fas fa-shopping-bag me-2"></i>
-                                                {{ __('common.add_to_cart') }}
+                                                {{ $product->stock <= 0 ? __('common.out_of_stock') : __('common.add_to_cart') }}
                                             </button>
                                             
                                             <button type="button" class="btn btn-outline-secondary rounded-circle shadow-sm d-flex align-items-center justify-content-center btn-wishlist" onclick="document.getElementById('wishlistForm').requestSubmit()" title="{{ __('common.add_to_wishlist') }}">
@@ -326,7 +326,7 @@
                                     <td>{{ $product->unit->name }}</td>
                                 </tr>
                                 @endif
-                                @if($product->color_objects->isNotEmpty())
+                                @if($product->color_objects && $product->color_objects->isNotEmpty())
                                 <tr>
                                     <th>{{ __('common.colors') }}</th>
                                     <td>
@@ -357,7 +357,7 @@
                                     </td>
                                 </tr>
                                 @endif
-                                @if($product->size_objects->isNotEmpty())
+                                @if($product->size_objects && $product->size_objects->isNotEmpty())
                                 <tr>
                                     <th>{{ __('common.sizes') }}</th>
                                     <td>
@@ -457,7 +457,11 @@
                                                 </div>
                                                 <div class="text-warning mb-2 small">
                                                     @for($i = 1; $i <= 5; $i++)
-                                                        <i class="fas fa-star{{ $i <= $review->rating ? '' : '-o' }}"></i>
+                                                        @if($i <= $review->rating)
+                                                            <i class="fas fa-star"></i>
+                                                        @else
+                                                            <i class="far fa-star"></i>
+                                                        @endif
                                                     @endfor
                                                 </div>
                                                 <p class="mb-0 text-muted">{{ $review->comment }}</p>

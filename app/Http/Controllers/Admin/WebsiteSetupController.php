@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\SettingService;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class WebsiteSetupController extends Controller
 {
@@ -103,7 +103,7 @@ class WebsiteSetupController extends Controller
                     // Check for new file upload at this specific position
                     // Note: accessing nested files via array keys from the request object
                     $files = $request->file('home_hero_gallery_files');
-                    if (isset($files[$p][$i]) && $files[$p][$i] instanceof \Illuminate\Http\UploadedFile) {
+                    if (isset($files[$p][$i]) && $files[$p][$i] instanceof UploadedFile) {
                         $file = $files[$p][$i];
                         if ($file->isValid()) {
                             // Delete old image

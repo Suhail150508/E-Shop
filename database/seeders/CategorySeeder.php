@@ -14,9 +14,10 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categoriesStructure = [
-            'Men\'s Fashion' => ['Shirts', 'Jackets', 'T-Shirts',],
+            'Men\'s Fashion' => ['Shirts', 'Jackets', 'T-Shirts', 'Panjabi'],
             'Women\'s Fashion' => ['Dresses', 'Tops', 'Skirts', 'Ethnic Wear'],
             'Kids\' Fashion' => ['Boys', 'Girls'],
+            'Accessories' => ['Sunglasses'],
         ];
 
         foreach ($categoriesStructure as $mainCategoryName => $subCategories) {

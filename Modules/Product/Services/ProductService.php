@@ -47,6 +47,13 @@ class ProductService extends BaseService
         $data['is_active'] = isset($data['is_active']) ? (bool) $data['is_active'] : false;
         $data['is_tryable'] = isset($data['is_tryable']) ? (bool) $data['is_tryable'] : false;
 
+        // Ensure foreign keys are null if empty
+        foreach (['subcategory_id', 'brand_id', 'unit_id'] as $key) {
+            if (isset($data[$key]) && $data[$key] === '') {
+                $data[$key] = null;
+            }
+        }
+
         if (isset($data['slug'])) {
             $data['slug'] = $this->generateUniqueSlug(Product::class, $data['slug']);
         } else {
@@ -82,6 +89,8 @@ class ProductService extends BaseService
     public function update(Product $product, array $data)
     {
         $data['is_active'] = isset($data['is_active']) ? (bool) $data['is_active'] : false;
+        $data['is_featured'] = isset($data['is_featured']) ? (bool) $data['is_featured'] : false;
+        $data['is_flash_sale'] = isset($data['is_flash_sale']) ? (bool) $data['is_flash_sale'] : false;
         $data['is_tryable'] = isset($data['is_tryable']) ? (bool) $data['is_tryable'] : false;
 
         if (isset($data['slug'])) {
@@ -125,6 +134,11 @@ class ProductService extends BaseService
 
     public function delete(Product $product)
     {
+        // Check if product is in any order
+        if (\App\Models\OrderItem::where('product_id', $product->id)->exists()) {
+             throw new \Exception(__('product::product.error_has_orders'));
+        }
+
         if ($product->image) {
             if (Storage::disk('public')->exists($product->image)) {
                 Storage::disk('public')->delete($product->image);
@@ -147,8 +161,13 @@ class ProductService extends BaseService
 
     public function bulkDelete(array $ids)
     {
-        $products = Product::whereIn('id', $ids)->with('images')->get();
+        $products = Product::whereIn('id', $ids)->with(['images', 'items'])->get(); // items is usually order items relationship if defined, or we check manually
+        
         foreach ($products as $product) {
+            // Check manually for order items if relationship not defined on Product model
+            if (\App\Models\OrderItem::where('product_id', $product->id)->exists()) {
+                 throw new \Exception(__('product::product.error_bulk_has_orders', ['name' => $product->name]));
+            }
             $this->delete($product);
         }
     }

@@ -268,7 +268,6 @@
                     applyBtn.disabled = false;
                     applyBtn.innerHTML = originalText;
                     toastr.error('{{ __("An error occurred. Please try again.") }}', 'Error');
-                    console.error('Error:', error);
                 });
             });
         }

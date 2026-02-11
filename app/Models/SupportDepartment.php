@@ -14,4 +14,9 @@ class SupportDepartment extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function tickets()
+    {
+        return $this->hasMany(SupportTicket::class, 'department_id');
+    }
 }

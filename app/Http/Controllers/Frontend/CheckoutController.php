@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Address;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Services\CartService;
 use App\Services\SettingService;
@@ -46,12 +47,16 @@ class CheckoutController extends Controller
         // Settings for display
         $shippingRate = (float) $this->settings->get('shipping_flat_rate', 0);
         $taxPercent = (float) $this->settings->get('tax_percent', 0);
+        $freeShippingMin = (float) $this->settings->get('free_shipping_min_amount', 0);
+        
+        $insideCityNameRaw = $this->settings->get('shipping_inside_city_name', 'Dhaka');
+        $insideCityNames = array_filter(array_map(fn($item) => strtolower(trim($item)), explode(',', $insideCityNameRaw)));
+        
+        $insideCityCost = (float) $this->settings->get('shipping_inside_city_cost', 60);
+        $outsideCityCost = (float) $this->settings->get('shipping_outside_city_cost', 120);
+        $currencySymbol = $this->settings->get('app_currency', '$');
 
-        // Google Maps Settings
-        $googleMapsApiKey = $this->settings->get('google_maps_api_key') ?: config('services.google.maps_api_key');
-        $googleMapsEnabled = (bool) $this->settings->get('google_maps_enabled', false);
-
-        return view('frontend.checkout.shipping', compact('addresses', 'subtotal', 'checkoutState', 'shippingRate', 'taxPercent', 'googleMapsApiKey', 'googleMapsEnabled'));
+        return view('frontend.checkout.shipping', compact('addresses', 'subtotal', 'checkoutState', 'shippingRate', 'taxPercent', 'freeShippingMin', 'insideCityNames', 'insideCityCost', 'outsideCityCost', 'currencySymbol'));
     }
 
     public function storeShipping(Request $request): RedirectResponse
@@ -70,7 +75,7 @@ class CheckoutController extends Controller
         if ($validated['delivery_type'] === 'home_delivery' && ! empty($validated['address_id'])) {
             $address = Address::where('id', $validated['address_id'])->where('user_id', $user->id)->first();
             if (! $address) {
-                return redirect()->route('checkout.shipping')->withErrors(['address_id' => __('Selected address is invalid.')]);
+                return redirect()->route('checkout.shipping')->withErrors(['address_id' => __('common.address_invalid')]);
             }
         }
 
@@ -94,11 +99,17 @@ class CheckoutController extends Controller
         $gateways = $this->payments->getEnabledGateways();
 
         // Calculate tax/shipping using settings to match OrderService logic
-        $shippingRate = (float) $this->settings->get('shipping_flat_rate', 0);
         $taxPercent = (float) $this->settings->get('tax_percent', 0);
-
         $tax = $taxPercent > 0 ? round($subtotal * $taxPercent / 100, 2) : 0;
-        $shippingCost = ($checkoutState['delivery_type'] === 'home_delivery') ? $shippingRate : 0;
+
+        $freeShippingMin = (float) $this->settings->get('free_shipping_min_amount', 0);
+
+        $address = null;
+        if (!empty($checkoutState['address_id'])) {
+            $address = Address::find($checkoutState['address_id']);
+        }
+
+        $shippingCost = $this->calculateShippingCost($subtotal, $address, $checkoutState['delivery_type'] ?? 'home_delivery');
 
         $discount = $this->cart->discount();
         $coupon = $this->cart->getCoupon();
@@ -109,7 +120,7 @@ class CheckoutController extends Controller
 
         $cartItems = $this->cart->items();
 
-        return view('frontend.checkout.payment', compact('subtotal', 'gateways', 'checkoutState', 'tax', 'shippingCost', 'total', 'walletBalance', 'taxPercent', 'cartItems', 'discount', 'coupon'));
+        return view('frontend.checkout.payment', compact('subtotal', 'gateways', 'checkoutState', 'tax', 'shippingCost', 'total', 'walletBalance', 'taxPercent', 'cartItems', 'discount', 'coupon', 'freeShippingMin'));
     }
 
     public function applyCoupon(Request $request)
@@ -118,40 +129,40 @@ class CheckoutController extends Controller
             'code' => 'required|string',
         ]);
 
-        $coupon = \App\Models\Coupon::where('code', $validated['code'])->first();
+        $coupon = Coupon::where('code', $validated['code'])->first();
 
         if (! $coupon) {
-            return response()->json(['success' => false, 'message' => __('Invalid coupon code.')]);
+            return response()->json(['success' => false, 'message' => __('common.coupon_invalid')]);
         }
 
         if (! $coupon->is_active) {
-            return response()->json(['success' => false, 'message' => __('Coupon is inactive.')]);
+            return response()->json(['success' => false, 'message' => __('common.coupon_inactive')]);
         }
 
         if ($coupon->expiry_date && $coupon->expiry_date->isPast()) {
-            return response()->json(['success' => false, 'message' => __('Coupon has expired.')]);
+            return response()->json(['success' => false, 'message' => __('common.coupon_expired')]);
         }
 
         if ($coupon->usage_limit && $coupon->used_count >= $coupon->usage_limit) {
-            return response()->json(['success' => false, 'message' => __('Coupon usage limit reached.')]);
+            return response()->json(['success' => false, 'message' => __('common.coupon_limit_reached')]);
         }
 
         $subtotal = $this->cart->subtotal();
 
         if ($coupon->min_spend && $subtotal < $coupon->min_spend) {
-            return response()->json(['success' => false, 'message' => __('Minimum spend of :amount required.', ['amount' => number_format($coupon->min_spend, 2)])]);
+            return response()->json(['success' => false, 'message' => __('common.coupon_min_spend', ['amount' => number_format($coupon->min_spend, 2)])]);
         }
 
         $this->cart->applyCoupon($coupon);
 
-        return response()->json(['success' => true, 'message' => __('Coupon applied successfully.')]);
+        return response()->json(['success' => true, 'message' => __('common.coupon_applied')]);
     }
 
     public function removeCoupon()
     {
         $this->cart->removeCoupon();
 
-        return response()->json(['success' => true, 'message' => __('Coupon removed.')]);
+        return response()->json(['success' => true, 'message' => __('common.coupon_removed')]);
     }
 
     public function process(Request $request): RedirectResponse
@@ -174,7 +185,7 @@ class CheckoutController extends Controller
                 ->where('user_id', $user->id)
                 ->first();
             if (! $address) {
-                return redirect()->route('checkout.shipping')->withErrors(['address_id' => __('Selected address is invalid.')]);
+                return redirect()->route('checkout.shipping')->withErrors(['address_id' => __('common.address_invalid')]);
             }
         }
 
@@ -205,6 +216,7 @@ class CheckoutController extends Controller
             'order_note' => $checkoutState['order_note'] ?? null,
             'shipping_latitude' => $checkoutState['shipping_latitude'] ?? null,
             'shipping_longitude' => $checkoutState['shipping_longitude'] ?? null,
+            'shipping_cost' => $this->calculateShippingCost($this->cart->subtotal(), $address, $checkoutState['delivery_type'] ?? 'home_delivery'),
         ];
 
         // Pass control to PaymentManager which handles Order creation
@@ -218,5 +230,52 @@ class CheckoutController extends Controller
         }
 
         return view('frontend.checkout.confirmation', compact('order'));
+    }
+
+    private function calculateShippingCost(float $subtotal, ?Address $address, string $deliveryType): float
+    {
+        if ($deliveryType !== 'home_delivery') {
+            return 0.0;
+        }
+
+        $freeShippingMin = (float) $this->settings->get('free_shipping_min_amount', 0);
+        if ($freeShippingMin > 0 && $subtotal >= $freeShippingMin) {
+            return 0.0;
+        }
+
+        $insideCityNameRaw = $this->settings->get('shipping_inside_city_name', 'Dhaka');
+        $insideCityNames = array_filter(array_map(fn($item) => strtolower(trim($item)), explode(',', $insideCityNameRaw)));
+        
+        $insideCityCost = (float) $this->settings->get('shipping_inside_city_cost', 60);
+        $outsideCityCost = (float) $this->settings->get('shipping_outside_city_cost', 120);
+
+        $isInsideCity = false;
+        
+        if ($address) {
+            $city = strtolower($address->city ?? '');
+            $state = strtolower($address->state ?? '');
+            $line1 = strtolower($address->line1 ?? '');
+            $line2 = strtolower($address->line2 ?? '');
+            
+            foreach ($insideCityNames as $name) {
+                if (empty($name)) continue;
+                
+                if (
+                    ($city && str_contains($city, $name)) || 
+                    ($state && str_contains($state, $name)) ||
+                    ($line1 && str_contains($line1, $name)) ||
+                    ($line2 && str_contains($line2, $name))
+                ) {
+                    $isInsideCity = true;
+                    break;
+                }
+            }
+        }
+
+        if ($isInsideCity) {
+            return $insideCityCost;
+        }
+
+        return $outsideCityCost;
     }
 }

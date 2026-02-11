@@ -2,6 +2,12 @@
 
 @section('title', __('Order Details'))
 
+@push('styles')
+    @if($order->shipping_latitude && $order->shipping_longitude)
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+    @endif
+@endpush
+
 @section('account_content')
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
@@ -14,11 +20,15 @@
             @if($order->refunds->count() > 0)
                 <div class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-3 py-2 d-flex align-items-center">
                     <i class="fa-solid fa-circle-info me-2"></i>
-                    {{ __('Refund:') }} <span class="ms-1 fw-bold text-capitalize">{{ __(ucfirst($order->refunds->first()->status)) }}</span>
+                    {{ __('Refund:') }} <span class="ms-1 fw-bold text-capitalize">{{ __('common.' . $order->refunds->first()->status) }}</span>
                 </div>
             @elseif($order->status === 'delivered')
                 <button type="button" class="btn btn-outline-danger rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#refundModal">
                     <i class="fa-solid fa-arrow-rotate-left me-2"></i> {{ __('Request Refund') }}
+                </button>
+            @elseif($order->status === 'pending')
+                <button type="button" class="btn btn-outline-danger rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
+                    <i class="fa-solid fa-ban me-2"></i> {{ __('Cancel Order') }}
                 </button>
             @endif
 
@@ -100,7 +110,7 @@
                         @if($order->status === 'processing' || $order->status === 'shipped' || $order->status === 'delivered')
                             <div class="mb-4 position-relative">
                                 <div class="position-absolute top-0 start-0 translate-middle bg-{{ $order->status_color }} rounded-circle" style="width: 12px; height: 12px; left: -1px !important;"></div>
-                                <h6 class="fw-bold mb-1 text-capitalize">{{ __(ucfirst($order->status)) }}</h6>
+                                <h6 class="fw-bold mb-1 text-capitalize">{{ __('common.' . $order->status) }}</h6>
                                 <p class="text-muted small mb-0">{{ __('Current Status') }}</p>
                             </div>
                         @endif
@@ -138,7 +148,7 @@
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <span class="text-muted">{{ __('Payment Status') }}</span>
                             <span class="badge rounded-pill bg-{{ $order->payment_status_color }} bg-opacity-10 text-{{ $order->payment_status_color }} px-3">
-                                {{ __(ucfirst($order->payment_status)) }}
+                                {{ __('common.' . $order->payment_status) }}
                             </span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
@@ -155,44 +165,18 @@
                     <div class="mb-4">
                         <div class="text-muted small text-uppercase fw-semibold mb-2">{{ __('Shipping Address') }}</div>
                         <p class="mb-0 text-dark">
-                            {{ $order->shipping_address ?: __('N/A') }}
+                            {{ $order->shipping_address ?: __('common.na') }}
                         </p>
                     </div>
 
                     @if($order->shipping_latitude && $order->shipping_longitude)
-                        @inject('settings', 'App\Services\SettingService')
-                        @php
-                            $googleMapsApiKey = $settings->get('google_maps_api_key') ?: config('services.google.maps_api_key');
-                            $googleMapsEnabled = (bool) $settings->get('google_maps_enabled', false);
-                        @endphp
-
-                        @if($googleMapsEnabled && $googleMapsApiKey)
                         <div class="mb-4">
                             <div class="text-muted small text-uppercase fw-semibold mb-2">{{ __('Delivery Location') }}</div>
-                            <div id="tracking-map" style="height: 200px; width: 100%; border-radius: 8px; border: 1px solid #e9ecef;"></div>
-                            
-                            @push('scripts')
-                            <script src="https://maps.googleapis.com/maps/api/js?key={{ $googleMapsApiKey }}&callback=initTrackingMap" async defer></script>
-                            <script>
-                                function initTrackingMap() {
-                                    const pos = { lat: {{ $order->shipping_latitude }}, lng: {{ $order->shipping_longitude }} };
-                                    const map = new google.maps.Map(document.getElementById("tracking-map"), {
-                                        zoom: 15,
-                                        center: pos,
-                                        disableDefaultUI: true,
-                                        zoomControl: true,
-                                        fullscreenControl: true
-                                    });
-                                    new google.maps.Marker({
-                                        position: pos,
-                                        map: map,
-                                        title: "{{ __('Delivery Location') }}"
-                                    });
-                                }
-                            </script>
-                            @endpush
+                            <div id="tracking-map" class="rounded border" style="height: 200px; width: 100%;"></div>
+                            <a href="https://www.openstreetmap.org/?mlat={{ $order->shipping_latitude }}&mlon={{ $order->shipping_longitude }}&zoom=16" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary mt-2">
+                                <i class="fas fa-external-link-alt me-1"></i> {{ __('common.view_on_map') }}
+                            </a>
                         </div>
-                        @endif
                     @endif
 
                     <div>
@@ -253,12 +237,12 @@
                             @php
                                 $status = $order->status;
                                 $steps = [
-                                    'pending' => ['label' => __('Pending'), 'icon' => 'fa-clipboard-list'],
-                                    'confirmed' => ['label' => __('Confirmed'), 'icon' => 'fa-check-circle'],
-                                    'processing' => ['label' => __('Processing'), 'icon' => 'fa-boxes-packing'],
-                                    'pickup' => ['label' => __('Pick-Up'), 'icon' => 'fa-truck-pickup'],
-                                    'shipped' => ['label' => __('Shipped'), 'icon' => 'fa-truck-fast'],
-                                    'delivered' => ['label' => __('Delivered'), 'icon' => 'fa-box-open']
+                                    'pending' => ['label' => __('common.pending'), 'icon' => 'fa-clipboard-list'],
+                                    'confirmed' => ['label' => __('common.confirmed'), 'icon' => 'fa-check-circle'],
+                                    'processing' => ['label' => __('common.processing'), 'icon' => 'fa-boxes-packing'],
+                                    'pickup' => ['label' => __('common.pickup'), 'icon' => 'fa-truck-pickup'],
+                                    'shipped' => ['label' => __('common.shipped'), 'icon' => 'fa-truck-fast'],
+                                    'delivered' => ['label' => __('common.delivered'), 'icon' => 'fa-box-open']
                                 ];
                                 
                                 // Logic to determine current step index based on order status
@@ -383,9 +367,52 @@
             </div>
         </div>
     </div>
+    <!-- Cancel Order Modal -->
+    <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold text-danger">{{ __('Cancel Order') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('customer.orders.cancel', $order->id) }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="text-center py-4">
+                            <i class="fa-solid fa-circle-exclamation text-danger fa-3x mb-3"></i>
+                            <h5 class="fw-bold mb-2">{{ __('Are you sure?') }}</h5>
+                            <p class="text-muted mb-0">{{ __('Do you really want to cancel this order? This action cannot be undone.') }}</p>
+                            @if($order->payment_status === 'paid')
+                                <div class="alert alert-info mt-3 mb-0 text-start small">
+                                    <i class="fa-solid fa-wallet me-2"></i> {{ __('The paid amount will be refunded to your wallet immediately.') }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0 pt-0 justify-content-center">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">{{ __('Keep Order') }}</button>
+                        <button type="submit" class="btn btn-danger rounded-pill px-4">{{ __('Yes, Cancel Order') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
+    @if($order->shipping_latitude && $order->shipping_longitude)
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var el = document.getElementById('tracking-map');
+            if (el && typeof L !== 'undefined') {
+                var map = L.map(el).setView([{{ $order->shipping_latitude }}, {{ $order->shipping_longitude }}], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+                L.marker([{{ $order->shipping_latitude }}, {{ $order->shipping_longitude }}]).addTo(map);
+            }
+        });
+    </script>
+    @endif
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);

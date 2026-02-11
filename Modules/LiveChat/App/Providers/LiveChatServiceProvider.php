@@ -15,6 +15,7 @@ class LiveChatServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'livechat');
+        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'livechat');
         $this->loadMigrationsFrom(__DIR__.'/../../Database/Migrations');
 
         $this->registerRoutes();

@@ -17,6 +17,7 @@ class ProfileController extends Controller
         return view('staff.profile', compact('user'));
     }
 
+    // Update staff profile
     public function update(Request $request)
     {
         $user = auth()->user();
@@ -43,6 +44,7 @@ class ProfileController extends Controller
         return redirect()->route('staff.profile')->with('success', __('Profile updated successfully.'));
     }
 
+    // Update staff password
     public function updatePassword(Request $request)
     {
         $user = auth()->user();

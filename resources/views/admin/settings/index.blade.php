@@ -54,6 +54,45 @@
                 @enderror
             </div>
 
+            <h2 class="h6 mb-3">{{ __('Shipping Settings') }}</h2>
+
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0 text-dark"><i class="fas fa-truck me-2"></i>{{ __('Shipping Configuration') }}</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="shipping_inside_city_name" class="form-label">{{ __('common.shipping_inside_city_names') }}</label>
+                            <input type="text" class="form-control" id="shipping_inside_city_name" name="shipping_inside_city_name" value="{{ old('shipping_inside_city_name', $settings['shipping_inside_city_name'] ?? 'Dhaka') }}" placeholder="e.g. Dhaka, Mirpur, Savar">
+                            <div class="form-text">{{ __('common.shipping_inside_city_names_hint') }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="free_shipping_min_amount" class="form-label">{{ __('Free Shipping Minimum Amount') }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">{{ $settings['app_currency'] ?? '$' }}</span>
+                                <input type="number" step="0.01" class="form-control" id="free_shipping_min_amount" name="free_shipping_min_amount" value="{{ old('free_shipping_min_amount', $settings['free_shipping_min_amount'] ?? '0') }}">
+                            </div>
+                            <div class="form-text">{{ __('Set 0 to disable free shipping.') }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="shipping_inside_city_cost" class="form-label">{{ __('Inside City Shipping Cost') }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">{{ $settings['app_currency'] ?? '$' }}</span>
+                                <input type="number" step="0.01" class="form-control" id="shipping_inside_city_cost" name="shipping_inside_city_cost" value="{{ old('shipping_inside_city_cost', $settings['shipping_inside_city_cost'] ?? '60') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="shipping_outside_city_cost" class="form-label">{{ __('Outside City Shipping Cost') }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">{{ $settings['app_currency'] ?? '$' }}</span>
+                                <input type="number" step="0.01" class="form-control" id="shipping_outside_city_cost" name="shipping_outside_city_cost" value="{{ old('shipping_outside_city_cost', $settings['shipping_outside_city_cost'] ?? '120') }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="h6 mb-3">{{ __('Footer Settings') }}</h2>
             
             <div class="card mb-4">
@@ -65,9 +104,39 @@
                         <label for="footer_description" class="form-label">{{ __('About/Description') }}</label>
                         <textarea class="form-control" id="footer_description" name="footer_description" rows="3">{{ old('footer_description', $settings['footer_description'] ?? '') }}</textarea>
                     </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="footer_phone" class="form-label"><i class="fas fa-phone-alt me-1 text-muted"></i> {{ __('common.phone_number') }}</label>
+                            <input type="text" class="form-control" id="footer_phone" name="footer_phone" value="{{ old('footer_phone', $settings['footer_phone'] ?? '') }}" placeholder="+1 (555) 123-4567">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="footer_email" class="form-label"><i class="fas fa-envelope me-1 text-muted"></i> {{ __('common.email_address') }}</label>
+                            <input type="email" class="form-control" id="footer_email" name="footer_email" value="{{ old('footer_email', $settings['footer_email'] ?? '') }}" placeholder="support@example.com">
+                        </div>
+                        <div class="col-12">
+                            <label for="footer_address" class="form-label"><i class="fas fa-map-marker-alt me-1 text-muted"></i> {{ __('common.address') }}</label>
+                            <textarea class="form-control" id="footer_address" name="footer_address" rows="2" placeholder="123 Street Name, City, Country">{{ old('footer_address', $settings['footer_address'] ?? '') }}</textarea>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <label for="copyright_text" class="form-label">{{ __('Copyright Text') }}</label>
                         <input type="text" class="form-control" id="copyright_text" name="copyright_text" value="{{ old('copyright_text', $settings['copyright_text'] ?? '') }}" placeholder="© {{ date('Y') }} {{ config('app.name') }}. All rights reserved.">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="payment_method_image" class="form-label">{{ __('common.payment_methods_image') }}</label>
+                        <input type="file" class="form-control @error('payment_method_image') is-invalid @enderror" id="payment_method_image" name="payment_method_image" accept="image/*">
+                        <div class="form-text">{{ __('Recommended size: 400x50px. Formats: PNG, JPG, SVG.') }}</div>
+                        @error('payment_method_image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        @if(isset($settings['payment_method_image']))
+                            <div class="mt-2 p-2 bg-dark rounded d-inline-block">
+                                <img src="{{ getImageOrPlaceholder($settings['payment_method_image'], '400x50') }}" alt="Payment Methods" style="max-height: 40px;">
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -99,22 +168,6 @@
             </div>
 
             <hr class="my-4">
-
-            <h2 class="h6 mb-3">{{ __('Google Maps Settings') }}</h2>
-
-            <div class="form-check form-switch mb-3">
-                <input class="form-check-input" type="checkbox" role="switch" id="google_maps_enabled" name="google_maps_enabled" value="1" {{ old('google_maps_enabled', $settings['google_maps_enabled'] ?? '') ? 'checked' : '' }}>
-                <label class="form-check-label" for="google_maps_enabled">{{ __('Enable Google Maps') }}</label>
-            </div>
-
-            <div class="mb-3">
-                <label for="google_maps_api_key" class="form-label">{{ __('Google Maps API Key') }}</label>
-                <input type="text" class="form-control @error('google_maps_api_key') is-invalid @enderror" id="google_maps_api_key" name="google_maps_api_key" value="{{ old('google_maps_api_key', $settings['google_maps_api_key'] ?? '') }}">
-                @error('google_maps_api_key')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="form-text text-muted">{{ __('Required for map functionality. Leave empty to use GOOGLE_MAPS_API_KEY from .env file.') }}</div>
-            </div>
 
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary">{{ __('Save Settings') }}</button>

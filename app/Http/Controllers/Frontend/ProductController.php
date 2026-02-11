@@ -21,7 +21,7 @@ class ProductController extends Controller
         $this->categoryService = $categoryService;
         $this->productService = $productService;
     }
-
+    // Show all products
     public function index(Request $request): View
     {
         $categories = $this->categoryService->getTree();
@@ -49,7 +49,7 @@ class ProductController extends Controller
 
         return view('frontend.shop.index', compact('categories', 'products', 'colors', 'sizes', 'units', 'tags'));
     }
-
+    // Show products by category
     public function category(Category $category): View
     {
         $categories = $this->categoryService->getTree();
@@ -89,7 +89,7 @@ class ProductController extends Controller
             'tags' => $tags,
         ]);
     }
-
+    // Show product details
     public function show(Product $product): View
     {
         abort_unless($product->is_active, 404);

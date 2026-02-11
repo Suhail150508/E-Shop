@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation | Single Vendor eCommerce</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="docs-wrapper">
+        <!-- Sidebar -->
+        <nav class="docs-sidebar" id="sidebar">
+            <a href="#" class="docs-brand">
+                <h2>Single Vendor eCommerce</h2>
+                <small style="color: #a1a5b7;">Documentation v1.0</small>
+            </a>
+
+            <div class="sidebar-search-wrap">
+                <input type="text" id="searchInput" placeholder="I am searching for..." class="sidebar-search-input">
+                <button type="button" class="sidebar-search-btn" aria-label="Search"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="docs-nav">
+                <ul>
+                    <!-- 1. Project Overview (first, expanded) -->
+                    <li class="nav-item">
+                        <div class="nav-link active" onclick="toggleMenu(this)">
+                            <span>Project Overview</span>
+                            <i class="fas fa-minus"></i>
+                        </div>
+                        <ul class="nav-submenu" style="display: block;">
+                            <li><a href="#welcome" class="active">Welcome</a></li>
+                            <li><a href="#how-it-works">How it Works</a></li>
+                            <li><a href="#key-features">Key Features</a></li>
+                            <li><a href="#requirements">Server Requirements</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 2. For Customers -->
+                    <li class="nav-item">
+                        <div class="nav-link" onclick="toggleMenu(this)">
+                            <span>For Customers</span>
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <ul class="nav-submenu">
+                            <li><a href="#customer-order">How to Complete an Order?</a></li>
+                            <li><a href="#interactive-map">Using the Interactive Map</a></li>
+                            <li><a href="#wallet-use">How to Use Wallet?</a></li>
+                            <li><a href="#wallet-deposit">How to Deposit to Wallet?</a></li>
+                            <li><a href="#how-to-refund">How to Request a Refund?</a></li>
+                            <li><a href="#when-refund">When Can You Request Refund?</a></li>
+                            <li><a href="#refund-policy">Refund Policy</a></li>
+                            <li><a href="#customer-important">Other Important Info for Customers</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 3. Installation & Setup -->
+                    <li class="nav-item">
+                        <div class="nav-link" onclick="toggleMenu(this)">
+                            <span>Installation & Setup</span>
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <ul class="nav-submenu">
+                            <li><a href="#install-local">Install on Local Server</a></li>
+                            <li><a href="#install-cpanel">Install on Live Server (cPanel)</a></li>
+                            <li><a href="#env-config">Configure .env File</a></li>
+                            <li><a href="#upgrade-guide">Upgrade the System</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 4. Admin – Manage Shop -->
+                    <li class="nav-item">
+                        <div class="nav-link" onclick="toggleMenu(this)">
+                            <span>Admin – Manage Shop</span>
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <ul class="nav-submenu">
+                            <li><a href="#dashboard">Dashboard Overview</a></li>
+                            <li><a href="#products">Manage Products</a></li>
+                            <li><a href="#categories">Categories</a></li>
+                            <li><a href="#subcategories">Sub Categories</a></li>
+                            <li><a href="#brands">Brands</a></li>
+                            <li><a href="#units">Units & Colors</a></li>
+                            <li><a href="#orders">Manage Orders</a></li>
+                            <li><a href="#refund-requests">Refund Requests</a></li>
+                            <li><a href="#refund-reasons">Refund Reasons</a></li>
+                            <li><a href="#coupons">Coupons</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 5. Admin – Users & Support -->
+                    <li class="nav-item">
+                        <div class="nav-link" onclick="toggleMenu(this)">
+                            <span>Admin – Users & Support</span>
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <ul class="nav-submenu">
+                            <li><a href="#customers">Customers List</a></li>
+                            <li><a href="#contact-messages">Contact Messages</a></li>
+                            <li><a href="#subscribers">Subscriber List</a></li>
+                            <li><a href="#support-tickets">Support Tickets</a></li>
+                            <li><a href="#departments">Departments</a></li>
+                            <li><a href="#staffs">Staff Management</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 6. Admin – Wallet & Live Chat -->
+                    <li class="nav-item">
+                        <div class="nav-link" onclick="toggleMenu(this)">
+                            <span>Admin – Wallet & Live Chat</span>
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <ul class="nav-submenu">
+                            <li><a href="#wallets">Wallet Lists</a></li>
+                            <li><a href="#wallet-transactions">Wallet Transactions</a></li>
+                            <li><a href="#wallet-settings">Wallet Settings</a></li>
+                            <li><a href="#livechat">Live Chat</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 7. Admin – Content & Settings -->
+                    <li class="nav-item">
+                        <div class="nav-link" onclick="toggleMenu(this)">
+                            <span>Admin – Content & Settings</span>
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <ul class="nav-submenu">
+                            <li><a href="#website-setup">Website Setup</a></li>
+                            <li><a href="#menus">Menus</a></li>
+                            <li><a href="#pages">Manage Pages</a></li>
+                            <li><a href="#reviews">Reviews</a></li>
+                            <li><a href="#multi-currency">Multi Currency</a></li>
+                            <li><a href="#multi-language">Multi Language</a></li>
+                            <li><a href="#payment-methods">Payment Methods</a></li>
+                            <li><a href="#general-settings">General Settings</a></li>
+                            <li><a href="#email-config">Email Config</a></li>
+                            <li><a href="#email-templates">Email Templates</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 8. Common Issues -->
+                    <li class="nav-item">
+                        <div class="nav-link" onclick="toggleMenu(this)">
+                            <span>Common Issues</span>
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <ul class="nav-submenu">
+                            <li><a href="#fix-404">Fix 404 Routes error</a></li>
+                            <li><a href="#fix-images">Fix Broken Images</a></li>
+                            <li><a href="#fix-db">Fix Database Connection error</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="docs-content">
+            <div class="content-header">
+                <h1>Single Vendor eCommerce Documentation</h1>
+                <span class="last-updated">Last Updated: February 2026</span>
+            </div>
+
+            <!-- ========== PROJECT OVERVIEW ========== -->
+            <section id="welcome">
+                <h3>Welcome</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Thank you for choosing <strong>Single Vendor eCommerce with Virtual Try-On</strong>. This documentation helps you install, configure, and use the system. It also explains how <strong>customers</strong> can place orders, use the wallet, and request refunds—so you can share the relevant parts with your buyers.</p>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Note:</strong> If you find any issue not covered here, please contact our support team.
+                    </div>
+                </div>
+            </section>
+
+            <section id="how-it-works">
+                <h3>How it Works</h3>
+                <span class="answer-label">Answer:</span>
+                <p>The system is a <strong>single-vendor</strong> online store: one admin runs the entire shop. Customers browse products on the frontend, add items to the cart, and complete checkout (shipping address → payment → confirmation). You manage everything from the <strong>Admin Panel</strong>: products, orders, refunds, customers, wallet, support tickets, live chat, and settings. Optional features include <strong>Virtual Try-On</strong> (e.g. sunglasses), <strong>Wallet</strong> (balance, pay at checkout), <strong>Multi-Currency</strong>, and <strong>Multi-Language</strong> with RTL support.</p>
+                <div class="screenshot-box">
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Screenshot: Home page with hero, categories, and product sections</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="key-features">
+                <h3>Key Features</h3>
+                <span class="answer-label">Answer:</span>
+                <ul>
+                    <li><strong>Image-based Virtual Try-On</strong> (no AI required) for suitable products (e.g. glasses).</li>
+                    <li><strong>Wallet</strong> – customers can hold balance and pay at checkout; refunds can be credited to wallet.</li>
+                    <li><strong>Multiple payment gateways</strong> – Stripe, PayPal, Razorpay, Paystack, Bank Transfer, Cash on Delivery.</li>
+                    <li><strong>Multi-Currency & Multi-Language</strong> with RTL support (e.g. Arabic).</li>
+                    <li><strong>Support Tickets</strong> and <strong>Live Chat</strong> for customer support.</li>
+                    <li><strong>Refund system</strong> – customers request refund with a reason; admin approves or rejects.</li>
+                    <li><strong>Manage Pages</strong> – About, Contact, Terms, Privacy, Shipping (editable from admin).</li>
+                    <li><strong>Website Setup</strong> – home page content, auth page titles/images, shop labels from one place.</li>
+                    <li><strong>Interactive Map</strong> – Integrated OpenStreetMap (Leaflet) for address selection. <strong>Free to use & No API Key required</strong>.</li>
+                </ul>
+            </section>
+
+            <section id="requirements">
+                <h3>Server Requirements</h3>
+                <span class="answer-label">Answer:</span>
+                <p>To run the system properly, ensure your server meets:</p>
+                <ul>
+                    <li><strong>PHP</strong> >= 8.2</li>
+                    <li><strong>Database</strong> – MySQL 5.7+ / MariaDB 10.3+ or PostgreSQL or SQLite</li>
+                    <li><strong>PHP extensions:</strong> BCMath, Ctype, Fileinfo, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML</li>
+                    <li><strong>GD</strong> or Imagick (for images and Virtual Try-On)</li>
+                    <li>Composer 2.x, Node.js & NPM (for frontend assets)</li>
+                </ul>
+            </section>
+
+            <hr class="section-divider">
+
+            <!-- ========== FOR CUSTOMERS ========== -->
+            <section id="customer-order">
+                <h3>How to Complete an Order?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li><strong>Browse</strong> – Open the store, go to Shop or a Category, and click a product to view details.</li>
+                    <li><strong>Add to Cart</strong> – Choose quantity (and options like color/size if available), then click <strong>Add to Cart</strong>.</li>
+                    <li><strong>Cart</strong> – Click the cart icon or go to Cart. Review items, change quantity if needed, then click <strong>Checkout</strong> (login/register if required).</li>
+                    <li><strong>Shipping</strong> – Select or add a delivery address. Choose <strong>Home Delivery</strong> or <strong>Pick Up</strong>. Add an order note if you want. Click <strong>Proceed to Payment</strong>.</li>
+                    <li><strong>Payment</strong> – Select a payment method (Card, PayPal, COD, Wallet, etc.). Optionally apply a <strong>Coupon</strong>. Click <strong>Pay Now</strong> or <strong>Place Order</strong>.</li>
+                    <li><strong>Confirmation</strong> – You will see an order success page with order number. You can go to <strong>Account → My Orders</strong> to view the order and download the invoice.</li>
+                </ol>
+                <div class="screenshot-box">
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Screenshot: Checkout – Shipping step with address and Proceed to Payment</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive-map">
+                <h3>Using the Interactive Map</h3>
+                <span class="answer-label">Answer:</span>
+                <p>The system features a powerful <strong>Interactive Map</strong> to simplify address management for customers.</p>
+                <ul>
+                    <li><strong>Pin Exact Location:</strong> Customers can drag and drop a pin on the map to set their precise delivery location.</li>
+                    <li><strong>Auto-Address Fill:</strong> Clicking on the map automatically fills in address fields (Street, City, Zip Code) using reverse geocoding.</li>
+                    <li><strong>Zero Configuration:</strong> Uses OpenStreetMap (Leaflet), so it is <strong>100% Free</strong> and requires <strong>No API Keys</strong> (unlike Google Maps).</li>
+                    <li><strong>Visual Confirmation:</strong> Ensures the delivery address is accurate, reducing failed deliveries.</li>
+                </ul>
+                <div class="screenshot-box">
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>Screenshot: Map Interface for Address Selection</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="wallet-use">
+                <h3>How to Use Wallet?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>The <strong>Wallet</strong> holds your store balance. You can use it to pay for orders at checkout when the balance is sufficient.</p>
+                <ul>
+                    <li>Log in and go to <strong>Account</strong> (or the Wallet/Balance link if available in the menu).</li>
+                    <li>View your <strong>current balance</strong> and recent transactions.</li>
+                    <li>At <strong>Checkout</strong>, if Wallet is enabled, you will see <strong>Pay with Wallet</strong> as an option. Select it to pay using your balance (full or partial, depending on store settings).</li>
+                </ul>
+                <div class="screenshot-box">
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Screenshot: Customer account – Wallet balance and transactions</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="wallet-deposit">
+                <h3>How to Deposit to Wallet?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Whether customers can <strong>deposit</strong> (add money) to the wallet depends on your store setup. If the admin has enabled a “Top Up” or “Add Funds” feature:</p>
+                <ul>
+                    <li>Go to <strong>Account → Wallet</strong> (or similar).</li>
+                    <li>Click <strong>Add Funds</strong> or <strong>Deposit</strong>.</li>
+                    <li>Enter the amount and complete payment via the available gateway (e.g. Stripe, PayPal). The amount will be credited to your wallet after successful payment.</li>
+                </ul>
+                <p>If you do not see a deposit option, your store may only use the wallet for <strong>refunds</strong> (admin credits refunds to the wallet). Check with the store owner.</p>
+            </section>
+
+            <section id="how-to-refund">
+                <h3>How to Request a Refund?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Log in and go to <strong>Account → My Orders</strong>.</li>
+                    <li>Open the <strong>order</strong> you want to refund.</li>
+                    <li>Click <strong>Request Refund</strong> (or similar).</li>
+                    <li>Select a <strong>reason</strong> from the list (e.g. Damaged product, Wrong item) and add any <strong>message</strong> or proof if asked.</li>
+                    <li>Submit the request. The admin will review and either <strong>Approve</strong> or <strong>Reject</strong>. You may receive the refund to your <strong>Wallet</strong> or via the original payment method, depending on store policy.</li>
+                </ol>
+                <div class="screenshot-box">
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Screenshot: Order detail page with Request Refund button</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="when-refund">
+                <h3>When Can You Request a Refund?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Typically you can request a refund from the <strong>order detail</strong> page in your account <strong>after the order is placed</strong>. The exact rules (e.g. within how many days, for which order statuses) are set by the store. Common cases:</p>
+                <ul>
+                    <li>Order is <strong>Pending</strong> or <strong>Processing</strong> – you may request cancellation/refund.</li>
+                    <li>Order is <strong>Shipped</strong> or <strong>Delivered</strong> – you may still request refund (e.g. damaged item, wrong product) and the admin will decide.</li>
+                </ul>
+                <p>If you do not see <strong>Request Refund</strong>, the store may have disabled it for that order or your account. Contact support for clarification.</p>
+            </section>
+
+            <section id="refund-policy">
+                <h3>Refund Policy</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Refund policy is defined by the <strong>store owner</strong>. In this system:</p>
+                <ul>
+                    <li>Customers submit a <strong>refund request</strong> with a reason (from the list configured by admin).</li>
+                    <li>The <strong>admin</strong> reviews each request and can <strong>Approve</strong> or <strong>Reject</strong> it.</li>
+                    <li>If approved, the refund may be credited to the customer’s <strong>Wallet</strong> or processed via the original payment method (e.g. Stripe, PayPal) – this depends on how the admin handles it.</li>
+                    <li>Store-specific rules (time limits, eligible products, restocking fees) should be published on the store’s <strong>Terms</strong> or <strong>Refund Policy</strong> page (editable via Admin → Manage Pages).</li>
+                </ul>
+            </section>
+
+            <section id="customer-important">
+                <h3>Other Important Info for Customers</h3>
+                <span class="answer-label">Answer:</span>
+                <ul>
+                    <li><strong>Account</strong> – From the header, use <strong>Account</strong> to access Profile, Addresses, My Orders, Wishlist, Refund requests, and Support tickets.</li>
+                    <li><strong>Addresses</strong> – Add and manage shipping addresses so checkout is faster.</li>
+                    <li><strong>Wishlist</strong> – Save products to the wishlist and move them to the cart when ready.</li>
+                    <li><strong>Coupons</strong> – At checkout, enter a coupon code if you have one to get a discount.</li>
+                    <li><strong>Support</strong> – Use <strong>Support Tickets</strong> (from account) for formal requests, or <strong>Live Chat</strong> (if enabled) for quick help.</li>
+                    <li><strong>Virtual Try-On</strong> – On product pages that support it, use the <strong>Virtual Try-On</strong> button to upload your photo and see how the product looks; you can adjust and download the result.</li>
+                </ul>
+            </section>
+
+            <hr class="section-divider">
+
+            <!-- ========== INSTALLATION & SETUP ========== -->
+
+            <!-- Installation -->
+            <section id="install-local">
+                <h3>How to install on Local Server?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Follow these steps to install the project on your local machine (XAMPP/WAMP):</p>
+                <ol>
+                    <li>Download the <strong>codecanyon-item.zip</strong> file and extract it.</li>
+                    <li>Copy the project folder to your <code>htdocs</code> (XAMPP) or <code>www</code> (WAMP) directory.</li>
+                    <li>Open <strong>phpMyAdmin</strong> and create a new database (e.g., <code>ecommerce_db</code>).</li>
+                    <li>Rename the <code>.env.example</code> file to <code>.env</code>.</li>
+                    <li>Open the terminal in the project directory and run:</li>
+                </ol>
+                <pre><code>composer install
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+php artisan serve</code></pre>
+            </section>
+
+            <section id="install-cpanel">
+                <h3>How to install on Live Server (cPanel)?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>To install on a live server, follow these instructions:</p>
+                <ol>
+                    <li>Log in to your <strong>cPanel</strong>.</li>
+                    <li>Go to <strong>File Manager</strong> and upload the project ZIP file to <code>public_html</code> or your subdomain folder.</li>
+                    <li>Extract the ZIP file.</li>
+                    <li>Create a new Database and User from <strong>MySQL Database Wizard</strong>.</li>
+                    <li>Import the <code>database.sql</code> file (provided in the root folder) into your database via phpMyAdmin.</li>
+                    <li>Edit the <code>.env</code> file and update the database credentials.</li>
+                </ol>
+            </section>
+
+            <section id="upgrade-guide">
+                <h3>How to upgrade the system?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>To upgrade to a newer version of the software, please follow these steps carefully:</p>
+                <ol>
+                    <li><strong>Backup:</strong> Always backup your files and database before upgrading.</li>
+                    <li><strong>Upload:</strong> Download the latest version from CodeCanyon and replace the existing files on your server (excluding the <code>.env</code> file and <code>public/storage</code> folder).</li>
+                    <li><strong>Update Dependencies:</strong> If there are changes in dependencies, run <code>composer install</code>.</li>
+                    <li><strong>Migrate:</strong> Run <code>php artisan migrate</code> to update the database structure.</li>
+                    <li><strong>Clear Cache:</strong> Run <code>php artisan optimize:clear</code> to clear all caches.</li>
+                </ol>
+            </section>
+
+            <section id="env-config">
+                <h3>How to configure .env file?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>The <code>.env</code> file contains critical configuration settings for your application.</p>
+                <pre><code>APP_URL=http://your-domain.com
+DB_DATABASE=ecommerce_db
+DB_USERNAME=root
+DB_PASSWORD=your_password</code></pre>
+            </section>
+
+            <!-- Dashboard -->
+            <section id="dashboard">
+                <h3>Dashboard Overview</h3>
+                <span class="answer-label">Answer:</span>
+                <p>The dashboard provides a quick overview of your store's performance:</p>
+                <ul>
+                    <li><strong>Total Sales:</strong> View total revenue generated.</li>
+                    <li><strong>Total Orders:</strong> Count of all orders placed.</li>
+                    <li><strong>Total Products:</strong> Number of products available in the store.</li>
+                    <li><strong>Total Customers:</strong> Registered user count.</li>
+                    <li><strong>Recent Orders:</strong> A list of the latest orders that need attention.</li>
+                </ul>
+                <div class="screenshot-box">
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Screenshot: Admin Dashboard – stats and recent orders</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Product Management -->
+            <section id="products">
+                <h3>How to manage Products?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Follow these steps to add products to your store:</p>
+                <ol>
+                    <li>Go to <strong>Product Management > Products</strong>.</li>
+                    <li>Click <strong>Add New Product</strong>.</li>
+                    <li>Enter the <strong>Product Name</strong>, <strong>Description</strong>, and <strong>Price</strong>.</li>
+                    <li>Upload the <strong>Main Image</strong> and <strong>Gallery Images</strong>.</li>
+                    <li>Assign a <strong>Category</strong>, <strong>Brand</strong>, and <strong>Unit</strong>.</li>
+                    <li>Set <strong>Stock Quantity</strong> and <strong>SKU</strong>.</li>
+                    <li>Click <strong>Save Product</strong>.</li>
+                </ol>
+                <div class="screenshot-box">
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Screenshot: Product list and Add New Product form</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="categories">
+                <h3>How to manage Categories?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Product Management > Categories</strong>.</li>
+                    <li>Click <strong>Add New Category</strong>.</li>
+                    <li>Enter the <strong>Name</strong> and upload a <strong>Banner/Icon</strong>.</li>
+                    <li>Use the list to edit or delete existing categories.</li>
+                </ol>
+            </section>
+
+            <section id="subcategories">
+                <h3>How to manage Sub Categories?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Product Management > Sub Categories</strong>.</li>
+                    <li>Click <strong>Add New Sub Category</strong>.</li>
+                    <li>Select the <strong>Parent Category</strong>.</li>
+                    <li>Enter the <strong>Name</strong> and click Save.</li>
+                </ol>
+            </section>
+
+            <section id="brands">
+                <h3>How to manage Brands?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Product Management > Brands</strong>.</li>
+                    <li>Click <strong>Add New Brand</strong>.</li>
+                    <li>Upload the <strong>Brand Logo</strong> and enter the <strong>Name</strong>.</li>
+                    <li>Brands can be assigned to products during product creation.</li>
+                </ol>
+            </section>
+
+            <section id="units">
+                <h3>How to manage Units?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Product Management > Units</strong>.</li>
+                    <li>Add units like <strong>kg</strong>, <strong>pc</strong>, <strong>ltr</strong>, etc.</li>
+                    <li>These units are used to define product quantities.</li>
+                </ol>
+            </section>
+
+            <section id="colors">
+                <h3>How to manage Colors?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Product Management > Colors</strong>.</li>
+                    <li>Add colors by selecting a <strong>Color Code</strong> and entering a <strong>Name</strong>.</li>
+                    <li>Used for product variations.</li>
+                </ol>
+            </section>
+
+            <!-- Order Management -->
+            <section id="orders">
+                <h3>How to manage Orders (Order Processing)?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>The Order Management system allows you to track and process customer orders from placement to delivery.</p>
+                <ol>
+                    <li><strong>View Orders:</strong> Go to <strong>Order Management > Orders</strong> to see a list of all orders with their current status (Pending, Processing, Completed, etc.).</li>
+                    <li><strong>Order Details:</strong> Click on the <strong>Action</strong> button or Order ID to view full details, including ordered items, shipping address, and payment status.</li>
+                    <li><strong>Update Status:</strong> You can change the order status to reflect progress:
+                        <ul>
+                            <li><strong>Pending:</strong> New order received.</li>
+                            <li><strong>Processing:</strong> Order is being prepared/packed.</li>
+                            <li><strong>Shipped:</strong> Order has been handed over to the courier.</li>
+                            <li><strong>Delivered:</strong> Customer has received the order.</li>
+                            <li><strong>Cancelled:</strong> Order was cancelled.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Invoices & Labels:</strong> You can download the PDF Invoice or print a Shipping Label directly from the order details page.</li>
+                </ol>
+                <div class="screenshot-box">
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Screenshot: Order Details page with Status Update and Invoice Download</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="refund-requests">
+                <h3>How to manage Refund Requests?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>If a customer requests a refund:</p>
+                <ol>
+                    <li>Go to <strong>Order Management > Refund Requests</strong>.</li>
+                    <li>Review the reason and evidence provided.</li>
+                    <li><strong>Approve</strong> or <strong>Reject</strong> the request.</li>
+                    <li>If approved, the amount may be refunded to the user's wallet or original payment method.</li>
+                </ol>
+                <div class="screenshot-box">
+                    <div class="screenshot-placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Screenshot: Refund Requests list – Approve/Reject actions</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="refund-reasons">
+                <h3>How to manage Refund Reasons?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Define reasons users can select when requesting a refund (e.g., "Damaged Product", "Wrong Item").</p>
+                <ol>
+                    <li>Go to <strong>Order Management > Refund Reasons</strong>.</li>
+                    <li>Add or edit the list of available reasons.</li>
+                </ol>
+            </section>
+
+            <section id="coupons">
+                <h3>How to manage Coupons?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Order Management > Coupons</strong>.</li>
+                    <li>Click <strong>Add New Coupon</strong>.</li>
+                    <li>Set the <strong>Code</strong>, <strong>Discount Type</strong> (Percent/Fixed), and <strong>Amount</strong>.</li>
+                    <li>Set <strong>Start Date</strong> and <strong>End Date</strong>.</li>
+                </ol>
+            </section>
+
+            <!-- Users Management -->
+            <section id="customers">
+                <h3>How to manage Customers?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Users Management > Customers List</strong>.</li>
+                    <li>View customer details, order history, and wallet balance.</li>
+                    <li><strong>Ban/Unban</strong> a customer if necessary.</li>
+                </ol>
+            </section>
+
+            <section id="contact-messages">
+                <h3>How to view Contact Messages?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Messages sent via the frontend Contact Us form appear here.</p>
+                <ol>
+                    <li>Go to <strong>Users Management > Contact Messages</strong>.</li>
+                    <li>Read and reply to user inquiries.</li>
+                </ol>
+            </section>
+
+            <section id="subscribers">
+                <h3>How to manage Subscribers?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>List of users who subscribed to the newsletter.</p>
+                <ol>
+                    <li>Go to <strong>Users Management > Subscriber List</strong>.</li>
+                    <li>You can export this list for email marketing campaigns.</li>
+                </ol>
+            </section>
+
+            <!-- Support Ticket -->
+            <section id="support-tickets">
+                <h3>How to manage Support Tickets?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Support Ticket > All Tickets</strong>.</li>
+                    <li>View tickets submitted by users.</li>
+                    <li>Reply to tickets and change their status (Open, Closed).</li>
+                </ol>
+            </section>
+
+            <section id="departments">
+                <h3>How to manage Departments?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Categorize support tickets (e.g., Technical, Sales).</p>
+                <ol>
+                    <li>Go to <strong>Support Ticket > Departments</strong>.</li>
+                    <li>Add new departments to organize tickets.</li>
+                </ol>
+            </section>
+
+            <!-- Wallet Management -->
+            <section id="wallets">
+                <h3>How to manage Wallets?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>The system has a digital wallet feature for users.</p>
+                <ol>
+                    <li>Go to <strong>Wallet Management > Wallet Lists</strong> to see user balances.</li>
+                    <li>Go to <strong>Transactions</strong> to view history.</li>
+                    <li>Configure wallet rules in <strong>Settings</strong>.</li>
+                </ol>
+            </section>
+
+            <!-- Live Chat -->
+            <section id="livechat">
+                <h3>How to manage Live Chat?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Interact with your customers in real-time.</p>
+                <ol>
+                    <li>Go to <strong>Live Chat</strong>.</li>
+                    <li>You can see active conversations and reply to customers instantly.</li>
+                </ol>
+            </section>
+
+            <!-- Staff Management -->
+            <section id="staffs">
+                <h3>How to manage Staffs?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Create accounts for your employees with specific roles.</p>
+                <ol>
+                    <li>Go to <strong>Staff Management > Staffs</strong>.</li>
+                    <li>Click <strong>Add New Staff</strong>.</li>
+                    <li>Assign a <strong>Role</strong> (e.g., Editor, Manager) to limit their access permissions.</li>
+                </ol>
+            </section>
+
+            <!-- Appearance -->
+            <section id="website-setup">
+                <h3>How to manage Website Setup?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>Customize the look and feel of your frontend.</p>
+                <ol>
+                    <li>Go to <strong>Appearance > Website Setup</strong>.</li>
+                    <li><strong>Home Page:</strong> Manage Hero Sliders, Banners, and Sections.</li>
+                    <li><strong>Footer:</strong> Update footer text, social links, and copyright info.</li>
+                    <li><strong>About/Contact:</strong> Update content for these static pages.</li>
+                </ol>
+            </section>
+
+            <section id="menus">
+                <h3>How to manage Menus?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Appearance > Menus</strong>.</li>
+                    <li>Manage the Header and Footer menus.</li>
+                    <li>Drag and drop items to reorder them.</li>
+                </ol>
+            </section>
+
+            <!-- Reviews -->
+            <section id="reviews">
+                <h3>How to manage Reviews?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Reviews</strong>.</li>
+                    <li>See all product reviews submitted by customers.</li>
+                    <li>Unpublish or delete inappropriate reviews.</li>
+                </ol>
+            </section>
+
+            <!-- Page Management -->
+            <section id="pages">
+                <h3>How to manage Pages?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>To edit dynamic pages like "About Us", "Terms & Conditions":</p>
+                <ol>
+                    <li>Go to <strong>Page Management</strong> in the sidebar.</li>
+                    <li>Click on the page you want to edit.</li>
+                    <li>Update the Page Title and Content in the editor.</li>
+                </ol>
+            </section>
+
+            <!-- International -->
+            <section id="multi-currency">
+                <h3>How to manage Multi Currency?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>International > Multi Currency</strong>.</li>
+                    <li>Add supported currencies.</li>
+                    <li>Set the exchange rate relative to the default currency.</li>
+                </ol>
+            </section>
+
+            <section id="multi-language">
+                <h3>How to manage Multi Language?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>International > Multi Language</strong>.</li>
+                    <li>Add new languages (e.g., French, Spanish).</li>
+                    <li>Use the <strong>Translation</strong> feature to translate static text strings.</li>
+                </ol>
+            </section>
+
+            <!-- Payment Settings -->
+            <section id="payment-methods">
+                <h3>How to manage Payment Methods?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>Payment Settings > Payment Methods</strong>.</li>
+                    <li>Enable gateways like PayPal, Stripe, etc.</li>
+                    <li>Enter your API credentials (Client ID, Secret) and set to Live/Sandbox mode.</li>
+                </ol>
+            </section>
+
+            <!-- System Settings -->
+            <section id="general-settings">
+                <h3>How to manage General Settings & Delivery Charges?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>This section controls core site configurations including branding and shipping logic.</p>
+                <ol>
+                    <li>Go to <strong>System Settings > General Settings</strong>.</li>
+                    <li><strong>App Settings:</strong> Change App Name, Currency Symbol, and Timezone.</li>
+                    <li><strong>Logo & Favicon:</strong> Upload your brand's Header/Footer Logo and Favicon.</li>
+                    <li><strong>Shipping Configuration (Delivery Charges):</strong>
+                        <ul>
+                            <li><strong>Inside City Name:</strong> Define the main city (e.g., "Dhaka"). If a customer's address matches this city, the "Inside City" rate applies.</li>
+                            <li><strong>Inside City Cost:</strong> Set the delivery charge for the main city.</li>
+                            <li><strong>Outside City Cost:</strong> Set the delivery charge for all other locations (any city not matching the "Inside City Name").</li>
+                            <li><strong>Free Shipping Minimum Amount:</strong> Set a minimum order subtotal (e.g., 5000) to automatically offer Free Shipping. Enter 0 to disable this feature.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Footer Information:</strong> Update contact details (Phone, Email, Address), copyright text, and payment method image.</li>
+                    <li><strong>Social Media Links:</strong> Configure links for Facebook, Twitter, Instagram, etc.</li>
+                </ol>
+            </section>
+
+            <section id="email-config">
+                <h3>How to configure Email?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>System Settings > Email Config</strong>.</li>
+                    <li>Enter SMTP details (Host, Port, User, Pass).</li>
+                    <li>Send a test email to verify.</li>
+                </ol>
+            </section>
+
+            <section id="email-templates">
+                <h3>How to manage Email Templates?</h3>
+                <span class="answer-label">Answer:</span>
+                <ol>
+                    <li>Go to <strong>System Settings > Email Templates</strong>.</li>
+                    <li>Customize the subject and body of automated emails (e.g., Order Placed, Registration).</li>
+                    <li>Use shortcodes (like <code>{user_name}</code>) to insert dynamic data.</li>
+                </ol>
+            </section>
+
+            <!-- Common Issues -->
+            <section id="fix-404">
+                <h3>How to fix 404 Routes error?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>If you face 404 errors on pages other than the homepage:</p>
+                <ol>
+                    <li>Ensure the <code>.htaccess</code> file exists in the root directory.</li>
+                    <li>Run <code>php artisan optimize:clear</code> to clear the route cache.</li>
+                </ol>
+            </section>
+
+            <section id="fix-images">
+                <h3>How to fix Broken Images?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>If product images are not showing up:</p>
+                <ol>
+                    <li>Run the storage link command: <code>php artisan storage:link</code>.</li>
+                </ol>
+            </section>
+
+            <section id="fix-db">
+                <h3>How to fix Database Connection error?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>If you see "Connection refused":</p>
+                <ol>
+                    <li>Check your <code>.env</code> file credentials.</li>
+                    <li>Ensure your database server is running.</li>
+                </ol>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Mobile Toggle -->
+    <div class="mobile-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Sidebar Toggle for Mobile
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        // Accordion Menu
+        function toggleMenu(element) {
+            const allNavLinks = document.querySelectorAll('.nav-link');
+            allNavLinks.forEach(link => {
+                if (link !== element) {
+                    link.classList.remove('active');
+                    link.nextElementSibling.style.display = 'none';
+                    link.parentElement.classList.remove('open');
+                    const icon = link.querySelector('i:last-child');
+                    if(icon) {
+                        icon.classList.remove('fa-minus');
+                        icon.classList.add('fa-plus');
+                    }
+                }
+            });
+
+            element.classList.toggle('active');
+            const submenu = element.nextElementSibling;
+            const icon = element.querySelector('i:last-child');
+            
+            if (submenu.style.display === 'block') {
+                submenu.style.display = 'none';
+                element.parentElement.classList.remove('open');
+                if(icon) {
+                    icon.classList.remove('fa-minus');
+                    icon.classList.add('fa-plus');
+                }
+            } else {
+                submenu.style.display = 'block';
+                element.parentElement.classList.add('open');
+                if(icon) {
+                    icon.classList.remove('fa-plus');
+                    icon.classList.add('fa-minus');
+                }
+            }
+        }
+
+        // Search Functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let links = document.querySelectorAll('.nav-submenu li a');
+            
+            links.forEach(link => {
+                let text = link.textContent || link.innerText;
+                let parentItem = link.closest('.nav-item');
+                let parentLink = parentItem.querySelector('.nav-link');
+                let submenu = parentItem.querySelector('.nav-submenu');
+                let icon = parentLink.querySelector('i:last-child');
+
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    link.parentElement.style.display = "";
+                    if (!parentLink.classList.contains('active')) {
+                        parentLink.classList.add('active');
+                        submenu.style.display = 'block';
+                        parentItem.classList.add('open');
+                        if(icon) {
+                            icon.classList.remove('fa-plus');
+                            icon.classList.add('fa-minus');
+                        }
+                    }
+                } else {
+                    link.parentElement.style.display = "none";
+                }
+            });
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-submenu li a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                if (window.innerWidth < 992) {
+                    document.getElementById('sidebar').classList.remove('show');
+                }
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

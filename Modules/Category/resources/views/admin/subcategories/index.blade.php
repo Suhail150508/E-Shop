@@ -105,7 +105,7 @@
                                     <a href="{{ route('admin.subcategories.edit', $subcategory->id) }}" class="btn btn-sm btn-soft-secondary" data-bs-toggle="tooltip" title="{{ __('Edit') }}">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('admin.subcategories.destroy', $subcategory->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('Are you sure you want to delete this subcategory?') }}')">
+                                    <form action="{{ route('admin.subcategories.destroy', $subcategory->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('common.delete_confirmation') }}')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-soft-danger" data-bs-toggle="tooltip" title="{{ __('Delete') }}">
@@ -173,7 +173,7 @@
 
         if(bulkDeleteBtn) {
             bulkDeleteBtn.addEventListener('click', function() {
-                if (!confirm('{{ __("Are you sure you want to delete selected items?") }}')) return;
+                if (!confirm('{{ __('common.delete_selected_confirmation') }}')) return;
 
                 const selectedIds = Array.from(checkboxes)
                     .filter(cb => cb.checked)
@@ -200,7 +200,6 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
                     if (typeof toastr !== 'undefined') {
                         toastr.error('{{ __('An error occurred') }}');
                     } else {

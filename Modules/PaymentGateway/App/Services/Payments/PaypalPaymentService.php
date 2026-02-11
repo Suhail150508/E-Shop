@@ -36,13 +36,19 @@ class PaypalPaymentService implements PaymentService
 
     public function isEnabled(): bool
     {
-        $enabled = (bool) $this->settings->get('payment_paypal_enabled', false);
-
-        return $enabled && $this->getClientId() && $this->getSecret();
+        return (bool) $this->settings->get('payment_paypal_enabled', false);
     }
 
     public function createPayment(Order $order, array $data = []): RedirectResponse
     {
+        if (! $this->getClientId() || ! $this->getSecret()) {
+            $redirectRoute = $order->type === Order::TYPE_WALLET_DEPOSIT ? 'customer.wallet.index' : 'customer.orders.show';
+
+            return redirect()
+                ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
+                ->with('error', __('paymentgateway::payment.paypal_not_configured'));
+        }
+
         $accessToken = $this->getAccessToken();
 
         if (! $accessToken) {
@@ -50,7 +56,7 @@ class PaypalPaymentService implements PaymentService
 
             return redirect()
                 ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-                ->with('error', __('PayPal is not configured correctly.'));
+                ->with('error', __('paymentgateway::payment.paypal_not_configured'));
         }
 
         $response = Http::withToken($accessToken)->post("{$this->baseUrl}/v2/checkout/orders", [
@@ -159,6 +165,11 @@ class PaypalPaymentService implements PaymentService
             if ($customId) {
                 $order = Order::find($customId);
                 if ($order && $order->user) {
+                    // Prevent double refund if already processed
+                    if ($order->payment_status === Order::PAYMENT_REFUNDED) {
+                        return new Response('Already Refunded');
+                    }
+
                     $amountRefunded = $resource['amount']['value'] ?? 0;
                     if ($amountRefunded > 0) {
                         DB::transaction(function () use ($order, $amountRefunded) {

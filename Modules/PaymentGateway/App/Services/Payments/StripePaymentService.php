@@ -34,9 +34,7 @@ class StripePaymentService implements PaymentService
 
     public function isEnabled(): bool
     {
-        $enabled = (bool) $this->settings->get('payment_stripe_enabled', false);
-
-        return $enabled && $this->getSecretKey() !== null;
+        return (bool) $this->settings->get('payment_stripe_enabled', false);
     }
 
     public function createPayment(Order $order, array $data = []): RedirectResponse
@@ -48,7 +46,7 @@ class StripePaymentService implements PaymentService
 
             return redirect()
                 ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-                ->with('error', __('Stripe is not configured.'));
+                ->with('error', __('paymentgateway::payment.stripe_not_configured'));
         }
 
         Stripe::setApiKey($secretKey);
@@ -73,7 +71,7 @@ class StripePaymentService implements PaymentService
 
             return redirect()
                 ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-                ->with('error', __('Cannot create Stripe session for empty order.'));
+                ->with('error', __('paymentgateway::payment.stripe_empty_order'));
         }
 
         $client = new StripeClient($secretKey);
@@ -105,7 +103,7 @@ class StripePaymentService implements PaymentService
 
             return redirect()
                 ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-                ->with('error', __('Stripe error: :message', ['message' => $exception->getMessage()]));
+                ->with('error', __('paymentgateway::payment.stripe_error', ['message' => $exception->getMessage()]));
         }
 
         $order->update([
@@ -124,7 +122,7 @@ class StripePaymentService implements PaymentService
 
             return redirect()
                 ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-                ->with('error', __('Missing Stripe session.'));
+                ->with('error', __('paymentgateway::payment.missing_stripe_session'));
         }
 
         $secretKey = $this->getSecretKey();
@@ -134,7 +132,7 @@ class StripePaymentService implements PaymentService
 
             return redirect()
                 ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-                ->with('error', __('Stripe is not configured.'));
+                ->with('error', __('paymentgateway::payment.stripe_not_configured'));
         }
 
         $client = new StripeClient($secretKey);
@@ -146,7 +144,7 @@ class StripePaymentService implements PaymentService
 
             return redirect()
                 ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-                ->with('error', __('Stripe error: :message', ['message' => $exception->getMessage()]));
+                ->with('error', __('paymentgateway::payment.stripe_error', ['message' => $exception->getMessage()]));
         }
 
         if ($session->payment_status === 'paid') {
@@ -161,23 +159,23 @@ class StripePaymentService implements PaymentService
             if ($order->type === Order::TYPE_WALLET_DEPOSIT) {
                 return redirect()
                     ->route('customer.wallet.index')
-                    ->with('success', __('Wallet funded successfully.'));
+                    ->with('success', __('paymentgateway::payment.wallet_funded'));
             }
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('success', __('Payment completed successfully.'));
+                ->with('success', __('paymentgateway::payment.payment_completed'));
         }
 
         if ($order->type === Order::TYPE_WALLET_DEPOSIT) {
             return redirect()
                 ->route('customer.wallet.index')
-                ->with('error', __('Payment not completed.'));
+                ->with('error', __('paymentgateway::payment.payment_not_completed'));
         }
 
         return redirect()
             ->route('customer.orders.show', $order)
-            ->with('error', __('Payment not completed.'));
+            ->with('error', __('paymentgateway::payment.payment_not_completed'));
     }
 
     public function handleCancel(Order $order, Request $request): RedirectResponse
@@ -196,7 +194,7 @@ class StripePaymentService implements PaymentService
 
             return redirect()
                 ->route('customer.wallet.index')
-                ->with('error', __('Payment cancelled.'));
+                ->with('error', __('paymentgateway::payment.payment_cancelled'));
         }
 
         return redirect()
@@ -264,6 +262,11 @@ class StripePaymentService implements PaymentService
                 $order = Order::find($orderId);
 
                 if ($order && $order->user) {
+                    // Prevent double refund if already processed
+                    if ($order->payment_status === Order::PAYMENT_REFUNDED) {
+                        return new Response('Already Refunded', 200);
+                    }
+
                     DB::transaction(function () use ($order, $amount) {
                         $user = $order->user;
                         $user->increment('wallet_balance', $amount);

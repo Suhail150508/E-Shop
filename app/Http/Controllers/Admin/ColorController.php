@@ -7,6 +7,7 @@ use App\Models\Color;
 use App\Http\Requests\Admin\StoreColorRequest;
 use App\Http\Requests\Admin\UpdateColorRequest;
 use Illuminate\Http\Request;
+use Modules\Product\App\Models\Product;
 
 class ColorController extends Controller
 {
@@ -100,6 +101,10 @@ class ColorController extends Controller
      */
     public function destroy(Color $color)
     {
+        if (Product::whereJsonContains('colors', $color->name)->exists()) {
+            return back()->with('error', __('common.color_has_products'));
+        }
+
         $color->delete();
 
         return redirect()->route('admin.colors.index')

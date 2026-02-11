@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
 use App\Models\Page;
 
 class PageController extends Controller
@@ -21,17 +22,6 @@ class PageController extends Controller
 
     public function contact()
     {
-        // Contact page usually has a form, so it might be hybrid.
-        // But we can still fetch dynamic content if available.
-        // If not seeded, we might fallback or handle gracefully.
-        // For now, I'll assume standard pages are in DB or will be.
-        // Since I only seeded About and Terms, I should be careful.
-
-        // Actually, for contact, it's often a form. The user asked for "dynamic admin panel".
-        // If I force it to be a generic page, I lose the form.
-        // I should check if there's a specific contact page content in DB.
-        // If not, I'll keep the view static but maybe pass a page object if it exists.
-
         $page = Page::with('contentTranslations')->where('slug', 'contact-us')->where('is_active', true)->first();
 
         return view('frontend.pages.contact', compact('page'));
@@ -60,10 +50,13 @@ class PageController extends Controller
 
     public function coupons()
     {
-        // Coupons page is likely functional (listing coupons).
-        // Maybe just a header/banner from dynamic page?
-        $page = Page::with('contentTranslations')->where('slug', 'coupons')->where('is_active', true)->first();
+        $coupons = Coupon::where('is_active', true)
+            ->where(function ($q) {
+                $q->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->startOfDay());
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        return view('frontend.pages.coupons', compact('page'));
+        return view('frontend.pages.coupons', compact('coupons'));
     }
 }

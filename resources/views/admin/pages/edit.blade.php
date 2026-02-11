@@ -48,8 +48,9 @@
                         $trans = $page->getTranslationValuesForLocale($locale);
                     @endphp
                     <div class="tab-pane fade {{ $isDefault ? 'show active' : '' }}" id="pane-{{ $locale }}" role="tabpanel">
+                        @php $isAboutPage = $page->slug === 'about-us'; @endphp
                         <div class="row g-4">
-                            <div class="col-lg-8">
+                            <div class="{{ $isAboutPage ? 'col-lg-4' : 'col-lg-8' }}">
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">{{ __('Page Title') }} <span class="text-danger">*</span></label>
                                     @if($isDefault)
@@ -60,18 +61,7 @@
                                     @endif
                                 </div>
 
-                                @if($isDefault)
-                                    <div class="alert alert-info border-0 shadow-sm mb-3">
-                                        <div class="d-flex">
-                                            <i class="bi bi-info-circle-fill fs-4 me-3"></i>
-                                            <div>
-                                                <h6 class="fw-bold mb-1">{{ __('Content Editor Guide') }}</h6>
-                                                <p class="mb-0 small">{{ __('You can upload images directly in the editor! Click the Image icon > Upload tab, or drag and drop images. For the best result, use the Banner Image field on the right for the main page header.') }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-
+                                @if(!$isAboutPage)
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">{{ __('Content') }}</label>
                                     @if($isDefault)
@@ -81,9 +71,10 @@
                                         <textarea class="form-control rich-editor" id="content_{{ $locale }}" name="translations[{{ $locale }}][content]" rows="15" data-locale="{{ $locale }}">{{ old("translations.{$locale}.content", $trans['content'] ?? '') }}</textarea>
                                     @endif
                                 </div>
+                                @endif
                             </div>
 
-                            <div class="col-lg-4">
+                            <div class="{{ $isAboutPage ? 'col-lg-8' : 'col-lg-4' }}">
                                 @if($isDefault)
                                     <div class="mb-4">
                                         <label class="form-label fw-bold">{{ __('Page Status') }}</label>
@@ -310,15 +301,6 @@
         </form>
     </div>
 </div>
-
-@push('styles')
-<style>
-.nav-tabs-translation .nav-link { border: 1px solid #dee2e6; margin-right: 4px; border-radius: 6px; font-weight: 500; }
-.nav-tabs-translation .nav-link.active { background: #e7f1ff; border-color: #0d6efd; color: #0d6efd; }
-.nav-tabs-translation .nav-link:hover:not(.active) { background: #f8f9fa; }
-@media (max-width: 576px) { .nav-tabs-translation { overflow-x: auto; -webkit-overflow-scrolling: touch; } .nav-tabs-translation .nav-link { font-size: 0.875rem; padding: 0.5rem 0.75rem; } }
-</style>
-@endpush
 
 @push('scripts')
 <script src="{{ asset('backend/vendor/tinymce/tinymce.min.js') }}"></script>

@@ -247,8 +247,8 @@
                             {{ setting('home_banner_text', __('common.testimonials_paragraph')) }}
                         </p>
                         @php
-                            $t1 = setting('home_banner_testimonial_1_name', 'John D.');
-                            $t2 = setting('home_banner_testimonial_2_name', 'Sarah J.');
+                            $t1 = setting('home_banner_testimonial_1_name', __('common.john_doe'));
+                            $t2 = setting('home_banner_testimonial_2_name', __('common.sarah_j'));
                             $parts1 = preg_split('/\s+/', trim($t1), 2);
                             $parts2 = preg_split('/\s+/', trim($t2), 2);
                             $init1 = $parts1 ? strtoupper(mb_substr($parts1[0], 0, 1) . (isset($parts1[1]) ? mb_substr($parts1[1], 0, 1) : '')) : '?';

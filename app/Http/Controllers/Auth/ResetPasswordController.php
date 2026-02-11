@@ -60,8 +60,5 @@ class ResetPasswordController extends Controller
         $user->save();
 
         event(new PasswordReset($user));
-
-        // Auto login is optional, usually standard flow redirects to login
-        // $this->guard()->login($user);
     }
 }

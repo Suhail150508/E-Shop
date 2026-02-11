@@ -5,9 +5,9 @@
 
 <div class="container py-5">
 @if(isset($page) && ($page->translate('content') ?? $page->content))
-    {!! $page->translate('content') ?? $page->content !!}
+        {!! $page->translate('content') ?? $page->content !!}
     @else
-        <div class="alert alert-info">{{ __('Shipping Information content is coming soon.') }}</div>
+        <div class="alert alert-info">{{ __('common.shipping_coming_soon') }}</div>
     @endif
 </div>
 

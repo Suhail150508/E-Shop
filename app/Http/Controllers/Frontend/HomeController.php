@@ -34,19 +34,19 @@ class HomeController extends Controller
         if (empty($heroImages) || ! is_array($heroImages)) {
             $heroImages = [
                 [
-                    ['image' => null, 'name' => 'Elegant Evening Gown', 'badge' => 'new'],
-                    ['image' => null, 'name' => 'Velvet Blazer', 'badge' => 'trend'],
-                    ['image' => null, 'name' => 'Designer Outfit', 'badge' => 'premium'],
+                    ['image' => null, 'name' => 'elegant_evening_gown', 'badge' => 'new'],
+                    ['image' => null, 'name' => 'velvet_blazer', 'badge' => 'trend'],
+                    ['image' => null, 'name' => 'designer_outfit', 'badge' => 'premium'],
                 ],
                 [
-                    ['image' => null, 'name' => 'Floral Maxi Dress', 'badge' => 'sale_badge'],
-                    ['image' => null, 'name' => 'Summer Dress', 'badge' => 'popular'],
-                    ['image' => null, 'name' => 'Casual Wear', 'badge' => 'new'],
+                    ['image' => null, 'name' => 'floral_maxi_dress', 'badge' => 'sale_badge'],
+                    ['image' => null, 'name' => 'summer_dress', 'badge' => 'popular'],
+                    ['image' => null, 'name' => 'casual_wear', 'badge' => 'new'],
                 ],
                 [
-                    ['image' => null, 'name' => 'Vintage Collection', 'badge' => 'hot'],
-                    ['image' => null, 'name' => 'Chic Top', 'badge' => 'limited'],
-                    ['image' => null, 'name' => 'Fashion Collection', 'badge' => 'hot'],
+                    ['image' => null, 'name' => 'vintage_collection', 'badge' => 'hot'],
+                    ['image' => null, 'name' => 'chic_top', 'badge' => 'limited'],
+                    ['image' => null, 'name' => 'fashion_collection', 'badge' => 'hot'],
                 ],
             ];
         }

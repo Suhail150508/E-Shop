@@ -34,15 +34,22 @@ class WalletPaymentService implements PaymentService
         $user = $order->user;
 
         if (! $user) {
-            return back()->with('error', __('You must be logged in to use wallet payment.'));
+            return back()->with('error', __('paymentgateway::payment.login_required_wallet'));
         }
 
         if ($user->wallet_balance < $order->total) {
-            return back()->with('error', __('Insufficient wallet balance.'));
+            return back()->with('error', __('paymentgateway::payment.insufficient_wallet_balance'));
         }
 
         try {
             DB::transaction(function () use ($order, $user) {
+                // Lock user row to prevent race conditions (double spending)
+                $user = $user->newQuery()->lockForUpdate()->find($user->id);
+
+                if ($user->wallet_balance < $order->total) {
+                    throw new \Exception(__('paymentgateway::payment.insufficient_wallet_balance'));
+                }
+
                 // Deduct from wallet
                 $user->decrement('wallet_balance', $order->total);
 
@@ -64,10 +71,10 @@ class WalletPaymentService implements PaymentService
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('success', __('Order paid successfully using wallet.'));
+                ->with('success', __('paymentgateway::payment.order_paid_wallet'));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Wallet payment failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
-            return back()->with('error', __('Payment failed. Please try again or contact support.'));
+            return back()->with('error', __('paymentgateway::payment.payment_failed'));
         }
     }
 

@@ -21,7 +21,7 @@ class WishlistController extends Controller
         $this->wishlist = $wishlist;
         $this->cart = $cart;
     }
-
+    // Show wishlist products
     public function index(): View
     {
         $products = $this->wishlist->items();
@@ -29,13 +29,14 @@ class WishlistController extends Controller
         return view('frontend.wishlist.index', compact('products'));
     }
 
+    // Add or remove product from wishlist
     public function toggle(Product $product): JsonResponse|RedirectResponse
     {
         $added = $this->wishlist->toggle($product);
 
         $message = $added
-            ? __(':name added to wishlist.', ['name' => $product->name])
-            : __(':name removed from wishlist.', ['name' => $product->name]);
+            ? __('common.added_to_wishlist', ['name' => $product->name])
+            : __('common.removed_from_wishlist', ['name' => $product->name]);
 
         if (request()->wantsJson()) {
             return response()->json([
@@ -49,12 +50,13 @@ class WishlistController extends Controller
         return back()->with('success', $message);
     }
 
+    // Move product from wishlist to cart
     public function moveToCart(Product $product): RedirectResponse
     {
         $this->wishlist->remove($product);
 
         $this->cart->add($product, 1);
 
-        return back()->with('success', __('Product moved to cart.'));
+        return back()->with('success', __('common.product_moved_to_cart'));
     }
 }

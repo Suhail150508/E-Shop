@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Modules\Product\App\Models\Product;
+
+/** @uses \Intervention\Image\ImageManager when intervention/image is installed (composer require intervention/image) */
 
 class TryOnController extends Controller
 {
@@ -66,22 +69,37 @@ class TryOnController extends Controller
                     $productImage->width(),
                     $productImage->height()
                 );
+                // Overlay for insert (1x): resize and enhance
                 $productImage->resize($targetW, $targetH);
-                $productImage->sharpen(8);
-                $productImage->contrast(4);
+                $productImage->sharpen(15);
+                $productImage->contrast(8);
+                $productImage->brightness(2);
                 if (method_exists($productImage, 'blur')) {
                     $productImage->blur(1);
                 }
+                $userImage->insert($productImage, 'top-left', max(0, $offsetX), max(0, $offsetY));
+                // Save overlay at 2x resolution so "Increase width" stays sharp (no jhapsha)
+                $overlayScale = 2;
+                $overlayImage = $manager->make($productImagePath);
+                $overlayImage->resize((int) ($targetW * $overlayScale), (int) ($targetH * $overlayScale));
+                $overlayImage->sharpen(15);
+                $overlayImage->contrast(8);
+                $overlayImage->brightness(2);
+                if (method_exists($overlayImage, 'blur')) {
+                    $overlayImage->blur(1);
+                }
                 $overlayFilename = 'overlay_' . uniqid() . '_' . time() . '.png';
                 $overlayPath = $dir . '/temp/' . $overlayFilename;
-                $productImage->encode('png', 100)->save($overlayPath);
+                $overlayImage->encode('png', 100)->save($overlayPath);
                 $overlayUrl = asset('uploads/tryon/temp/' . $overlayFilename);
                 $overlayLeft = max(0, $offsetX);
                 $overlayTop = max(0, $offsetY);
                 $overlayWidth = $targetW;
                 $overlayHeight = $targetH;
-                $userImage->insert($productImage, 'top-left', $overlayLeft, $overlayTop);
-                $userImage->sharpen(8);
+                // Final composite
+                $userImage->brightness(3);
+                $userImage->contrast(6);
+                $userImage->sharpen(14);
                 $userImage->encode('png', 100)->save($path);
             } else {
                 $gdResult = $this->mergeWithGd(
@@ -120,7 +138,7 @@ class TryOnController extends Controller
             }
 
             return response()->json($response)->header('Cache-Control', 'no-cache, must-revalidate');
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
             Log::error('Virtual Try-On Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
@@ -143,21 +161,23 @@ class TryOnController extends Controller
 
     /**
      * Create Intervention ImageManager if the package is available.
+     * Requires: composer require intervention/image (^2.7)
      *
      * @return \Intervention\Image\ImageManager|null
      */
     private function makeImageManager(string $driver)
     {
-        if (! class_exists(\Intervention\Image\ImageManager::class)) {
+        $imageManagerClass = 'Intervention\Image\ImageManager';
+        if (! class_exists($imageManagerClass)) {
             return null;
         }
         try {
-            return new \Intervention\Image\ImageManager(['driver' => $driver]);
+            return new $imageManagerClass(['driver' => $driver]);
         } catch (\Exception $e) {
             Log::warning('Virtual Try-On: ImageManager failed with driver ' . $driver . ': ' . $e->getMessage());
             if ($driver === 'imagick') {
                 try {
-                    return new \Intervention\Image\ImageManager(['driver' => 'gd']);
+                    return new $imageManagerClass(['driver' => 'gd']);
                 } catch (\Exception $e2) {
                     return null;
                 }
@@ -230,7 +250,6 @@ class TryOnController extends Controller
         $transparent = imagecolorallocatealpha($productResized, 0, 0, 0, 127);
         imagefill($productResized, 0, 0, $transparent);
         imagecopyresampled($productResized, $product, 0, 0, 0, 0, $newProdW, $newProdH, $prodW, $prodH);
-        imagedestroy($product);
 
         if (defined('IMG_FILTER_GAUSSIAN_BLUR')) {
             imagefilter($productResized, IMG_FILTER_GAUSSIAN_BLUR);
@@ -238,12 +257,36 @@ class TryOnController extends Controller
 
         $overlayFilename = 'overlay_' . uniqid() . '_' . time() . '.png';
         $overlayPath = rtrim($tempDir, '/') . '/' . $overlayFilename;
-        if (is_dir($tempDir)) {
-            imagepng($productResized, $overlayPath, 9);
-            $overlayUrl = asset('uploads/tryon/temp/' . $overlayFilename);
+        $overlayScale = 2;
+        $overlayW = (int) ($newProdW * $overlayScale);
+        $overlayH = (int) ($newProdH * $overlayScale);
+        if (is_dir($tempDir) && $overlayW > 0 && $overlayH > 0) {
+            $product2x = $this->gdLoadImage($productImagePath);
+            if ($product2x) {
+                $productOverlay2x = imagecreatetruecolor($overlayW, $overlayH);
+                if ($productOverlay2x) {
+                    imagealphablending($productOverlay2x, false);
+                    imagesavealpha($productOverlay2x, true);
+                    $transparent = imagecolorallocatealpha($productOverlay2x, 0, 0, 0, 127);
+                    imagefill($productOverlay2x, 0, 0, $transparent);
+                    imagecopyresampled($productOverlay2x, $product2x, 0, 0, 0, 0, $overlayW, $overlayH, imagesx($product2x), imagesy($product2x));
+                    imagepng($productOverlay2x, $overlayPath, 9);
+                    imagedestroy($productOverlay2x);
+                    $overlayUrl = asset('uploads/tryon/temp/' . $overlayFilename);
+                } else {
+                    imagepng($productResized, $overlayPath, 9);
+                    $overlayUrl = asset('uploads/tryon/temp/' . $overlayFilename);
+                }
+                imagedestroy($product2x);
+            } else {
+                imagepng($productResized, $overlayPath, 9);
+                $overlayUrl = asset('uploads/tryon/temp/' . $overlayFilename);
+            }
         } else {
             $overlayUrl = null;
         }
+
+        imagedestroy($product);
 
         $destX = max(0, min($destX, $userW - $newProdW));
         $destY = min(max(0, $destY), max(0, $userH - $newProdH));
@@ -322,24 +365,31 @@ class TryOnController extends Controller
         return null;
     }
 
+    /**
+     * Improve user photo for try-on: correct orientation, resize, and light enhancement.
+     * Used only when Intervention Image is available.
+     */
     private function optimizeImage($image)
     {
+        $image->orientate();
         if ($image->width() > 1500) {
             $image->resize(1500, null, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
         }
-        $image->orientate();
-        $image->contrast(3);
-        $image->brightness(2);
+        $image->contrast(5);
+        $image->brightness(4);
+        if (method_exists($image, 'sharpen')) {
+            $image->sharpen(6);
+        }
 
         return $image;
     }
 
     /**
-     * Calculate overlay size and position for face-worn items (e.g. sunglasses).
-     * Overlay is sized to a fraction of image width so it fits the face naturally.
+     * Calculate overlay size and position for try-on (glasses, shirts, etc.).
+     * Overlay is sized to a fraction of image width so it fits torso/face.
      *
      * @return array{0: int, 1: int, 2: int, 3: int} [targetWidth, targetHeight, offsetX, offsetY]
      */
@@ -347,8 +397,8 @@ class TryOnController extends Controller
     {
         $prodAspect = $prodW / max(1, $prodH);
 
-        // Face/glasses region is typically ~40-45% of portrait width; size overlay to fit
-        $faceWidthFactor = 0.42;
+        // Default ~55% of width so shirt/torso overlay fits better; user can still adjust
+        $faceWidthFactor = 0.55;
         $targetProdW = (int) ($userW * $faceWidthFactor);
         $targetProdH = (int) ($targetProdW / $prodAspect);
 

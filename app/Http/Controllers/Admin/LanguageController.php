@@ -73,7 +73,7 @@ class LanguageController extends Controller
             $data['is_default'] = true;
             $data['status'] = true; // Default must be active
         } elseif (! $is_default && $language->is_default) {
-            return back()->withErrors(['is_default' => __('You cannot unset the default language. Set another language as default instead.')]);
+            return back()->withErrors(['is_default' => __('common.language_unset_default_error')]);
         }
 
         $language->update($data);

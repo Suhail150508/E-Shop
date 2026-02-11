@@ -6,7 +6,17 @@
     <meta name="robots" content="noindex, follow">
     <meta name="description" content="{{ __('common.page_not_found_message') }}">
 @endsection
-
+@push('styles')
+    <style>
+        .error-404-section { min-height: 60vh; display: flex; align-items: center; }
+        .error-404-code { font-size: clamp(4rem, 15vw, 8rem); font-weight: 800; color: var(--bs-gray-200, #e9ecef); line-height: 1; }
+        .error-404-icon { font-size: 3rem; }
+        @media (max-width: 575.98px) {
+            .error-404-section .d-flex { flex-direction: column; }
+            .error-404-section .btn { width: 100%; max-width: 280px; }
+        }
+    </style>
+@endpush
 @section('content')
 <section class="error-404-section py-5">
     <div class="container">
@@ -43,15 +53,4 @@
     </div>
 </section>
 
-@push('styles')
-<style>
-    .error-404-section { min-height: 60vh; display: flex; align-items: center; }
-    .error-404-code { font-size: clamp(4rem, 15vw, 8rem); font-weight: 800; color: var(--bs-gray-200, #e9ecef); line-height: 1; }
-    .error-404-icon { font-size: 3rem; }
-    @media (max-width: 575.98px) {
-        .error-404-section .d-flex { flex-direction: column; }
-        .error-404-section .btn { width: 100%; max-width: 280px; }
-    }
-</style>
-@endpush
 @endsection

@@ -37,6 +37,7 @@ class PaymentGatewayServiceProvider extends ServiceProvider
         $this->registerRoutes();
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'paymentgateway');
         $this->loadMigrationsFrom(__DIR__.'/../../Database/Migrations');
+        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'paymentgateway');
     }
 
     protected function registerRoutes(): void

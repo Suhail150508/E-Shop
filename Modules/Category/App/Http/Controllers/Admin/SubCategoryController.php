@@ -4,6 +4,7 @@ namespace Modules\Category\App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Modules\Category\App\Models\Category;
 use Modules\Category\Services\CategoryService;
 
@@ -140,8 +141,8 @@ class SubCategoryController extends Controller
             $this->categoryService->delete($subcategory);
             return redirect()->route('admin.subcategories.index')->with('success', __('Subcategory deleted successfully.'));
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::warning('Subcategory delete failed', ['id' => $subcategory->id, 'error' => $e->getMessage()]);
-            return redirect()->back()->with('error', __('common.error_deleting_subcategory'));
+            Log::warning('Subcategory delete failed', ['id' => $subcategory->id, 'error' => $e->getMessage()]);
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
@@ -161,10 +162,11 @@ class SubCategoryController extends Controller
 
         try {
             $this->categoryService->bulkDelete($ids);
-            return response()->json(['success' => __('Selected subcategories deleted successfully.')]);
+            session()->flash('success', __('category::category.subcategories_bulk_delete_success'));
+            return response()->json(['success' => __('category::category.subcategories_bulk_delete_success')]);
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::warning('Subcategory bulk delete failed', ['ids' => $ids, 'error' => $e->getMessage()]);
-            return response()->json(['error' => __('common.error_deleting_selected_subcategories')], 400);
+            Log::warning('Subcategory bulk delete failed', ['ids' => $ids, 'error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 }

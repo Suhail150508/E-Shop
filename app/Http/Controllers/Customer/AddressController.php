@@ -114,6 +114,7 @@ class AddressController extends Controller
     public function destroy(Request $request, Address $address)
     {
         if ($address->user_id !== $request->user()->id) {
+            // Check if refund already exists
             abort(403);
         }
 
@@ -127,6 +128,7 @@ class AddressController extends Controller
         $user = $request->user();
 
         if ($address->user_id !== $user->id) {
+            // Check if refund already exists
             abort(403);
         }
 

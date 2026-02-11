@@ -41,6 +41,10 @@ class SupportDepartmentController extends Controller
 
     public function destroy(SupportDepartment $supportDepartment)
     {
+        if ($supportDepartment->tickets()->exists()) {
+            return back()->with('error', __('common.department_has_tickets'));
+        }
+
         $supportDepartment->delete();
 
         return back()->with('success', __('common.department_deleted_success'));

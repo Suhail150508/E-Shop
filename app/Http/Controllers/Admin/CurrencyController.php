@@ -107,7 +107,7 @@ class CurrencyController extends Controller
             $data['status'] = true; // Default must be active
         } elseif (! $is_default && $currency->is_default) {
             // Cannot unset default flag directly, must set another currency as default
-            return back()->withErrors(['is_default' => __('You cannot unset the default currency. Set another currency as default instead.')]);
+            return back()->withErrors(['is_default' => __('common.currency_unset_default_error')]);
         }
 
         $currency->update($data);

@@ -6,8 +6,8 @@
 
 @section('content')
 @php
-    $title = setting('auth_forgot_title', __('Forgot Password?'));
-    $subtitle = setting('auth_forgot_subtitle', __('Enter your email address and we will send you a link to reset your password.'));
+    $title = setting('auth_forgot_title', __('common.forgot_password_title'));
+    $subtitle = setting('auth_forgot_subtitle', __('common.forgot_password_subtitle'));
     $image = setting('auth_forgot_image', null);
 @endphp
 
@@ -20,8 +20,8 @@
             </div>
             <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div>
             <div class="position-absolute bottom-0 start-0 p-5 text-white w-100" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
-                <h2 class="display-5 fw-bold mb-3">{{ __('Secure Recovery') }}</h2>
-                <p class="lead mb-0 text-white-50">{{ __('We are here to help you get back to your account safely.') }}</p>
+                <h2 class="display-5 fw-bold mb-3">{{ __('common.secure_recovery') }}</h2>
+                <p class="lead mb-0 text-white-50">{{ __('common.recovery_help_text') }}</p>
             </div>
         </div>
         
@@ -41,19 +41,19 @@
                     
                     <div class="form-floating mb-4">
                         <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="{{ __('common.enter_email') }}">
-                        <label for="email">{{ __('auth.email') }}</label>
+                        <label for="email">{{ __('common.email') }}</label>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     
                     <button type="submit" class="btn btn-dark w-100 py-3 fw-bold shadow-sm mb-4">
-                        {{ __('Send Reset Link') }}
+                        {{ __('common.send_reset_link') }}
                     </button>
                     
                     <div class="text-center">
                         <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">
-                            <i class="fas fa-arrow-left me-1"></i> {{ __('Back to Login') }}
+                            <i class="fas fa-arrow-left me-1"></i> {{ __('common.back_to_login') }}
                         </a>
                     </div>
                 </form>

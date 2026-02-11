@@ -12,7 +12,6 @@
                         <div class="avatar-lg bg-primary-subtle rounded-3 d-flex align-items-center justify-content-center stats-icon-container">
                             <i class="fas fa-dollar-sign text-primary fs-4"></i>
                         </div>
-                        {{-- <span class="badge bg-success-subtle text-success">+12.5%</span> --}}
                     </div>
                     <h5 class="text-muted fw-normal mb-1">{{ __('Total Revenue') }}</h5>
                     <h2 class="fw-bold mb-0">{{ format_price($totalRevenue ?? 0) }}</h2>
@@ -27,7 +26,6 @@
                         <div class="avatar-lg bg-info-subtle rounded-3 d-flex align-items-center justify-content-center stats-icon-container">
                             <i class="fas fa-shopping-bag text-info fs-4"></i>
                         </div>
-                        {{-- <span class="badge bg-success-subtle text-success">+8.2%</span> --}}
                     </div>
                     <h5 class="text-muted fw-normal mb-1">{{ __('Total Orders') }}</h5>
                     <h2 class="fw-bold mb-0">{{ number_format($totalOrders ?? 0) }}</h2>
@@ -42,7 +40,6 @@
                         <div class="avatar-lg bg-warning-subtle rounded-3 d-flex align-items-center justify-content-center stats-icon-container">
                             <i class="fas fa-users text-warning fs-4"></i>
                         </div>
-                        {{-- <span class="badge bg-danger-subtle text-danger">-2.4%</span> --}}
                     </div>
                     <h5 class="text-muted fw-normal mb-1">{{ __('Total Customers') }}</h5>
                     <h2 class="fw-bold mb-0">{{ number_format($totalCustomers ?? 0) }}</h2>
@@ -57,7 +54,6 @@
                         <div class="avatar-lg bg-purple-subtle rounded-3 d-flex align-items-center justify-content-center stats-icon-container">
                             <i class="fas fa-box text-purple fs-4"></i>
                         </div>
-                        {{-- <span class="badge bg-success-subtle text-success">+5.7%</span> --}}
                     </div>
                     <h5 class="text-muted fw-normal mb-1">{{ __('Total Products') }}</h5>
                     <h2 class="fw-bold mb-0">{{ number_format($totalProducts ?? 0) }}</h2>
@@ -204,7 +200,7 @@
         var statusSeries = @json($chartStatusSeries);
 
         if (statusSeries.length === 0) {
-            statusLabels = ['{{ __("No Orders") }}'];
+            statusLabels = ['{{ __("common.no_orders") }}'];
             statusSeries = [1]; // Dummy data for visual
             var colors = ['#e2e8f0']; // Grey for empty
         } else {
@@ -252,7 +248,7 @@
                             total: {
                                 show: true,
                                 showAlways: true,
-                                label: '{{ __("Total") }}',
+                                label: '{{ __("common.total") }}',
                                 fontSize: '14px',
                                 fontFamily: 'Inter, sans-serif',
                                 fontWeight: 600,
@@ -277,7 +273,7 @@
                 y: {
                     formatter: function(val) {
                         // If using dummy data, show 0 in tooltip
-                        if (statusSeries.length === 1 && statusSeries[0] === 1 && statusLabels[0] === '{{ __("No Orders") }}') {
+                        if (statusSeries.length === 1 && statusSeries[0] === 1 && statusLabels[0] === '{{ __("common.no_orders") }}') {
                             return "0";
                         }
                         return val;

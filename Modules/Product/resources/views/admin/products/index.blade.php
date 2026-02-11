@@ -3,6 +3,7 @@
 @section('page_title', __('Products'))
 
 @section('content')
+<!-- Header -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="h4 fw-bold mb-0">
         <i class="fas fa-box me-2 text-primary"></i>{{ __('Product') }}
@@ -12,6 +13,7 @@
     </a>
 </div>
 
+<!-- Filter Section -->
 <div class="card border-0 shadow-sm rounded-4 mb-4">
     <div class="card-body p-4">
         <form action="{{ route('admin.products.index') }}" method="GET">
@@ -52,6 +54,7 @@
     </div>
 </div>
 
+<!-- Product Table -->
 <div class="card border-0 shadow-sm rounded-4">
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -116,7 +119,7 @@
                                     <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline-block delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger-soft rounded-2" title="{{ __('Delete') }}" onclick="return confirm('{{ __('Are you sure?') }}')">
+                                        <button type="submit" class="btn btn-sm btn-danger-soft rounded-2" title="{{ __('Delete') }}" onclick="return confirm('{{ __('common.confirm_delete_product') }}')">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
@@ -170,7 +173,7 @@
                                     <div class="empty-state-icon bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3 empty-state-icon-large">
                                         <i class="fas fa-box-open fa-2x text-muted"></i>
                                     </div>
-                                    <h5 class="fw-bold text-dark mb-1">{{ __('No Products Found') }}</h5>
+                                    <h5 class="fw-bold text-dark mb-1">{{ __('common.no_products_found') }}</h5>
                                     <p class="text-muted">{{ __('Try adjusting your search or filters.') }}</p>
                                     <a href="{{ route('admin.products.create') }}" class="btn btn-primary px-4 mt-2">
                                         <i class="fas fa-plus me-2"></i>{{ __('Add New Product') }}

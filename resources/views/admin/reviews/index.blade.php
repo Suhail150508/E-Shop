@@ -66,7 +66,7 @@
                                                 <i class="fa-solid {{ $review->is_approved ? 'fa-ban' : 'fa-check' }}"></i>
                                             </button>
                                         </form>
-                                        <form action="{{ route('admin.reviews.destroy', $review) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure?') }}')">
+                                        <form action="{{ route('admin.reviews.destroy', $review->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('common.delete_confirmation') }}')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ __('Delete') }}">

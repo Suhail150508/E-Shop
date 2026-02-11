@@ -124,6 +124,13 @@ EOT
 </section>
 EOT
             ],
+            [
+                'title' => 'Contact Us',
+                'slug' => 'contact-us',
+                'image' => null,
+                'is_active' => true,
+                'content' => '',
+            ],
         ];
 
         foreach ($pages as $page) {

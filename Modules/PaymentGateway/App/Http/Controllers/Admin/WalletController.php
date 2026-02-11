@@ -100,14 +100,14 @@ class WalletController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => __('Wallet status updated successfully.'),
+            'message' => __('paymentgateway::payment.wallet_status_updated'),
         ]);
     }
 
     public function approveTransaction(Request $request, WalletTransaction $transaction)
     {
         if ($transaction->status !== 'pending') {
-            return back()->with('error', __('This transaction is not pending.'));
+            return back()->with('error', __('paymentgateway::payment.transaction_not_pending'));
         }
 
         // If it's a deposit (credit) with an associated order, let OrderService handle it
@@ -116,7 +116,7 @@ class WalletController extends Controller
 
             if ($order && $order->status === Order::STATUS_PENDING) {
                 $this->orderService->changeStatus($order, Order::STATUS_PROCESSING, auth()->id());
-                return back()->with('success', __('Transaction approved successfully.'));
+                return back()->with('success', __('paymentgateway::payment.transaction_approved'));
             }
         }
 
@@ -142,7 +142,7 @@ class WalletController extends Controller
             return back()->with('error', __('common.error_approving_transaction'));
         }
 
-        return back()->with('success', __('Transaction approved successfully.'));
+        return back()->with('success', __('paymentgateway::payment.transaction_approved'));
     }
 
     public function updateSettings(Request $request)
@@ -153,6 +153,6 @@ class WalletController extends Controller
 
         $this->settingService->set('wallet_deposit_limit', $request->wallet_deposit_limit);
 
-        return back()->with('success', __('Wallet settings updated successfully.'));
+        return back()->with('success', __('paymentgateway::payment.wallet_settings_updated'));
     }
 }

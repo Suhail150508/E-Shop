@@ -8,7 +8,7 @@
             <h4 class="mb-1">{{ $ticket->subject }}</h4>
             <div class="d-flex align-items-center gap-3 text-muted small">
                 <span><i class="fas fa-hashtag me-1"></i>{{ $ticket->ticket_number }}</span>
-                <span><i class="fas fa-layer-group me-1"></i>{{ $ticket->department?->name ?? __('Unknown') }}</span>
+                <span><i class="fas fa-layer-group me-1"></i>{{ $ticket->department?->name ?? __('common.unknown') }}</span>
                 <span><i class="fas fa-calendar me-1"></i>{{ $ticket->created_at?->format('M d, Y H:i') }}</span>
             </div>
         </div>
@@ -32,7 +32,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="fw-bold {{ $message->user_id === auth()->id() ? 'text-primary' : 'text-dark' }}">
-                                        {{ $message->user->name ?? __('Unknown User') }}
+                                        {{ $message->user->name ?? __('common.unknown_user') }}
                                     </div>
                                     <span class="text-muted small">{{ $message->created_at?->format('M d, Y H:i A') }}</span>
                                 </div>

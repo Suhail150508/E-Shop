@@ -1,0 +1,136 @@
+.live-chat-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px; /* Left side to avoid conflict with floating cart/scroll top */
+    z-index: 10000;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.live-chat-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--rust);
+    color: white;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.live-chat-toggle:hover {
+    transform: scale(1.1);
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: red;
+    color: white;
+    font-size: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    display: none; /* Hidden by default */
+}
+
+.chat-window {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+    animation: slideUp 0.3s ease;
+}
+
+@media (max-width: 480px) {
+    .chat-window {
+        width: 92%;
+        left: 4%;
+        bottom: 90px;
+    }
+    .live-chat-toggle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.chat-header {
+    background: var(--rust);
+    padding: 15px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-body {
+    flex: 1;
+    overflow-y: auto;
+    background: #f8f9fa;
+    position: relative;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.message.customer {
+    align-self: flex-end;
+    background: var(--rust);
+    color: white;
+    border-bottom-right-radius: 2px;
+}
+
+.message.admin {
+    align-self: flex-start;
+    background: white;
+    border: 1px solid #eee;
+    border-bottom-left-radius: 2px;
+    color: #333;
+}
+
+.message-time {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 4px;
+    display: block;
+    text-align: right;
+}
+
+.message img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 5px;
+}

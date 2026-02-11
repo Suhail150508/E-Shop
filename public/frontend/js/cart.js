@@ -91,7 +91,6 @@ document.addEventListener('submit', function (e) {
         }
     })
     .catch((error) => {
-        console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
             toastr.error(transCommon.error_generic || 'Something went wrong. Please try again.');
         }
@@ -158,7 +157,6 @@ document.addEventListener('submit', function (e) {
         }
     })
     .catch((error) => {
-        console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
             toastr.error(transCommon.error_generic || 'Something went wrong. Please try again.');
         }
@@ -202,7 +200,6 @@ document.addEventListener('submit', function (e) {
         }
     })
     .catch((error) => {
-        console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
             toastr.error(transCommon.error_generic || 'Something went wrong.');
         }
@@ -247,7 +244,6 @@ document.addEventListener('submit', function (e) {
         }
     })
     .catch((error) => {
-        console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
             toastr.error(transCommon.error_generic || 'Something went wrong.');
         }
@@ -285,7 +281,6 @@ document.addEventListener('submit', function (e) {
         }
     })
     .catch((error) => {
-        console.error('Error:', error);
         if (typeof toastr !== 'undefined') {
             toastr.error(transCommon.error_generic || 'Something went wrong.');
         }

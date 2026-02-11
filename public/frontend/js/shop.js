@@ -5,7 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize filters
-    updateActiveFilters();
+    // updateActiveFilters(); // Disabled to prevent conflict with server-side rendering
     handleResponsiveFilters();
     window.addEventListener('resize', handleResponsiveFilters);
     
@@ -82,7 +82,8 @@ function toggleFilter(element) {
 function toggleColor(element) {
     element.classList.toggle('active');
     updateColorInput();
-    updateActiveFilters();
+    // updateActiveFilters();
+    document.getElementById('filtersForm').submit();
 }
 
 function updateColorInput() {
@@ -173,104 +174,72 @@ function clearAllFilters() {
     document.getElementById('filtersForm').submit();
 }
 
-// Update active filters display
+// Active Filters - Disabled for server-side rendering
+/*
 function updateActiveFilters() {
     const container = document.getElementById('activeFilters');
-    const form = document.getElementById('filtersForm');
-    if(!form || !container) return;
+    if (!container) return;
     
-    const formData = new FormData(form);
-    const transCommon = window.translations?.common || {};
-    
-    let activeFilters = [];
-    
-    // Check categories
-    const categories = formData.getAll('categories[]');
-    if (categories.length) {
-        categories.forEach(id => {
-            const label = document.querySelector(`input[name="categories[]"][value="${id}"]`)
-                ?.closest('.filter-label')?.querySelector('span:first-child')?.textContent || `Category ${id}`;
-            activeFilters.push({
-                label: label,
-                remove: () => {
-                    const checkbox = document.querySelector(`input[name="categories[]"][value="${id}"]`);
-                    if (checkbox) checkbox.checked = false;
-                    form.submit();
-                }
-            });
-        });
-    }
-    
-    // Check price range
-    const minPrice = formData.get('min_price');
-    const maxPrice = formData.get('max_price');
-    if (minPrice || maxPrice) {
-        let label = '';
-        const fromTxt = transCommon.from_price || 'From';
-        const upToTxt = transCommon.up_to_price || 'Up to';
-        
-        if (minPrice && maxPrice) {
-            label = `$${minPrice} - $${maxPrice}`;
-        } else if (minPrice) {
-            label = `${fromTxt} $${minPrice}`;
-        } else {
-            label = `${upToTxt} $${maxPrice}`;
-        }
-
-        activeFilters.push({
-            label: label,
-            remove: () => {
-                document.querySelector('input[name="min_price"]').value = '';
-                document.querySelector('input[name="max_price"]').value = '';
-                form.submit();
-            }
-        });
-    }
-    
-    // Check colors
-    const colors = formData.get('colors')?.split(',').filter(c => c) || [];
-    if (colors.length) {
-        colors.forEach(color => {
-            activeFilters.push({
-                label: color.charAt(0).toUpperCase() + color.slice(1),
-                remove: () => {
-                    const colorOption = document.querySelector(`.color-option[data-color="${color}"]`);
-                    if (colorOption) colorOption.classList.remove('active');
-                    updateColorInput();
-                    form.submit();
-                }
-            });
-        });
-    }
-    
-    // Check availability
-    const availability = formData.getAll('availability[]');
-    if (availability.length) {
-        availability.forEach(value => {
-            const label = value.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-            activeFilters.push({
-                label: label,
-                remove: () => {
-                    const checkbox = document.querySelector(`input[name="availability[]"][value="${value}"]`);
-                    if (checkbox) checkbox.checked = false;
-                    form.submit();
-                }
-            });
-        });
-    }
-    
-    // Update display
     container.innerHTML = '';
-    if (activeFilters.length > 0) {
-        activeFilters.forEach(filter => {
-            const tag = document.createElement('div');
-            tag.className = 'filter-tag';
-            tag.innerHTML = `${filter.label} <i class="fas fa-times"></i>`;
-            tag.addEventListener('click', filter.remove);
-            container.appendChild(tag);
+    let hasFilters = false;
+
+    // Categories
+    const checkedCategories = document.querySelectorAll('input[name="categories[]"]:checked');
+    checkedCategories.forEach(input => {
+        hasFilters = true;
+        const label = input.closest('.filter-option').querySelector('.filter-label span').textContent;
+        addFilterTag(label, () => {
+            input.checked = false;
+            document.getElementById('filtersForm').submit();
         });
+    });
+
+    // Colors
+    const activeColors = document.querySelectorAll('.color-option.active');
+    activeColors.forEach(color => {
+        hasFilters = true;
+        const colorName = color.dataset.color;
+        addFilterTag(colorName.charAt(0).toUpperCase() + colorName.slice(1), () => {
+            color.classList.remove('active');
+            updateColorInput();
+            document.getElementById('filtersForm').submit();
+        });
+    });
+
+    // Price
+    const minPrice = document.getElementById('minPriceInput').value;
+    const maxPrice = document.getElementById('maxPriceInput').value;
+    if (minPrice > 0 || maxPrice < 1000) {
+        hasFilters = true;
+        addFilterTag(`$${minPrice} - $${maxPrice}`, () => {
+            document.getElementById('minPriceInput').value = 0;
+            document.getElementById('maxPriceInput').value = 1000;
+            document.getElementById('filtersForm').submit();
+        });
+    }
+
+    if (hasFilters) {
         container.style.display = 'flex';
+        // Add Clear All button
+        const clearAll = document.createElement('button');
+        clearAll.className = 'clear-filters ms-auto';
+        clearAll.innerHTML = '<i class="fas fa-times"></i> Clear All';
+        clearAll.onclick = clearAllFilters;
+        container.appendChild(clearAll);
     } else {
         container.style.display = 'none';
     }
 }
+
+function addFilterTag(text, onRemove) {
+    const tag = document.createElement('div');
+    tag.className = 'filter-tag';
+    tag.innerHTML = `
+        ${text}
+        <i class="fas fa-times"></i>
+    `;
+    tag.onclick = onRemove;
+    const container = document.getElementById('activeFilters');
+    if(container) container.appendChild(tag);
+}
+*/

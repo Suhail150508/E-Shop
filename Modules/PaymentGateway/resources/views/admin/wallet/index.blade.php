@@ -106,7 +106,7 @@
                 .then(data => {
                     if (data.success) {
                         // Optional: Show toast notification
-                        console.log(data.message);
+                        // Success logic
                     } else {
                         // Revert toggle if failed
                         this.checked = !status;
@@ -114,7 +114,6 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
                     this.checked = !status;
                 });
             });

@@ -59,7 +59,7 @@ class WalletController extends Controller
 
         // Check if wallet is active
         if (! $user->wallet_status) {
-            return back()->with('error', __('Your wallet is currently inactive. Please contact support.'));
+            return back()->with('error', __('paymentgateway::payment.wallet_inactive'));
         }
 
         try {
@@ -68,7 +68,7 @@ class WalletController extends Controller
             return $this->payments->pay($order, $paymentMethod);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::warning('Wallet deposit failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);
-            return back()->with('error', __('Unable to process deposit. Please try again or contact support.'));
+            return back()->with('error', __('paymentgateway::payment.deposit_failed'));
         }
     }
 }

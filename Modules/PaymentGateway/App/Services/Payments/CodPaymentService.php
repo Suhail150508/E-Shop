@@ -36,7 +36,7 @@ class CodPaymentService implements PaymentService
 
         return redirect()
             ->route('customer.orders.show', $order)
-            ->with('success', __('Order placed with Cash on Delivery.'));
+            ->with('success', __('paymentgateway::payment.cod_order_placed'));
     }
 
     public function handleSuccess(Order $order, Request $request): RedirectResponse

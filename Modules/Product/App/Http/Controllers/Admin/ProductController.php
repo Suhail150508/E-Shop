@@ -9,6 +9,7 @@ use App\Models\Language;
 use App\Models\Size;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Modules\Category\Services\CategoryService;
 use Modules\Product\App\Http\Requests\StoreProductRequest;
 use Modules\Product\App\Http\Requests\UpdateProductRequest;
@@ -64,7 +65,7 @@ class ProductController extends Controller
         $languages = Language::getActiveForAdmin();
         if ($languages->isEmpty()) {
             $languages = collect([
-                (object) ['id' => 0, 'code' => config('app.locale', 'en'), 'name' => __('English'), 'is_default' => true],
+                (object) ['id' => 0, 'code' => config('app.locale', 'en'), 'name' => __('product::product.english'), 'is_default' => true],
             ]);
         }
         $defaultLanguage = Language::getDefault();
@@ -90,8 +91,10 @@ class ProductController extends Controller
             $product->saveContentTranslationsFromInput($translations);
         }
 
+        Cache::forget('home_products');
+
         return redirect()->route('admin.products.index')
-            ->with('success', __('Product created successfully.'));
+            ->with('success', __('product::product.created_success'));
     }
 
     /**
@@ -111,7 +114,7 @@ class ProductController extends Controller
         $languages = Language::getActiveForAdmin();
         if ($languages->isEmpty()) {
             $languages = collect([
-                (object) ['id' => 0, 'code' => config('app.locale', 'en'), 'name' => __('English'), 'is_default' => true],
+                (object) ['id' => 0, 'code' => config('app.locale', 'en'), 'name' => __('product::product.english'), 'is_default' => true],
             ]);
         }
         $defaultLanguage = Language::getDefault();
@@ -130,7 +133,24 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $data = $request->validated();
+        
+        // Ensure boolean fields are correctly handled
+        $data['is_active'] = $request->boolean('is_active');
+        $data['is_featured'] = $request->boolean('is_featured');
+        $data['is_flash_sale'] = $request->boolean('is_flash_sale');
         $data['is_tryable'] = $request->boolean('is_tryable');
+
+        // Handle array fields that might be empty (deselected)
+        if (!$request->has('colors')) {
+            $data['colors'] = [];
+        }
+        if (!$request->has('sizes')) {
+            $data['sizes'] = [];
+        }
+        if (!$request->has('tags')) {
+            $data['tags'] = [];
+        }
+
         $translations = $data['translations'] ?? [];
         unset($data['translations']);
         $this->productService->update($product, $data);
@@ -138,8 +158,10 @@ class ProductController extends Controller
             $product->saveContentTranslationsFromInput($translations);
         }
 
+        Cache::forget('home_products');
+
         return redirect()->route('admin.products.index')
-            ->with('success', __('Product updated successfully.'));
+            ->with('success', __('product::product.updated_success'));
     }
 
     /**
@@ -152,11 +174,12 @@ class ProductController extends Controller
     {
         try {
             $this->productService->delete($product);
+            Cache::forget('home_products');
             return redirect()->route('admin.products.index')
-                ->with('success', __('Product deleted successfully.'));
+                ->with('success', __('product::product.deleted_success'));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Product delete failed', ['product_id' => $product->id, 'error' => $e->getMessage()]);
-            return redirect()->back()->with('error', __('common.error_deleting_product'));
+            return redirect()->back()->with('error', __('product::product.error_deleting'));
         }
     }
 
@@ -171,15 +194,16 @@ class ProductController extends Controller
         $ids = $request->input('ids');
 
         if (! is_array($ids) || count($ids) === 0) {
-            return response()->json(['error' => __('No items selected.')], 400);
+            return response()->json(['error' => __('product::product.no_items_selected')], 400);
         }
 
         try {
             $this->productService->bulkDelete($ids);
-            return response()->json(['success' => __('Selected products deleted successfully.')]);
+            Cache::forget('home_products');
+            return response()->json(['success' => __('product::product.bulk_delete_success')]);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::warning('Product bulk delete failed', ['ids' => $ids, 'error' => $e->getMessage()]);
-            return response()->json(['error' => __('common.error_deleting_selected_products')], 400);
+            return response()->json(['error' => __('product::product.error_deleting')], 400);
         }
     }
 }

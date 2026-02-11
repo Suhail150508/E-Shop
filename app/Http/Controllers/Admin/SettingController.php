@@ -51,6 +51,18 @@ class SettingController extends Controller
         }
         unset($validated['app_favicon']);
 
+        // Handle Payment Method Image
+        if ($request->hasFile('payment_method_image')) {
+            $oldImage = $this->settingService->get('payment_method_image');
+            if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+                Storage::disk('public')->delete($oldImage);
+            }
+
+            $path = $request->file('payment_method_image')->store('uploads/settings', 'public');
+            $this->settingService->set('payment_method_image', $path);
+        }
+        unset($validated['payment_method_image']);
+
         foreach ($validated as $key => $value) {
             $this->settingService->set($key, $value);
         }

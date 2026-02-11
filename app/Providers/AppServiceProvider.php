@@ -65,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer('layouts.admin', function ($view) {
             try {
                 $adminPages = Page::select('id', 'title', 'slug')
-                    ->whereNotIn('slug', config('pages.auth_slugs', []))
+                    ->whereNotIn('slug', array_merge(config('pages.auth_slugs', []), ['coupons']))
                     ->orderBy('title')
                     ->get();
                 $view->with('adminPages', $adminPages);

@@ -43,13 +43,13 @@
                                 </td>
                                 <td class="text-end pe-4" data-label="{{ __('Actions') }}">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <button type="button" class="btn btn-sm btn-soft-primary rounded-2" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#editReasonModal{{ $reason->id }}" 
+                                        <button type="button" class="btn btn-sm btn-soft-primary rounded-2"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editReasonModal{{ $reason->id }}"
                                                 title="{{ __('Edit') }}">
                                             <i class="bi bi-pencil"></i>
                                         </button>
-                                        <form action="{{ route('admin.refund-reasons.destroy', $reason->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure?') }}')">
+                                        <form action="{{ route('admin.refund-reasons.destroy', $reason->id) }}" method="POST" onsubmit="return confirm('{{ __('common.delete_confirmation') }}')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-soft-danger rounded-2" title="{{ __('Delete') }}">
@@ -148,27 +148,3 @@
     </div>
 </div>
 @endsection
-
-@push('styles')
-<style>
-    .btn-soft-primary {
-        color: #0d6efd;
-        background-color: rgba(13, 110, 253, 0.1);
-        border: none;
-    }
-    .btn-soft-primary:hover {
-        color: #fff;
-        background-color: #0d6efd;
-    }
-
-    .btn-soft-danger {
-        color: #dc3545;
-        background-color: rgba(220, 53, 69, 0.1);
-        border: none;
-    }
-    .btn-soft-danger:hover {
-        color: #fff;
-        background-color: #dc3545;
-    }
-</style>
-@endpush

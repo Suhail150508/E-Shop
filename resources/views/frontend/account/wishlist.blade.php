@@ -1,11 +1,11 @@
 @extends('layouts.customer')
 
-@section('title', __('My Wishlist'))
+@section('title', __('common.my_wishlist'))
 
 @section('account_content')
     <div class="card border-0 shadow-sm rounded-3">
         <div class="card-header bg-white border-bottom-0 py-3 px-4">
-            <h5 class="mb-0 fw-bold">{{ __('My Wishlist') }}</h5>
+            <h5 class="mb-0 fw-bold">{{ __('common.my_wishlist') }}</h5>
         </div>
         <div class="card-body p-4">
             @if($wishlistItems->isEmpty())
@@ -13,8 +13,8 @@
                     <div class="mb-3">
                         <i class="fa-regular fa-heart fa-3x text-muted opacity-25"></i>
                     </div>
-                    <p class="text-muted mb-4">{{ __('Your wishlist is empty.') }}</p>
-                    <a href="{{ route('shop.index') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">{{ __('Continue Shopping') }}</a>
+                    <p class="text-muted mb-4">{{ __('common.wishlist_empty') }}</p>
+                    <a href="{{ route('shop.index') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">{{ __('common.continue_shopping') }}</a>
                 </div>
             @else
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
@@ -35,7 +35,7 @@
                                 <div class="position-absolute top-0 start-0 m-2 z-1">
                                      <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="btn btn-white btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center text-danger bg-white wishlist-remove-btn" data-bs-toggle="tooltip" title="{{ __('Remove from Wishlist') }}">
+                                        <button type="submit" class="btn btn-white btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center text-danger bg-white wishlist-remove-btn" data-bs-toggle="tooltip" title="{{ __('common.remove_from_wishlist') }}">
                                             <i class="fa-regular fa-heart"></i>
                                         </button>
                                     </form>
@@ -79,9 +79,9 @@
                                     <!-- Stock Status -->
                                      <div class="mb-3">
                                         @if($product->stock > 0)
-                                            <span class="text-success small fw-medium wishlist-stock-status">{{ __('In stock') }}</span>
+                                            <span class="text-success small fw-medium wishlist-stock-status">{{ __('common.in_stock') }}</span>
                                         @else
-                                            <span class="text-danger small fw-medium wishlist-stock-status">{{ __('Out of stock') }}</span>
+                                            <span class="text-danger small fw-medium wishlist-stock-status">{{ __('common.out_of_stock') }}</span>
                                         @endif
                                     </div>
 
@@ -98,8 +98,8 @@
                                         
                                         <form action="{{ route('cart.store', $product->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-outline-primary btn-sm rounded px-3" {{ $product->stock <= 0 ? 'disabled' : '' }}>
-                                                <i class="fa-solid fa-cart-shopping me-1"></i> {{ __('Add') }}
+                                            <button type="submit" class="btn btn-primary btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center wishlist-cart-btn" data-bs-toggle="tooltip" title="{{ __('common.add_to_cart') }}">
+                                                <i class="fa-solid fa-cart-plus"></i>
                                             </button>
                                         </form>
                                     </div>

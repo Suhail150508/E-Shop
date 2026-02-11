@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $recentOrders = (clone $ordersQuery)->latest()->take(5)->get();
 
         $wishlistCount = Wishlist::where('user_id', $user->id)->count();
-        $walletBalance = 0; // Feature not yet implemented
+        $walletBalance = $user->wallet_balance ?? 0;
         $supportTicketCount = SupportTicket::where('user_id', $user->id)->count();
 
         return view('frontend.account.dashboard', compact(

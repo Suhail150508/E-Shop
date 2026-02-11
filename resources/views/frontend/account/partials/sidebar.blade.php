@@ -59,12 +59,11 @@
             <span>{{ __('Profile') }}</span>
         </a>
 
-        <form action="{{ route('logout') }}" method="POST" class="mt-2 pt-2 border-top">
-            @csrf
-            <button type="submit" class="nav-link d-flex align-items-center px-3 py-2 text-danger w-100 border-0 bg-transparent">
+        <div class="mt-2 pt-2 border-top">
+            <button type="button" class="nav-link d-flex align-items-center px-3 py-2 text-danger w-100 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="fa-solid fa-right-from-bracket fa-fw me-3"></i>
                 <span>{{ __('Logout') }}</span>
             </button>
-        </form>
+        </div>
     </div>
 </div>

@@ -282,9 +282,9 @@
                                     <i class="fas fa-globe me-2"></i> {{ app()->getLocale() == 'en' ? 'English' : (app()->getLocale() == 'bn' ? 'বাংলা' : 'العربية') }}
                                 </a>
                                 <ul class="dropdown-menu border-0 shadow-none rounded-0 mt-0 bg-light" aria-labelledby="langDropdownMobile">
-                                    <li><a class="dropdown-item py-2" href="{{ route('lang.switch', 'en') }}">English</a></li>
-                                    <li><a class="dropdown-item py-2" href="{{ route('lang.switch', 'bn') }}">বাংলা</a></li>
-                                    <li><a class="dropdown-item py-2" href="{{ route('lang.switch', 'ar') }}">العربية</a></li>
+                                    <li><a class="dropdown-item py-2" href="{{ route('lang.switch', 'en') }}">{{ __('common.english') }}</a></li>
+                                    <li><a class="dropdown-item py-2" href="{{ route('lang.switch', 'bn') }}">{{ __('common.bangla') }}</a></li>
+                                    <li><a class="dropdown-item py-2" href="{{ route('lang.switch', 'ar') }}">{{ __('common.arabic') }}</a></li>
                                 </ul>
                             </li>
                             @if(current_currency())

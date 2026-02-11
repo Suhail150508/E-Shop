@@ -99,7 +99,7 @@
             fetch(CONFIG.routes.index)
                 .then(res => res.json())
                 .then(data => this.renderList(data))
-                .catch(err => console.error('Error fetching notifications:', err));
+                .catch(err => {});
         },
 
         handleNewNotification(notification) {

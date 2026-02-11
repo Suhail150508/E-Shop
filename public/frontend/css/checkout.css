@@ -1,3 +1,187 @@
+/* =========================================
+   Checkout page: header clearance (responsive)
+   ========================================= */
+.checkout-page-wrap {
+    padding-top: 1rem;
+}
+@media (max-width: 991.98px) {
+    .checkout-page-wrap {
+        padding-top: 140px;
+    }
+}
+@media (max-width: 576px) {
+    .checkout-page-wrap {
+        padding-top: 116px;
+    }
+}
+
+/* =========================================
+   Checkout steps – stylish progress bar
+   ========================================= */
+.checkout-steps {
+    margin-bottom: 3rem !important;
+}
+.checkout-steps .stepper-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+    gap: 0;
+}
+.checkout-steps .stepper-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Connecting Line */
+.checkout-steps .stepper-item::before {
+    content: '';
+    position: absolute;
+    top: 1.25rem;
+    left: 50%;
+    width: 100%;
+    height: 3px;
+    background: #e9ecef;
+    z-index: -1;
+    transform: translateY(-50%);
+}
+.checkout-steps .stepper-item:last-child::before {
+    display: none;
+}
+
+/* Active/Completed Line Colors */
+.checkout-steps .stepper-item.completed::before,
+.checkout-steps .stepper-item.active::before {
+    background: #0d6efd; /* Blue for completed and active (line to next) */
+}
+/* Exception: The line leaving the active step should strictly be gray if the next step is not active? */
+/* Usually: 
+   Step 1 (Completed) -> Line Blue -> Step 2 (Active)
+   Step 2 (Active) -> Line Gray -> Step 3 (Pending)
+*/
+.checkout-steps .stepper-item.active::before {
+    background: #e9ecef;
+}
+
+/* Step Circle */
+.checkout-steps .step-counter {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    background: #fff;
+    color: #adb5bd;
+    border: 2px dashed #dee2e6; /* Dashed border for inactive */
+    transition: all 0.3s ease;
+}
+
+/* Completed Step Circle */
+.checkout-steps .stepper-item.completed .step-counter {
+    background: #0d6efd;
+    color: #fff;
+    border: 2px solid #0d6efd;
+}
+
+/* Active Step Circle */
+.checkout-steps .stepper-item.active .step-counter {
+    background: #0d6efd;
+    color: #fff;
+    border: 2px solid #0d6efd;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2); /* Soft glow */
+    position: relative;
+}
+/* Dashed ring for active step */
+.checkout-steps .stepper-item.active .step-counter::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 50%;
+    border: 1px dashed #0d6efd;
+    animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+/* Step Name */
+.checkout-steps .step-name {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.checkout-steps .stepper-item.active .step-name {
+    color: #0d6efd;
+    font-weight: 700;
+}
+.checkout-steps .stepper-item.completed .step-name {
+    color: #0d6efd;
+}
+
+@media (max-width: 576px) {
+    .checkout-steps .step-name {
+        font-size: 0.65rem;
+        margin-top: 0.5rem;
+    }
+    .checkout-steps .step-counter {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.8rem;
+    }
+    .checkout-steps .stepper-item::before {
+        top: 1rem;
+    }
+    .checkout-steps .stepper-item.active .step-counter::after {
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+    }
+}
+
+/* =========================================
+   Delivery type buttons – theme color (not blue)
+   ========================================= */
+.checkout-delivery-btns .btn-outline-checkout {
+    color: var(--primary, #D17A5C);
+    border-color: rgba(209, 122, 92, 0.5);
+    background: #fff;
+}
+.checkout-delivery-btns .btn-outline-checkout:hover {
+    background: rgba(209, 122, 92, 0.08);
+    border-color: var(--primary, #D17A5C);
+    color: var(--primary-dark, #B86A4D);
+}
+.checkout-delivery-btns .btn-check:checked + .btn-outline-checkout {
+    background: var(--primary, #D17A5C);
+    border-color: var(--primary, #D17A5C);
+    color: #fff;
+}
+
+/* Order summary primary button */
+.checkout-page-wrap .btn-primary {
+    background: var(--primary, #D17A5C);
+    border-color: var(--primary, #D17A5C);
+}
+.checkout-page-wrap .btn-primary:hover {
+    background: var(--primary-dark, #B86A4D);
+    border-color: var(--primary-dark, #B86A4D);
+}
+
 /* Google Map */
 .google-map-container {
     width: 100%;
@@ -7,17 +191,86 @@
 }
 
 /* Success Animation */
-.success-icon-wrapper {
-    width: 80px;
-    height: 80px;
-    background: rgba(25, 135, 84, 0.1);
-    display: inline-flex;
-    align-items: center;
+.success-animation-wrapper {
+    display: flex;
     justify-content: center;
+    margin-bottom: 1.5rem;
 }
 
-.success-icon-wrapper i {
-    font-size: 40px;
+.success-checkmark {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 8px rgba(13, 110, 253, 0.1);
+    animation: pulse-blue 2s infinite;
+    position: relative;
+}
+
+.success-checkmark i {
+    font-size: 42px;
+    color: #fff;
+    animation: scale-up 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes pulse-blue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 20px rgba(13, 110, 253, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+    }
+}
+
+@keyframes scale-up {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Order Summary Card */
+.order-summary-card {
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+    overflow: hidden;
+    background: #fff;
+    transition: transform 0.3s ease;
+}
+
+.order-summary-card:hover {
+    transform: translateY(-5px);
+}
+
+.order-summary-header {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.order-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.order-info-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.order-info-value {
+    font-weight: 600;
+    color: #212529;
+    font-size: 1rem;
 }
 
 .btn-icon-circle-sm {
@@ -35,4 +288,39 @@
 
 .text-xs {
     font-size: 0.75rem !important;
+}
+
+/* Address & checkout map (Leaflet) */
+.address-map-container,
+#checkout-delivery-map {
+    min-height: 200px;
+    background: #f8f9fa;
+}
+#checkout-delivery-map.leaflet-container {
+    z-index: 1;
+}
+
+
+/* Payment Page */
+.payment-option {
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid #e9ecef;
+    background-color: #fff;
+}
+.payment-option:hover {
+    border-color: var(--rust);
+    background-color: rgba(210, 105, 30, 0.05);
+}
+.btn-check:checked + .payment-option {
+    border-color: var(--rust) !important;
+    background-color: #fff4f2;
+    color: var(--rust);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+.btn-check:checked + .payment-option i {
+    color: var(--rust);
+}
+.btn-check:checked + .payment-option .text-muted {
+    color: #8c4a2f !important;
 }

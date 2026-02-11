@@ -20,13 +20,13 @@ class PaymentMethodController extends Controller
     public function index(Request $request)
     {
         $gateways = [
-            'cod' => 'Cash On Delivery',
-            'wallet' => 'Wallet',
-            'stripe' => 'Stripe',
-            'paypal' => 'Paypal',
-            'paystack' => 'Paystack',
-            'razorpay' => 'Razorpay',
-            'bank' => 'Bank Payment',
+            'cod' => __('common.cod'),
+            'wallet' => __('common.wallet'),
+            'stripe' => __('common.stripe'),
+            'paypal' => __('common.paypal'),
+            'paystack' => __('common.paystack'),
+            'razorpay' => __('common.razorpay'),
+            'bank' => __('common.bank_payment'),
         ];
 
         $currentGateway = $request->query('gateway', 'cod');

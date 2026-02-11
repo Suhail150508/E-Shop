@@ -101,7 +101,7 @@
                                     <a href="{{ route('admin.brands.edit', $brand) }}" class="btn btn-sm btn-soft-secondary" data-bs-toggle="tooltip" title="{{ __('Edit') }}">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('admin.brands.destroy', $brand) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('Are you sure you want to delete this brand?') }}')">
+                                    <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('common.delete_confirmation') }}')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-soft-danger" data-bs-toggle="tooltip" title="{{ __('Delete') }}">

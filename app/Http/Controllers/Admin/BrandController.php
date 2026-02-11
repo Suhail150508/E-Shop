@@ -133,8 +133,9 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        if ($brand->products()->where('is_active', true)->exists()) {
-            return redirect()->back()->with('error', __('common.brand_has_active_products'));
+        // Check for any products (active or inactive)
+        if ($brand->products()->exists()) {
+            return redirect()->back()->with('error', __('common.brand_has_products'));
         }
 
         if ($brand->image) {
@@ -165,14 +166,12 @@ class BrandController extends Controller
         }
 
         $brands = Brand::whereIn('id', $ids)
-            ->withCount(['products' => function ($query) {
-                $query->where('is_active', true);
-            }])
+            ->withCount('products')
             ->get();
 
         foreach ($brands as $brand) {
             if ($brand->products_count > 0) {
-                return response()->json(['error' => __('common.brands_have_active_products')], 400);
+                return response()->json(['error' => __('common.brands_have_products')], 400);
             }
         }
 
@@ -188,6 +187,7 @@ class BrandController extends Controller
             $brand->delete();
         }
 
+        session()->flash('success', __('common.selected_brands_deleted'));
         return response()->json(['success' => __('common.selected_brands_deleted')]);
     }
 }

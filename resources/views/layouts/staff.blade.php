@@ -8,20 +8,21 @@
     <link rel="icon" href="{{ getImageOrPlaceholder(setting('app_favicon'), '32x32') }}">
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"> -->
     
     <!-- Icons -->
-    <link rel="stylesheet" href="{{ asset('backend/css/font-awesome-all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/all.min.css') }}">
     
     <!-- Bootstrap 5 -->
-    <link rel="stylesheet" href="{{ asset('global/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}">
     
     <!-- ApexCharts -->
     <script src="{{ asset('backend/js/apexcharts.min.js') }}"></script>
 
     <!-- Toastr CSS -->
+    <link rel="stylesheet" href="{{ asset('backend/css/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('global/toastr/toastr.main.css') }}">
 
     <style>
@@ -553,7 +554,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('backend/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('global/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Toastr JS -->
     <script src="{{ asset('global/toastr/toastr.main.js') }}"></script>
     @include('layouts.partials.toaster')

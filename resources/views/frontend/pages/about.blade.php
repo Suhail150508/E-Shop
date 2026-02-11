@@ -31,36 +31,36 @@
                     <h1 id="about-hero-heading" class="about-hero-title display-5 fw-bold mb-3">
                         {{ $m('about_hero_title', __('common.about') . ' ' . config('app.name')) }}
                     </h1>
-                    <p class="lead text-muted mb-3">{{ $m('about_hero_subtitle', 'Where Innovation Meets Seamless Online Shopping') }}</p>
-                    <p class="mb-0">{{ $m('about_hero_text', 'We are committed to redefining eCommerce with a seamless, secure, and user-friendly experience—connecting buyers and sellers through cutting-edge technology.') }}</p>
+                    <p class="lead text-muted mb-3">{{ $m('about_hero_subtitle', __('common.about_hero_subtitle_default')) }}</p>
+                    <p class="mb-0">{{ $m('about_hero_text', __('common.about_hero_text_default')) }}</p>
                 </div>
             </div>
         </section>
 
         {{-- Our Story --}}
         <section class="mb-5 pb-lg-5" aria-labelledby="about-story-heading">
-            <h2 id="about-story-heading" class="text-center about-section-title display-6 mb-2">{{ $m('about_story_title', 'Our Story') }}</h2>
-            <p class="text-center text-muted mb-5 mx-auto" style="max-width: 720px;">{{ $m('about_story_subtitle', 'From a Bold Vision to a Trusted Marketplace: How we were built to transform the future of eCommerce.') }}</p>
+            <h2 id="about-story-heading" class="text-center about-section-title display-6 mb-2">{{ $m('about_story_title', __('common.about_story_title_default')) }}</h2>
+            <p class="text-center text-muted mb-5 mx-auto" style="max-width: 720px;">{{ $m('about_story_subtitle', __('common.about_story_subtitle_default')) }}</p>
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="h-100">
                         <img src="{{ $imgUrl('about_story_1_image', '400x300') }}" alt="{{ e($m('about_story_1_heading')) }}" class="img-fluid rounded-3 w-100 mb-3 object-fit-cover" style="height: 220px;" onerror="this.onerror=null; this.src='{{ route('placeholder', ['size' => '400x300']) }}?v=2';">
-                        <h3 class="h5 fw-bold mb-2">{{ $m('about_story_1_heading', 'Our Vision and Beginning') }}</h3>
-                        <p class="text-muted small mb-0">{{ $m('about_story_1_text', 'Redefining the eCommerce landscape with a vision to connect buyers and sellers seamlessly.') }}</p>
+                        <h3 class="h5 fw-bold mb-2">{{ $m('about_story_1_heading', __('common.about_story_1_heading_default')) }}</h3>
+                        <p class="text-muted small mb-0">{{ $m('about_story_1_text', __('common.about_story_1_text_default')) }}</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="h-100">
                         <img src="{{ $imgUrl('about_story_2_image', '400x300') }}" alt="{{ e($m('about_story_2_heading')) }}" class="img-fluid rounded-3 w-100 mb-3 object-fit-cover" style="height: 220px;" onerror="this.onerror=null; this.src='{{ route('placeholder', ['size' => '400x300']) }}?v=2';">
-                        <h3 class="h5 fw-bold mb-2">{{ $m('about_story_2_heading', 'Overcoming Challenges') }}</h3>
-                        <p class="text-muted small mb-0">{{ $m('about_story_2_text', 'Navigating obstacles with innovation to build a reliable and secure marketplace.') }}</p>
+                        <h3 class="h5 fw-bold mb-2">{{ $m('about_story_2_heading', __('common.about_story_2_heading_default')) }}</h3>
+                        <p class="text-muted small mb-0">{{ $m('about_story_2_text', __('common.about_story_2_text_default')) }}</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="h-100">
                         <img src="{{ $imgUrl('about_story_3_image', '400x300') }}" alt="{{ e($m('about_story_3_heading')) }}" class="img-fluid rounded-3 w-100 mb-3 object-fit-cover" style="height: 220px;" onerror="this.onerror=null; this.src='{{ route('placeholder', ['size' => '400x300']) }}?v=2';">
-                        <h3 class="h5 fw-bold mb-2">{{ $m('about_story_3_heading', 'Our Future Vision') }}</h3>
-                        <p class="text-muted small mb-0">{{ $m('about_story_3_text', 'Continuing to innovate and grow, building a sustainable eCommerce ecosystem for the future.') }}</p>
+                        <h3 class="h5 fw-bold mb-2">{{ $m('about_story_3_heading', __('common.about_story_3_heading_default')) }}</h3>
+                        <p class="text-muted small mb-0">{{ $m('about_story_3_text', __('common.about_story_3_text_default')) }}</p>
                     </div>
                 </div>
             </div>
@@ -68,8 +68,8 @@
 
         {{-- Our Mission & Vision --}}
         <section class="mb-5 pb-lg-5" aria-labelledby="about-mission-heading">
-            <h2 id="about-mission-heading" class="text-center about-section-title display-6 mb-3">{{ $m('about_mission_title', 'Our Mission & Vision') }}</h2>
-            <p class="text-center text-muted mb-5 mx-auto" style="max-width: 720px;">{{ $m('about_mission_intro', 'We are committed to revolutionizing eCommerce by creating a seamless, secure, and customer-centric marketplace.') }}</p>
+            <h2 id="about-mission-heading" class="text-center about-section-title display-6 mb-3">{{ $m('about_mission_title', __('common.about_mission_title_default')) }}</h2>
+            <p class="text-center text-muted mb-5 mx-auto" style="max-width: 720px;">{{ $m('about_mission_intro', __('common.about_mission_intro_default')) }}</p>
             <div class="row g-4 mb-4">
                 <div class="col-lg-6">
                     <div class="row align-items-center g-3">
@@ -77,7 +77,7 @@
                             <img src="{{ $imgUrl('about_mission_1_image', '400x320') }}" alt="" class="img-fluid rounded-3 w-100 object-fit-cover" style="height: 240px;" onerror="this.onerror=null; this.src='{{ route('placeholder', ['size' => '400x320']) }}?v=2';">
                         </div>
                         <div class="col-md-7">
-                            <p class="mb-0 text-muted">{{ $m('about_mission_1_text', 'We make online shopping easy and reliable, empower sellers, and foster a trusted marketplace for everyone.') }}</p>
+                            <p class="mb-0 text-muted">{{ $m('about_mission_1_text', __('common.about_mission_1_text_default')) }}</p>
                         </div>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                             <img src="{{ $imgUrl('about_mission_2_image', '400x320') }}" alt="" class="img-fluid rounded-3 w-100 object-fit-cover" style="height: 240px;" onerror="this.onerror=null; this.src='{{ route('placeholder', ['size' => '400x320']) }}?v=2';">
                         </div>
                         <div class="col-md-7">
-                            <p class="mb-0 text-muted">{{ $m('about_mission_2_text', 'We revolutionize digital commerce by integrating cutting-edge technology, expanding globally, and connecting buyers and sellers worldwide.') }}</p>
+                            <p class="mb-0 text-muted">{{ $m('about_mission_2_text', __('common.about_mission_2_text_default')) }}</p>
                         </div>
                     </div>
                 </div>
@@ -96,16 +96,16 @@
 
         {{-- Testimonials & Success Stories --}}
         <section class="mb-4" aria-labelledby="about-testimonial-heading">
-            <h2 id="about-testimonial-heading" class="text-center about-section-title display-6 mb-2">{{ $m('about_testimonial_title', 'Testimonials & Success Stories') }}</h2>
-            <p class="text-center text-muted mb-4 mx-auto" style="max-width: 720px;">{{ $m('about_testimonial_subtitle', 'From a Bold Vision to a Trusted Marketplace: How we were built to transform the future of eCommerce.') }}</p>
+            <h2 id="about-testimonial-heading" class="text-center about-section-title display-6 mb-2">{{ $m('about_testimonial_title', __('common.about_testimonial_title_default')) }}</h2>
+            <p class="text-center text-muted mb-4 mx-auto" style="max-width: 720px;">{{ $m('about_testimonial_subtitle', __('common.about_testimonial_subtitle_default')) }}</p>
             <div class="row g-4 justify-content-center">
                 <div class="col-md-6 col-lg-5">
                     <div class="about-testimonial-card d-flex gap-3">
                         <img src="{{ $imgUrl('about_testimonial_1_avatar', '80x80') }}" alt="{{ e($m('about_testimonial_1_name')) }}" class="about-testimonial-avatar flex-shrink-0" onerror="this.onerror=null; this.src='{{ route('placeholder', ['size' => '80x80']) }}?v=2';">
                         <div class="flex-grow-1">
-                            <h3 class="h6 fw-bold mb-1">{{ $m('about_testimonial_1_name', 'Bill Gates') }}</h3>
-                            <p class="small text-muted mb-2">{{ $m('about_testimonial_1_role', 'CIO') }}</p>
-                            <p class="small mb-0 fst-italic">"{{ $m('about_testimonial_1_quote', 'A game-changing platform for modern commerce.') }}"</p>
+                            <h3 class="h6 fw-bold mb-1">{{ $m('about_testimonial_1_name', __('common.about_testimonial_1_name')) }}</h3>
+                            <p class="small text-muted mb-2">{{ $m('about_testimonial_1_role', __('common.about_testimonial_1_role')) }}</p>
+                            <p class="small mb-0 fst-italic">"{{ $m('about_testimonial_1_quote', __('common.about_testimonial_1_quote')) }}"</p>
                         </div>
                     </div>
                 </div>
@@ -113,9 +113,9 @@
                     <div class="about-testimonial-card d-flex gap-3">
                         <img src="{{ $imgUrl('about_testimonial_2_avatar', '80x80') }}" alt="{{ e($m('about_testimonial_2_name')) }}" class="about-testimonial-avatar flex-shrink-0" onerror="this.onerror=null; this.src='{{ route('placeholder', ['size' => '80x80']) }}?v=2';">
                         <div class="flex-grow-1">
-                            <h3 class="h6 fw-bold mb-1">{{ $m('about_testimonial_2_name', 'John Anderson') }}</h3>
-                            <p class="small text-muted mb-2">{{ $m('about_testimonial_2_role', 'CTO') }}</p>
-                            <p class="small mb-0 fst-italic">"{{ $m('about_testimonial_2_quote', 'Innovation and reliability at its best.') }}"</p>
+                            <h3 class="h6 fw-bold mb-1">{{ $m('about_testimonial_2_name', __('common.about_testimonial_2_name')) }}</h3>
+                            <p class="small text-muted mb-2">{{ $m('about_testimonial_2_role', __('common.about_testimonial_2_role')) }}</p>
+                            <p class="small mb-0 fst-italic">"{{ $m('about_testimonial_2_quote', __('common.about_testimonial_2_quote')) }}"</p>
                         </div>
                     </div>
                 </div>

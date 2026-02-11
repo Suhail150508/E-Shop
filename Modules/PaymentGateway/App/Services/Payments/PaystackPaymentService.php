@@ -31,13 +31,19 @@ class PaystackPaymentService implements PaymentService
 
     public function isEnabled(): bool
     {
-        return (bool) $this->settings->get('payment_paystack_enabled', false)
-            && $this->getPublicKey()
-            && $this->getSecretKey();
+        return (bool) $this->settings->get('payment_paystack_enabled', false);
     }
 
     public function createPayment(Order $order, array $data = []): RedirectResponse
     {
+        if (! $this->getPublicKey() || ! $this->getSecretKey()) {
+            $redirectRoute = $order->type === Order::TYPE_WALLET_DEPOSIT ? 'customer.wallet.index' : 'customer.orders.show';
+
+            return redirect()
+                ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
+                ->with('error', __('paymentgateway::payment.paystack_not_configured'));
+        }
+
         $response = Http::withToken($this->getSecretKey())->post('https://api.paystack.co/transaction/initialize', [
             'email' => $order->customer_email,
             'amount' => (int) round($order->total * 100), // Amount in kobo
@@ -155,6 +161,11 @@ class PaystackPaymentService implements PaymentService
                 if ($orderId) {
                     $order = Order::find($orderId);
                     if ($order && $order->user) {
+                        // Prevent double refund if already processed
+                        if ($order->payment_status === Order::PAYMENT_REFUNDED) {
+                            return new Response('Already Refunded');
+                        }
+
                         $amount = $data['amount'] / 100;
                         DB::transaction(function () use ($order, $amount) {
                             $user = $order->user;

@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'name' => 'Name',
+    'parent_category' => 'Parent Category',
+    'none' => 'None',
+    'image' => 'Image',
+    'status' => 'Status',
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+    'create_category' => 'Create Category',
+    'edit_category' => 'Edit Category',
+    'categories' => 'Categories',
+    'category_list' => 'Category List',
+    'search_placeholder' => 'Search categories...',
+    'created_success' => 'Category created successfully.',
+    'updated_success' => 'Category updated successfully.',
+    'deleted_success' => 'Category deleted successfully.',
+    'error_deleting' => 'An error occurred while deleting the category. Please try again or contact support.',
+    'no_items_selected' => 'No items selected.',
+    'bulk_delete_success' => 'Selected categories deleted successfully.',
+    'subcategories_bulk_delete_success' => 'Selected subcategories deleted successfully.',
+    'error_has_subcategories' => 'Cannot delete category because it has subcategories. Please delete them first.',
+    'error_has_products' => 'Cannot delete category because it has products. Please move or delete them first.',
+    'error_bulk_has_products' => 'Cannot delete category :name because it has products.',
+    'error_bulk_has_subcategories' => 'Cannot delete category :name because it has subcategories.',
+];

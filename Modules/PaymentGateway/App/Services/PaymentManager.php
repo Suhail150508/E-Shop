@@ -54,11 +54,11 @@ class PaymentManager extends BaseService
             $order = $this->orders->createFromCart($user, $customerData);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Order creation failed', ['user_id' => $user->id, 'error' => $e->getMessage()]);
-            return redirect()->route('cart.index')->with('error', __('Cart is empty or order creation failed.'));
+            return redirect()->route('cart.index')->with('error', __('paymentgateway::payment.cart_empty_or_order_failed'));
         }
 
         if (! $order) {
-            return redirect()->route('cart.index')->with('error', __('Cart is empty or order creation failed.'));
+            return redirect()->route('cart.index')->with('error', __('paymentgateway::payment.cart_empty_or_order_failed'));
         }
 
         // Clear checkout state from session
@@ -76,7 +76,7 @@ class PaymentManager extends BaseService
 
             return redirect()
                 ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-                ->with('error', __('Payment gateway unavailable or disabled.'));
+                ->with('error', __('paymentgateway::payment.gateway_unavailable'));
         }
 
         return $gateway->createPayment($order, $data);
@@ -91,7 +91,7 @@ class PaymentManager extends BaseService
 
             return redirect()
                 ->route($redirectRoute, $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
-                ->with('error', __('Invalid payment gateway.'));
+                ->with('error', __('paymentgateway::payment.invalid_gateway'));
         }
 
         return $gateway->handleSuccess($order, $request);

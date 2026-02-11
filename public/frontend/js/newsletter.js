@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                if (typeof console !== 'undefined' && console.error) console.error('Error:', error);
                 const msg = window.translations?.common?.error_occurred || 'An error occurred. Please try again later.';
                 if (window.toastr) window.toastr.error(msg);
                 else alert(msg);

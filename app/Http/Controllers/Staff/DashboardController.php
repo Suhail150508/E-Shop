@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    // Show staff dashboard
     public function index()
     {
         $user = auth()->user();

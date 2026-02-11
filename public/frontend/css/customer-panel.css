@@ -221,3 +221,9 @@
     max-width: 300px;
     white-space: normal;
 }
+
+/* Address create/edit map (Leaflet) */
+.account-layout .address-map-container {
+    min-height: 200px;
+    background: #f8f9fa;
+}

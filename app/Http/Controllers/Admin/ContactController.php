@@ -7,6 +7,7 @@ use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactReplyMail;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -51,7 +52,7 @@ class ContactController extends Controller
         try {
             Mail::to($message->email)->send(new ContactReplyMail($message));
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::warning('Contact reply email failed', ['message_id' => $message->id, 'error' => $e->getMessage()]);
+           Log::warning('Contact reply email failed', ['message_id' => $message->id, 'error' => $e->getMessage()]);
             return back()->with('warning', __('common.reply_saved_email_failed'));
         }
 

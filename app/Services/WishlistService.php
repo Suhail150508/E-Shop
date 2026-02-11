@@ -23,7 +23,9 @@ class WishlistService extends BaseService
 
         return collect($ids);
     }
-
+    /**
+     * Get all wishlist items.
+     */
     public function items()
     {
         $ids = $this->ids();
@@ -37,7 +39,9 @@ class WishlistService extends BaseService
             ->with('approvedReviews')
             ->get();
     }
-
+    /**
+     * Toggle a product in the wishlist.
+     */
     public function toggle(Product $product): void
     {
         if (Auth::check()) {
@@ -69,7 +73,9 @@ class WishlistService extends BaseService
 
         Session::put($this->sessionKey, $ids->values()->all());
     }
-
+    /**
+     * Remove a product from the wishlist.
+     */
     public function remove(Product $product): void
     {
         if (Auth::check()) {
@@ -84,7 +90,9 @@ class WishlistService extends BaseService
 
         Session::put($this->sessionKey, $ids->values()->all());
     }
-
+    /**
+     * Clear all wishlist items.
+     */
     public function clear(): void
     {
         if (Auth::check()) {
@@ -95,7 +103,9 @@ class WishlistService extends BaseService
 
         Session::forget($this->sessionKey);
     }
-
+    /**
+     * Get the count of wishlist items.
+     */
     public function count(): int
     {
         return $this->ids()->count();

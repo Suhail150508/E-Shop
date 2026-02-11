@@ -1,10 +1,13 @@
 @extends('layouts.frontend')
 
+@section('title', __('common.payment_information'))
+
 @push('styles')
     <link rel="stylesheet" href="{{ asset('frontend/css/checkout.css') }}">
 @endpush
 
 @section('content')
+<div class="checkout-page-wrap">
 <div class="container py-5">
     @include('frontend.checkout.steps', ['currentStep' => 3])
 
@@ -12,14 +15,14 @@
         <div class="col-lg-8">
             <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
                 @csrf
-                
+
                 <!-- Payment Method Section -->
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white py-3">
-                        <h5 class="mb-0 fw-bold">{{ setting('checkout_payment_title', __('Payment Method')) }}</h5>
+                        <h5 class="mb-0 fw-bold">{{ setting('checkout_payment_title', __('common.payment_method')) }}</h5>
                     </div>
                     <div class="card-body">
-                        
+
                         <!-- Cash on Delivery -->
                         @if(isset($gateways['cod']))
                         <div class="mb-3">
@@ -27,8 +30,8 @@
                             <label class="btn btn-outline-secondary d-flex align-items-center justify-content-between w-100 p-3 text-start payment-option" for="payment_cod">
                                 <div class="d-flex align-items-center">
                                     <div class="ms-2">
-                                        <h6 class="mb-0 fw-bold">{{ __('Cash On Delivery') }}</h6>
-                                        <small class="text-muted">{{ __('Pay nicely when you receive your order') }}</small>
+                                        <h6 class="mb-0 fw-bold">{{ __('common.cash_on_delivery') }}</h6>
+                                        <small class="text-muted">{{ __('common.cod_description') }}</small>
                                     </div>
                                 </div>
                                 <i class="fas fa-money-bill-wave fa-lg"></i>
@@ -43,10 +46,10 @@
                             <label class="btn btn-outline-secondary d-flex align-items-center justify-content-between w-100 p-3 text-start payment-option {{ $walletBalance < $total ? 'opacity-50' : '' }}" for="payment_wallet">
                                 <div class="d-flex align-items-center">
                                     <div class="ms-2">
-                                        <h6 class="mb-0 fw-bold">{{ __('Wallet') }}</h6>
-                                        <small class="text-muted">{{ __('Balance:') }} {{ format_price($walletBalance) }}</small>
+                                        <h6 class="mb-0 fw-bold">{{ __('common.wallet') }}</h6>
+                                        <small class="text-muted">{{ __('common.wallet_balance') }} {{ format_price($walletBalance) }}</small>
                                         @if($walletBalance < $total)
-                                            <div class="text-danger small mt-1">{{ __('Insufficient balance') }}</div>
+                                            <div class="text-danger small mt-1">{{ __('common.insufficient_balance') }}</div>
                                         @endif
                                     </div>
                                 </div>
@@ -62,8 +65,8 @@
                             <label class="btn btn-outline-secondary d-flex align-items-center justify-content-between w-100 p-3 text-start payment-option" for="payment_bank">
                                 <div class="d-flex align-items-center">
                                     <div class="ms-2">
-                                        <h6 class="mb-0 fw-bold">{{ __('Bank Transfer') }}</h6>
-                                        <small class="text-muted">{{ __('Manually transfer to our bank account') }}</small>
+                                        <h6 class="mb-0 fw-bold">{{ __('common.bank_transfer') }}</h6>
+                                        <small class="text-muted">{{ __('common.bank_transfer_description') }}</small>
                                     </div>
                                 </div>
                                 <i class="fas fa-university fa-lg"></i>
@@ -72,7 +75,7 @@
                         @endif
 
                         @if(isset($gateways['stripe']) || isset($gateways['paypal']) || isset($gateways['razorpay']) || isset($gateways['paystack']))
-                        <h6 class="fw-bold mt-4 mb-3">{{ __('Online Payment Method') }}</h6>
+                        <h6 class="fw-bold mt-4 mb-3">{{ __('common.online_payment_method') }}</h6>
                         <div class="row g-3">
                             <!-- Stripe -->
                             @if(isset($gateways['stripe']))
@@ -133,24 +136,38 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <h5 class="fw-bold mb-4">{{ __('Order Summary') }}</h5>
+                    <h5 class="fw-bold mb-4">{{ __('common.order_summary') }}</h5>
+
+                    @if($freeShippingMin > 0)
+                        <div class="mb-3">
+                            @if($subtotal >= $freeShippingMin)
+                                <div class="alert alert-success py-2 small">
+                                    <i class="fas fa-check-circle me-1"></i> {{ __('common.free_shipping_eligible') }}
+                                </div>
+                            @else
+                                <div class="alert alert-info py-2 small">
+                                    <i class="fas fa-info-circle me-1"></i> {{ __('common.spend_more_for_free_shipping', ['amount' => format_price($freeShippingMin - $subtotal)]) }}
+                                </div>
+                            @endif
+                        </div>
+                    @endif
 
                     <!-- Order Items Preview -->
                     <div class="mb-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="small fw-bold text-muted mb-0">{{ __('Package 1 of 1') }}</h6>
-                            <small class="text-muted">{{ __('Shipped by store') }}</small>
+                            <h6 class="small fw-bold text-muted mb-0">{{ __('common.package_count', ['current' => 1, 'total' => 1]) }}</h6>
+                            <small class="text-muted">{{ __('common.shipped_by_store') }}</small>
                         </div>
                         <div class="bg-light p-3 rounded">
                             <div class="d-flex justify-content-between small text-muted mb-2">
-                                <span>{{ __('Delivery Charge:') }} {{ format_price($shippingCost) }}</span>
-                                <span>{{ __('Tax:') }} {{ $taxPercent }}%</span>
+                                <span>{{ __('common.delivery_charge') }} {{ format_price($shippingCost) }}</span>
+                                <span>{{ __('common.tax') }} {{ $taxPercent }}%</span>
                             </div>
-                            
+
                             <div class="d-flex align-items-center mt-3">
                                 <div>
-                                    <h6 class="mb-0 small fw-bold text-truncate text-truncate-150">{{ $cartItems->first()['name'] ?? __('Item') }}</h6>
-                                    <small class="text-muted">{{ $cartItems->sum('quantity') }} {{ __('Items') }}</small>
+                                    <h6 class="mb-0 small fw-bold text-truncate text-truncate-150">{{ $cartItems->first()['name'] ?? __('common.item') }}</h6>
+                                    <small class="text-muted">{{ $cartItems->sum('quantity') }} {{ __('common.items') }}</small>
                                 </div>
                                 <div class="ms-auto fw-bold">{{ format_price($subtotal) }}</div>
                             </div>
@@ -165,49 +182,49 @@
                                     <i class="fas fa-tag me-2"></i>
                                     <div>
                                         <div class="fw-bold small">{{ $coupon['code'] }}</div>
-                                        <div class="small text-xs">{{ __('Applied') }}</div>
+                                        <div class="small text-xs">{{ __('common.applied') }}</div>
                                     </div>
                                 </div>
                                 <button type="button" class="btn-close btn-sm" id="remove_coupon_btn" aria-label="Remove"></button>
                             </div>
                         @else
                             <a href="#" class="d-flex justify-content-between align-items-center text-decoration-none" data-bs-toggle="collapse" data-bs-target="#couponCollapse">
-                                <span class="fw-bold text-primary">{{ __('Import your coupon') }}</span>
+                                <span class="fw-bold text-primary">{{ __('common.import_coupon') }}</span>
                                 <i class="fas fa-chevron-right text-primary small"></i>
                             </a>
                             <div class="collapse mt-2" id="couponCollapse">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="coupon_code" placeholder="{{ __('Enter coupon code') }}">
-                                    <button class="btn btn-primary" id="apply_coupon_btn" type="button">{{ __('Apply') }}</button>
+                                    <input type="text" class="form-control" id="coupon_code" placeholder="{{ __('common.enter_coupon_code') }}">
+                                    <button class="btn btn-primary" id="apply_coupon_btn" type="button">{{ __('common.apply') }}</button>
                                 </div>
                                 <div id="coupon_message" class="small mt-1"></div>
                             </div>
                         @endif
                     </div>
-                    
+
                     <hr>
 
                     <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">{{ __('Sub Total') }}</span>
+                        <span class="text-muted">{{ __('common.subtotal') }}</span>
                         <span class="fw-bold">{{ format_price($subtotal ?? 0) }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">{{ __('Discount') }}</span>
+                        <span class="text-muted">{{ __('common.discount') }}</span>
                         <span class="fw-bold text-success" id="summary_discount">(-) {{ format_price($discount ?? 0) }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">{{ __('Tax') }} ({{ $taxPercent ?? 0 }}%)</span>
+                        <span class="text-muted">{{ __('common.tax') }} ({{ $taxPercent ?? 0 }}%)</span>
                         <span class="fw-bold">{{ format_price($tax ?? 0) }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">{{ __('Delivery Fee') }}</span>
+                        <span class="text-muted">{{ __('common.delivery_fee') }}</span>
                         <span class="fw-bold">{{ format_price($shippingCost ?? 0) }}</span>
                     </div>
-                    
+
                     <hr>
-                    
+
                     <div class="d-flex justify-content-between mb-4">
-                        <span class="fw-bold fs-5">{{ __('Total Amount') }}</span>
+                        <span class="fw-bold fs-5">{{ __('common.total_amount') }}</span>
                         <span class="fw-bold fs-5 text-primary" id="summary_total">{{ format_price($total ?? 0) }}</span>
                     </div>
 
@@ -220,35 +237,13 @@
                             ]) !!}
                         </label>
                     </div>
-                    
-                    <button type="submit" form="payment-form" class="btn btn-primary w-100 py-3 fw-bold shadow-sm">{{ __('Pay Now') }}</button>
+
+                    <button type="submit" form="payment-form" class="btn btn-primary w-100 py-3 fw-bold shadow-sm">{{ __('common.pay_now') }}</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<style>
-    .payment-option {
-        cursor: pointer;
-        transition: all 0.2s;
-        border: 2px solid #e9ecef;
-        background-color: #fff;
-    }
-    .payment-option:hover {
-        border-color: var(--rust);
-        background-color: rgba(210, 105, 30, 0.05);
-    }
-    .btn-check:checked + .payment-option {
-        border-color: var(--rust) !important;
-        background-color: #fff4f2;
-        color: var(--rust);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-    .btn-check:checked + .payment-option i {
-        color: var(--rust);
-    }
-    .btn-check:checked + .payment-option .text-muted {
-        color: #8c4a2f !important;
-    }
-</style>
+</div>
+
 @endsection

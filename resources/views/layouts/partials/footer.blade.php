@@ -33,6 +33,43 @@
                 <p class="footer-description">
                     {{ setting('footer_description') ?: __('common.footer_description') }}
                 </p>
+
+                <div class="footer-contact mb-4">
+                    @if(setting('footer_phone') || setting('footer_email') || setting('footer_address'))
+                        @if(setting('footer_phone'))
+                            <div class="d-flex align-items-center mb-2 text-white-50">
+                                <i class="fas fa-phone-alt me-2"></i>
+                                <span class="fs-14">{{ setting('footer_phone') }}</span>
+                            </div>
+                        @endif
+                        @if(setting('footer_email'))
+                            <div class="d-flex align-items-center mb-2 text-white-50">
+                                <i class="fas fa-envelope me-2"></i>
+                                <a href="mailto:{{ setting('footer_email') }}" class="text-white-50 text-decoration-none fs-14 hover-white">{{ setting('footer_email') }}</a>
+                            </div>
+                        @endif
+                        @if(setting('footer_address'))
+                            <div class="d-flex align-items-start text-white-50">
+                                <i class="fas fa-map-marker-alt mt-1 me-2"></i>
+                                <span class="fs-14">{{ setting('footer_address') }}</span>
+                            </div>
+                        @endif
+                    @else
+                        <div class="d-flex align-items-center mb-2 text-white-50">
+                            <i class="fas fa-phone-alt me-2"></i>
+                            <span class="fs-14">{{ __('common.phone_number') }}</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2 text-white-50">
+                            <i class="fas fa-envelope me-2"></i>
+                            <a href="mailto:{{ __('common.email_address') }}" class="text-white-50 text-decoration-none fs-14 hover-white">{{ __('common.email_address') }}</a>
+                        </div>
+                        <div class="d-flex align-items-start text-white-50">
+                            <i class="fas fa-map-marker-alt mt-1 me-2"></i>
+                            <span class="fs-14">{{ __('common.address') }}</span>
+                        </div>
+                    @endif
+                </div>
+
                 <div class="social-links">
                     @php
                         $socials = [
@@ -126,8 +163,13 @@
             </div>
         </div>
         
-        <div class="footer-bottom">
-            <p>{{ setting('copyright_text') ?? __('common.copyright', ['year' => date('Y')]) }} | <a href="{{ route('pages.privacy') }}" class="text-white text-decoration-none">{{ __('common.privacy') }}</a> | <a href="{{ route('pages.terms') }}" class="text-white text-decoration-none">{{ __('common.terms') }}</a></p>
+        <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <p class="mb-0">{{ setting('copyright_text') ?? __('common.copyright', ['year' => date('Y')]) }} | <a href="{{ route('pages.privacy') }}" class="text-white text-decoration-none">{{ __('common.privacy') }}</a> | <a href="{{ route('pages.terms') }}" class="text-white text-decoration-none">{{ __('common.terms') }}</a></p>
+            @if(setting('payment_method_image'))
+                <div class="payment-methods">
+                    <img src="{{ getImageOrPlaceholder(setting('payment_method_image'), '400x30') }}" alt="{{ __('common.payment_methods') }}" class="img-fluid" style="max-height: 30px;">
+                </div>
+            @endif
         </div>
     </div>
 </footer>

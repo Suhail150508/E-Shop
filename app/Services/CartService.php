@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Coupon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use Modules\Product\App\Models\Product;
@@ -9,14 +10,18 @@ use Modules\Product\App\Models\Product;
 class CartService extends BaseService
 {
     protected string $sessionKey = 'cart.items';
-
+    /**
+     * Get all cart items.
+     */
     public function items(): Collection
     {
         $items = Session::get($this->sessionKey, []);
 
         return collect($items);
     }
-
+    /**
+     * Add a product to the cart.
+     */
     public function add(Product $product, int $quantity = 1, array $options = []): void
     {
         $items = $this->items();
@@ -45,7 +50,9 @@ class CartService extends BaseService
 
         Session::put($this->sessionKey, $items->toArray());
     }
-
+    /**
+     * Update the quantity of a product in the cart.
+     */
     public function update(string $key, int $quantity): void
     {
         $items = $this->items();
@@ -64,7 +71,9 @@ class CartService extends BaseService
 
         Session::put($this->sessionKey, $items->toArray());
     }
-
+    /**
+     * Remove a product from the cart.
+     */
     public function remove(string $key): void
     {
         $items = $this->items();
@@ -73,7 +82,9 @@ class CartService extends BaseService
 
         Session::put($this->sessionKey, $items->toArray());
     }
-
+    /**
+     * Generate a unique key for the cart item.
+     */ 
     protected function generateKey($productId, array $options): string
     {
         if (empty($options)) {
@@ -82,18 +93,24 @@ class CartService extends BaseService
         ksort($options);
         return $productId . '-' . md5(serialize($options));
     }
-
+    /**
+     * Clear the cart.
+     */
     public function clear(): void
     {
         Session::forget($this->sessionKey);
         $this->removeCoupon();
     }
-
+    /**
+     * Get the total number of items in the cart.
+     */
     public function count(): int
     {
         return $this->items()->sum('quantity');
     }
-
+    /**
+     * Get the subtotal of the cart items.
+     */
     public function subtotal(): float
     {
         return $this->items()->reduce(function ($carry, $item) {
@@ -104,8 +121,10 @@ class CartService extends BaseService
             return $carry + ($unit * $item['quantity']);
         }, 0);
     }
-
-    public function applyCoupon(\App\Models\Coupon $coupon): void
+    /**
+     * Apply a coupon to the cart.
+     */
+    public function applyCoupon(Coupon $coupon): void
     {
         Session::put('cart.coupon', [
             'id' => $coupon->id,
@@ -114,17 +133,23 @@ class CartService extends BaseService
             'value' => $coupon->value,
         ]);
     }
-
+    /**
+     * Remove the coupon from the cart.
+     */
     public function removeCoupon(): void
     {
         Session::forget('cart.coupon');
     }
-
+    /**
+     * Get the coupon applied to the cart.
+     */
     public function getCoupon(): ?array
     {
         return Session::get('cart.coupon');
     }
-
+    /**
+     * Get the discount amount based on the coupon applied.
+     */
     public function discount(): float
     {
         $coupon = $this->getCoupon();
@@ -140,7 +165,9 @@ class CartService extends BaseService
 
         return $subtotal * ($coupon['value'] / 100);
     }
-
+    /**
+     * Get the total amount of the cart items after applying the coupon discount.
+     */
     public function total(): float
     {
         return max(0, $this->subtotal() - $this->discount());

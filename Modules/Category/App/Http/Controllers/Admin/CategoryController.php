@@ -4,6 +4,7 @@ namespace Modules\Category\App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Modules\Category\App\Http\Requests\StoreCategoryRequest;
 use Modules\Category\App\Http\Requests\UpdateCategoryRequest;
 use Modules\Category\App\Models\Category;
@@ -59,7 +60,7 @@ class CategoryController extends Controller
         $this->categoryService->create($request->validated());
 
         return redirect()->route('admin.categories.index')
-            ->with('success', __('Category created successfully.'));
+            ->with('success', __('category::category.created_success'));
     }
 
     /**
@@ -90,7 +91,7 @@ class CategoryController extends Controller
         $this->categoryService->update($category, $request->validated());
 
         return redirect()->route('admin.categories.index')
-            ->with('success', __('Category updated successfully.'));
+            ->with('success', __('category::category.updated_success'));
     }
 
     /**
@@ -104,10 +105,10 @@ class CategoryController extends Controller
         try {
             $this->categoryService->delete($category);
             return redirect()->route('admin.categories.index')
-                ->with('success', __('Category deleted successfully.'));
+                ->with('success', __('category::category.deleted_success'));
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Error deleting category ID '.$category->id.': '.$e->getMessage());
-            return redirect()->back()->with('error', __('An error occurred while deleting the category. Please try again or contact support.'));
+            Log::error('Error deleting category ID '.$category->id.': '.$e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
@@ -135,15 +136,16 @@ class CategoryController extends Controller
         $ids = $request->input('ids');
 
         if (!is_array($ids) || count($ids) === 0) {
-            return response()->json(['error' => __('No items selected.')], 400);
+            return response()->json(['error' => __('category::category.no_items_selected')], 400);
         }
 
         try {
             $this->categoryService->bulkDelete($ids);
-            return response()->json(['success' => __('Selected categories deleted successfully.')]);
+            session()->flash('success', __('category::category.bulk_delete_success'));
+            return response()->json(['success' => __('category::category.bulk_delete_success')]);
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::warning('Category bulk delete failed', ['ids' => $ids, 'error' => $e->getMessage()]);
-            return response()->json(['error' => __('common.error_deleting_selected_categories')], 400);
+            Log::warning('Category bulk delete failed', ['ids' => $ids, 'error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 }

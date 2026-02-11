@@ -85,18 +85,18 @@ class OrderController extends Controller
         ];
 
         $statuses = [
-            Order::STATUS_PENDING => __('Pending'),
-            Order::STATUS_PROCESSING => __('Processing'),
-            Order::STATUS_SHIPPED => __('Shipped'),
-            Order::STATUS_DELIVERED => __('Delivered'),
-            Order::STATUS_CANCELLED => __('Cancelled'),
+            Order::STATUS_PENDING => __('common.pending'),
+            Order::STATUS_PROCESSING => __('common.processing'),
+            Order::STATUS_SHIPPED => __('common.shipped'),
+            Order::STATUS_DELIVERED => __('common.delivered'),
+            Order::STATUS_CANCELLED => __('common.cancelled'),
         ];
 
         $paymentStatuses = [
-            Order::PAYMENT_PENDING => __('Pending'),
-            Order::PAYMENT_PAID => __('Paid'),
-            Order::PAYMENT_FAILED => __('Failed'),
-            Order::PAYMENT_REFUNDED => __('Refunded'),
+            Order::PAYMENT_PENDING => __('common.pending'),
+            Order::PAYMENT_PAID => __('common.paid'),
+            Order::PAYMENT_FAILED => __('common.failed'),
+            Order::PAYMENT_REFUNDED => __('common.refunded'),
         ];
 
         return view('admin.orders.index', compact('orders', 'statuses', 'paymentStatuses', 'statusCounts'));
@@ -113,11 +113,11 @@ class OrderController extends Controller
         $order->load(['items.product', 'user', 'staff', 'statusHistories.changedBy']);
 
         $statuses = [
-            Order::STATUS_PENDING => __('Pending'),
-            Order::STATUS_PROCESSING => __('Processing'),
-            Order::STATUS_SHIPPED => __('Shipped'),
-            Order::STATUS_DELIVERED => __('Delivered'),
-            Order::STATUS_CANCELLED => __('Cancelled'),
+            Order::STATUS_PENDING => __('common.pending'),
+            Order::STATUS_PROCESSING => __('common.processing'),
+            Order::STATUS_SHIPPED => __('common.shipped'),
+            Order::STATUS_DELIVERED => __('common.delivered'),
+            Order::STATUS_CANCELLED => __('common.cancelled'),
         ];
 
         $staffUsers = User::where('role', User::ROLE_STAFF)

@@ -11,7 +11,7 @@
                     <i class="fas fa-shopping-cart"></i>
                 @endif
             </div>
-            <div class="step-name">{{ __('Add to Cart') }}</div>
+            <div class="step-name">{{ __('common.step_add_to_cart') }}</div>
         </div>
 
         <!-- Step 2: Check & Proceed -->
@@ -23,7 +23,7 @@
                     <i class="fas fa-clipboard-check"></i>
                 @endif
             </div>
-            <div class="step-name">{{ __('Check & Proceed') }}</div>
+            <div class="step-name">{{ __('common.step_check_proceed') }}</div>
         </div>
 
         <!-- Step 3: Payment -->
@@ -32,10 +32,10 @@
                 @if($currentStep > 3)
                     <i class="fas fa-check"></i>
                 @else
-                    <i class="fas fa-wallet"></i>
+                    <i class="fas fa-hand-holding-usd"></i>
                 @endif
             </div>
-            <div class="step-name">{{ __('Payment') }}</div>
+            <div class="step-name">{{ __('common.step_payment') }}</div>
         </div>
 
         <!-- Step 4: Confirmation -->
@@ -47,7 +47,7 @@
                     <i class="fas fa-check-circle"></i>
                 @endif
             </div>
-            <div class="step-name">{{ __('Confirmation') }}</div>
+            <div class="step-name">{{ __('common.step_confirmation') }}</div>
         </div>
     </div>
 </div>

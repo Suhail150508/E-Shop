@@ -2,35 +2,6 @@
 
 @section('page_title', __('Categories'))
 
-@push('styles')
-<style>
-    .avatar-sm {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-    }
-    .btn-soft-secondary {
-        color: #6c757d;
-        background-color: rgba(108, 117, 125, 0.1);
-        border: none;
-    }
-    .btn-soft-secondary:hover {
-        color: #fff;
-        background-color: #6c757d;
-    }
-    .btn-soft-danger {
-        color: #dc3545;
-        background-color: rgba(220, 53, 69, 0.1);
-        border: none;
-    }
-    .btn-soft-danger:hover {
-        color: #fff;
-        background-color: #dc3545;
-    }
-    
-
-</style>
-@endpush
 @section('content')
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
     <div>
@@ -140,7 +111,7 @@
                                     <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-soft-secondary" data-bs-toggle="tooltip" title="{{ __('Edit') }}">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('Are you sure you want to delete this category?') }}')">
+                                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('common.confirm_delete_category') }}')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-soft-danger" data-bs-toggle="tooltip" title="{{ __('Delete') }}">
@@ -156,7 +127,7 @@
                                 <div class="text-muted mb-2">
                                     <i class="bi bi-folder2-open display-4"></i>
                                 </div>
-                                <h5 class="h6 text-muted">{{ __('No categories found') }}</h5>
+                                <h5 class="h6 text-muted">{{ __('common.no_categories_found') }}</h5>
                                 <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-primary mt-2">
                                     {{ __('Create First Category') }}
                                 </a>
@@ -204,7 +175,7 @@
 
         if(bulkDeleteBtn) {
             bulkDeleteBtn.addEventListener('click', function() {
-                if (!confirm('{{ __("Are you sure you want to delete selected items?") }}')) return;
+                if (!confirm('{{ __("common.confirm_delete_selected_items") }}')) return;
 
                 const selectedIds = Array.from(checkboxes)
                     .filter(cb => cb.checked)
@@ -230,8 +201,7 @@
                         }
                     }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
+                .catch(() => {
                     if (typeof toastr !== 'undefined') {
                         toastr.error('{{ __('An error occurred') }}');
                     } else {

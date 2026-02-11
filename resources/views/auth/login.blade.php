@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/auth.css') }}">
 @endpush
 @php
-    $title = setting('auth_login_title', __('auth.login'));
-    $subtitle = setting('auth_login_subtitle', __('auth.welcome_back') . ' ' . config('app.name'));
+    $title = setting('auth_login_title', __('common.login_title'));
+    $subtitle = setting('auth_login_subtitle', __('common.welcome_back') . ' ' . config('app.name'));
     $image = setting('auth_login_image', null);
 @endphp
 
@@ -20,7 +20,7 @@
             <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div>
             <div class="position-absolute bottom-0 start-0 p-5 text-white w-100 auth-overlay">
                 <h2 class="display-5 fw-bold mb-3">{{ config('app.name') }}</h2>
-                <p class="lead mb-0 text-white-50">{{ e(setting('auth_login_overlay_text', __('auth.overlay_text'))) }}</p>
+                <p class="lead mb-0 text-white-50">{{ e(setting('auth_login_overlay_text', __('common.login_overlay_text'))) }}</p>
             </div>
         </div>
         
@@ -40,15 +40,15 @@
                     
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autofocus placeholder="{{ __('common.enter_email') }}">
-                        <label for="email">{{ __('auth.email') }}</label>
+                        <label for="email">{{ __('common.email_address') }}</label>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     
                     <div class="form-floating mb-3 position-relative">
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required placeholder="{{ __('auth.enter_password') }}">
-                        <label for="password">{{ __('auth.password') }}</label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required placeholder="{{ __('common.enter_password') }}">
+                        <label for="password">{{ __('common.password') }}</label>
                         <button type="button" class="btn btn-link text-decoration-none position-absolute top-50 end-0 translate-middle-y me-2 text-muted" onclick="togglePassword()">
                             <i class="far fa-eye" id="toggleIcon"></i>
                         </button>
@@ -61,25 +61,25 @@
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="remember" name="remember" @checked(old('remember'))>
                             <label class="form-check-label text-muted" for="remember">
-                                {{ __('auth.remember_me') }}
+                                {{ __('common.remember_me') }}
                             </label>
                         </div>
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}" class="text-decoration-none text-primary small fw-semibold">
-                                {{ __('auth.forgot_password') }}
+                                {{ __('common.forgot_password') }}
                             </a>
                         @endif
                     </div>
                     
                     <button type="submit" class="btn btn-dark w-100 py-3 fw-bold shadow-sm mb-4">
-                        {{ __('auth.login') }}
+                        {{ __('common.login_btn') }}
                     </button>
                     
                     <div class="text-center">
                         <p class="text-muted mb-0">
-                            {{ __("Don't have an account?") }} 
+                            {{ __('common.dont_have_account') }} 
                             <a href="{{ route('register') }}" class="text-primary fw-bold text-decoration-none ms-1">
-                                {{ __('auth.register') }}
+                                {{ __('common.register_btn') }}
                             </a>
                         </p>
                     </div>

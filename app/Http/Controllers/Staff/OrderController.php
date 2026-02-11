@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    // Show staff orders
     public function index()
     {
         $orders = Order::where('staff_id', auth()->id())
@@ -30,6 +31,7 @@ class OrderController extends Controller
         return view('staff.orders.show', compact('order'));
     }
 
+    // Update order status
     public function updateStatus(Request $request, Order $order)
     {
         if ($order->staff_id !== auth()->id()) {
