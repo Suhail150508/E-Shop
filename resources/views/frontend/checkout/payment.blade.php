@@ -82,7 +82,7 @@
                             <div class="col-6 col-md-4">
                                 <input type="radio" class="btn-check" name="payment_method" id="payment_stripe" value="stripe">
                                 <label class="btn btn-outline-secondary d-flex align-items-center justify-content-center p-2 w-100 payment-option h-100" for="payment_stripe">
-                                    <span class="fw-bold"><i class="fab fa-stripe fa-3x align-middle"></i></span>
+                                    <span class="fw-bold"><i class="fab fa-stripe fa-3x align-middle icon-stripe"></i></span>
                                 </label>
                             </div>
                             @endif
@@ -92,7 +92,7 @@
                             <div class="col-6 col-md-4">
                                 <input type="radio" class="btn-check" name="payment_method" id="payment_paypal" value="paypal">
                                 <label class="btn btn-outline-secondary d-flex align-items-center justify-content-center p-2 w-100 payment-option h-100" for="payment_paypal">
-                                    <span class="fw-bold"><i class="fab fa-paypal fa-3x align-middle"></i></span>
+                                    <span class="fw-bold"><i class="fab fa-paypal fa-3x align-middle icon-paypal"></i></span>
                                 </label>
                             </div>
                             @endif
@@ -103,7 +103,7 @@
                                 <input type="radio" class="btn-check" name="payment_method" id="payment_razorpay" value="razorpay">
                                 <label class="btn btn-outline-secondary d-flex align-items-center justify-content-center p-2 w-100 payment-option h-100" for="payment_razorpay">
                                     <div class="d-flex flex-column align-items-center">
-                                        <i class="fas fa-money-bill-wave fa-2x mb-1"></i>
+                                        <i class="fas fa-money-bill-wave fa-2x mb-1 icon-razorpay"></i>
                                         <span class="fw-bold small">{{ __('Razorpay') }}</span>
                                     </div>
                                 </label>
@@ -116,7 +116,7 @@
                                 <input type="radio" class="btn-check" name="payment_method" id="payment_paystack" value="paystack">
                                 <label class="btn btn-outline-secondary d-flex align-items-center justify-content-center p-2 w-100 payment-option h-100" for="payment_paystack">
                                     <div class="d-flex flex-column align-items-center">
-                                        <i class="fas fa-layer-group fa-2x mb-1"></i>
+                                        <i class="fas fa-layer-group fa-2x mb-1 icon-paystack"></i>
                                         <span class="fw-bold small">{{ __('Paystack') }}</span>
                                     </div>
                                 </label>
