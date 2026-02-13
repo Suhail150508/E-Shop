@@ -27,7 +27,7 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             @if($item->product)
-                                                <img src="{{ $item->product->image_url }}" alt="{{ $item->product_name }}" class="rounded me-3" width="50" height="50" style="object-fit: cover;">
+                                                <img src="{{ $item->product->image_url }}" alt="{{ $item->product_name }}" class="rounded me-3 object-fit-cover" width="50" height="50">
                                             @else
                                                 <div class="rounded me-3 bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                                                     <i class="fas fa-image text-muted"></i>

@@ -4,7 +4,7 @@
 
 @push('styles')
     @if($order->shipping_latitude && $order->shipping_longitude)
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('global/leaflet/leaflet.css') }}">
     @endif
 @endpush
 
@@ -401,7 +401,7 @@
 
 @push('scripts')
     @if($order->shipping_latitude && $order->shipping_longitude)
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+    <script src="{{ asset('global/leaflet/leaflet.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var el = document.getElementById('tracking-map');

@@ -45,7 +45,7 @@
                 <div class="p-3 border-top bg-white">
                     <form id="admin-reply-form" class="d-flex gap-2">
                         <input type="hidden" name="conversation_id" id="active-conversation-id" value="{{ $conversations->first()->id ?? '' }}">
-                        <label class="btn btn-light border position-relative" id="attachment-label">
+                        <label class="btn btn-secondary-soft position-relative" id="attachment-label">
                             <i class="bi bi-paperclip" id="attachment-icon"></i>
                             <input type="file" name="attachment" class="d-none">
                             <span id="attachment-indicator" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle d-none">

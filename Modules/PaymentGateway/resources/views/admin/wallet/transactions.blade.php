@@ -13,7 +13,7 @@
                 <form action="{{ route('admin.wallet.transactions') }}" method="GET" class="d-flex justify-content-end gap-2">
                     <div class="input-group input-group-sm w-auto">
                         <input type="text" name="date_range" class="form-control" placeholder="{{ __('YYYY-MM-DD to YYYY-MM-DD') }}" value="{{ request('date_range') }}">
-                        <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-filter"></i></button>
+                        <button class="btn btn-secondary-soft" type="submit"><i class="fas fa-filter"></i></button>
                     </div>
                 </form>
             </div>
@@ -78,7 +78,7 @@
                                 @if($transaction->status === 'pending')
                                     <form action="{{ route('admin.wallet.transactions.approve', $transaction->id) }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('{{ __('Are you sure you want to approve this transaction?') }}')">
+                                        <button type="submit" class="btn btn-sm btn-success-soft" onclick="return confirm('{{ __('Are you sure you want to approve this transaction?') }}')">
                                             <i class="fas fa-check"></i> {{ __('Approve') }}
                                         </button>
                                     </form>

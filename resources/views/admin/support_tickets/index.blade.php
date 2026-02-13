@@ -7,7 +7,12 @@
     <div class="card-header bg-white py-3">
         <div class="row g-3 align-items-center">
             <div class="col-md-6">
-                <h5 class="mb-0"><i class="fas fa-ticket-alt me-2"></i>{{ __('Support Tickets') }}</h5>
+                <h5 class="mb-0">
+                    <span class="d-inline-flex align-items-center justify-content-center bg-primary-subtle rounded-circle me-2" style="width: 40px; height: 40px;">
+                        <i class="fas fa-ticket-alt text-primary"></i>
+                    </span>
+                    {{ __('Support Tickets') }}
+                </h5>
             </div>
             <div class="col-md-6">
                 <form action="{{ route('admin.support-tickets.index') }}" method="GET" class="d-flex justify-content-end gap-2">
@@ -27,7 +32,7 @@
                     </select>
                     <div class="input-group input-group-sm w-auto">
                         <input type="text" name="search" class="form-control" placeholder="{{ __('Search...') }}" value="{{ is_string(request('search')) ? request('search') : '' }}">
-                        <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-secondary-soft" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
             </div>
@@ -75,7 +80,7 @@
                                 <span class="badge bg-{{ $ticket->status_color }}">{{ ucfirst($ticket->status) }}</span>
                             </td>
                             <td class="text-end px-4">
-                                <a href="{{ route('admin.support-tickets.show', $ticket->id) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="{{ __('View Ticket') }}">
+                                <a href="{{ route('admin.support-tickets.show', $ticket->id) }}" class="btn btn-sm btn-secondary-soft" data-bs-toggle="tooltip" title="{{ __('View Ticket') }}">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             </td>

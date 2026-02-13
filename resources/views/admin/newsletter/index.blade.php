@@ -13,7 +13,7 @@
                 <form action="{{ route('admin.newsletter.index') }}" method="GET" class="d-inline-block">
                     <div class="input-group input-group-sm">
                         <input type="text" name="search" class="form-control" placeholder="{{ __('Search email...') }}" value="{{ request('search') }}">
-                        <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-secondary-soft" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
             </div>
@@ -46,7 +46,7 @@
                                 <form action="{{ route('admin.newsletter.destroy', $subscriber->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this subscriber?') }}')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ __('Delete') }}">
+                                    <button type="submit" class="btn btn-sm btn-danger-soft" title="{{ __('Delete') }}">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>

@@ -13,8 +13,10 @@
 
     <div class="row g-4">
         <div class="col-lg-8">
-            <form id="payment-form" action="{{ route('checkout.process') }}" method="POST">
+            <form id="payment-form" action="{{ route('checkout.process') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="bank_transaction_id" id="hidden_transaction_id">
+                <input type="hidden" name="bank_name" id="hidden_bank_name">
 
                 <!-- Payment Method Section -->
                 <div class="card border-0 shadow-sm mb-4">
@@ -244,6 +246,98 @@
         </div>
     </div>
 </div>
+
+<!-- Bank Transfer Modal -->
+<div class="modal fade" id="bankTransferModal" tabindex="-1" aria-labelledby="bankTransferModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="bankTransferModalLabel">{{ __('common.bank_transfer_details') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted small mb-3">{{ __('common.bank_transfer_instruction_modal') }}</p>
+                
+                <div class="mb-3">
+                    <label for="modal_bank_name" class="form-label small fw-bold">{{ __('common.bank_name') }}</label>
+                    <input type="text" class="form-control" id="modal_bank_name" placeholder="{{ __('common.enter_bank_name') }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="modal_transaction_id" class="form-label small fw-bold required">{{ __('common.transaction_id') }} <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="modal_transaction_id" placeholder="{{ __('common.enter_transaction_id') }}">
+                    <div class="invalid-feedback" id="modal_transaction_id_error">
+                        {{ __('common.transaction_id_required') }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{ __('common.cancel') }}</button>
+                <button type="button" class="btn btn-primary px-4" id="confirmBankTransfer">{{ __('common.submit') }}</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentForm = document.getElementById('payment-form');
+        const bankModalEl = document.getElementById('bankTransferModal');
+        const bankModal = new bootstrap.Modal(bankModalEl);
+        const confirmBankTransferBtn = document.getElementById('confirmBankTransfer');
+        const transactionIdInput = document.getElementById('modal_transaction_id');
+        const transactionIdError = document.getElementById('modal_transaction_id_error');
+
+        paymentForm.addEventListener('submit', function(e) {
+            const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
+            
+            // If Bank Transfer is selected
+            if (selectedPayment && selectedPayment.value === 'bank') {
+                // Check if we already have the transaction ID populated (from modal)
+                const hiddenTransactionId = document.getElementById('hidden_transaction_id').value;
+                
+                if (!hiddenTransactionId) {
+                    e.preventDefault(); // Stop form submission
+                    bankModal.show(); // Show modal
+                }
+            }
+        });
+
+        confirmBankTransferBtn.addEventListener('click', function() {
+            const tid = transactionIdInput.value.trim();
+            const bankName = document.getElementById('modal_bank_name').value.trim();
+
+            // Validate Transaction ID
+            if (!tid) {
+                transactionIdInput.classList.add('is-invalid');
+                transactionIdError.style.display = 'block';
+                return;
+            } else {
+                transactionIdInput.classList.remove('is-invalid');
+                transactionIdError.style.display = 'none';
+            }
+
+            // Copy values to hidden fields
+            document.getElementById('hidden_transaction_id').value = tid;
+            document.getElementById('hidden_bank_name').value = bankName;
+
+            // Hide modal
+            bankModal.hide();
+
+            // Submit the form
+            paymentForm.submit();
+        });
+        
+        // Clear error on input
+        transactionIdInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                this.classList.remove('is-invalid');
+                transactionIdError.style.display = 'none';
+            }
+        });
+    });
+</script>
+@endpush

@@ -36,7 +36,7 @@
                                 @endif
                             </td>
                             <td class="text-end px-4">
-                                <button class="btn btn-sm btn-outline-primary me-1" 
+                                <button class="btn btn-sm btn-secondary-soft me-1" 
                                         data-bs-toggle="modal" 
                                         data-bs-target="#editDepartmentModal{{ $department->id }}">
                                     <i class="fas fa-edit"></i>
@@ -44,7 +44,7 @@
                                 <form action="{{ route('admin.support-departments.destroy', $department->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Are you sure?') }}')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger">
+                                    <button class="btn btn-sm btn-danger-soft">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -80,7 +80,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                                            <button type="button" class="btn btn-secondary-soft" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                                             <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
                                         </div>
                                     </form>
@@ -131,7 +131,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="button" class="btn btn-secondary-soft" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                     <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
                 </div>
             </form>

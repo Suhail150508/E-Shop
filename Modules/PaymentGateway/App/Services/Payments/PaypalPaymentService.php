@@ -130,7 +130,7 @@ class PaypalPaymentService implements PaymentService
                 }
 
                 return redirect()
-                    ->route($order->type === Order::TYPE_WALLET_DEPOSIT ? 'customer.wallet.index' : 'customer.orders.show', $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
+                    ->route($order->type === Order::TYPE_WALLET_DEPOSIT ? 'customer.wallet.index' : 'checkout.confirmation', $order->type === Order::TYPE_WALLET_DEPOSIT ? [] : $order)
                     ->with('success', __('Payment completed successfully.'));
             }
         }

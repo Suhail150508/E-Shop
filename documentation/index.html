@@ -36,6 +36,7 @@
                             <li><a href="#welcome" class="active">Welcome</a></li>
                             <li><a href="#how-it-works">How it Works</a></li>
                             <li><a href="#key-features">Key Features</a></li>
+                            <li><a href="#why-choose">Why Choose Us?</a></li>
                             <li><a href="#requirements">Server Requirements</a></li>
                         </ul>
                     </li>
@@ -183,7 +184,8 @@
                 <span class="answer-label">Answer:</span>
                 <p>The system is a <strong>single-vendor</strong> online store: one admin runs the entire shop. Customers browse products on the frontend, add items to the cart, and complete checkout (shipping address → payment → confirmation). You manage everything from the <strong>Admin Panel</strong>: products, orders, refunds, customers, wallet, support tickets, live chat, and settings. Optional features include <strong>Virtual Try-On</strong> (e.g. sunglasses), <strong>Wallet</strong> (balance, pay at checkout), <strong>Multi-Currency</strong>, and <strong>Multi-Language</strong> with RTL support.</p>
                 <div class="screenshot-box">
-                    <div class="screenshot-placeholder">
+                    <img src="{{ asset('documentation/images/home_page.png') }}" alt="Home Page" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="screenshot-placeholder" style="display: none;">
                         <i class="fas fa-image"></i>
                         <span>Screenshot: Home page with hero, categories, and product sections</span>
                     </div>
@@ -204,6 +206,44 @@
                     <li><strong>Website Setup</strong> – home page content, auth page titles/images, shop labels from one place.</li>
                     <li><strong>Interactive Map</strong> – Integrated OpenStreetMap (Leaflet) for address selection. <strong>Free to use & No API Key required</strong>.</li>
                 </ul>
+            </section>
+
+            <section id="why-choose">
+                <h3>Why Choose This Script?</h3>
+                <span class="answer-label">Answer:</span>
+                <p>We have designed this system to provide the <strong>smoothest user experience</strong> for customers and the <strong>easiest management</strong> for admins. Here are the top reasons to buy:</p>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h4><i class="fas fa-bolt text-primary"></i> Blazing Fast AJAX Experience (No Reload)</h4>
+                        <p>Customers can manage their entire shopping journey <strong>without page reloads</strong>. From adding products to cart (with flying animation), updating quantities, removing items, to applying coupons—everything happens instantly using advanced <strong>AJAX handlers</strong>. This ensures a modern, app-like feel that boosts conversion rates.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <h4><i class="fas fa-glasses text-primary"></i> Virtual Try-On Feature</h4>
+                        <p>Stand out from the competition with our unique <strong>Virtual Try-On</strong> system. Customers can upload their photo and visually "try on" products like sunglasses or eyeglasses. No expensive AI APIs required—it works simply and effectively using canvas technology.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <h4><i class="fas fa-check-circle text-primary"></i> CodeCanyon Compliant & Developer Friendly</h4>
+                        <p>Built with <strong>Clean Code</strong> architecture following industry standards. We use <strong>Local Assets</strong> (no external CDNs) to ensure offline stability and compliance. The code is well-commented, organized, and secure against common vulnerabilities (XSS, CSRF, SQL Injection).</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <h4><i class="fas fa-map-marked-alt text-primary"></i> Interactive Map (Zero Cost)</h4>
+                        <p>Say goodbye to expensive Google Maps APIs. Our integrated <strong>OpenStreetMap (Leaflet)</strong> solution allows customers to pin their exact delivery location for free. It includes auto-address filling and drag-and-drop precision.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <h4><i class="fas fa-wallet text-primary"></i> Smart Wallet & Refund System</h4>
+                        <p>Complete wallet ecosystem where customers can deposit funds, pay for orders, and receive refunds directly to their wallet. This keeps money within your platform and encourages repeat purchases.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <h4><i class="fas fa-globe text-primary"></i> Global Ready (Multi-Language & Currency)</h4>
+                        <p>Ready for the world with dynamic <strong>Multi-Language</strong> (including RTL support for Arabic, Hebrew, etc.) and <strong>Multi-Currency</strong> support. Manage all translations and currency rates directly from the Admin Panel.</p>
+                    </div>
+                </div>
             </section>
 
             <section id="requirements">
@@ -234,7 +274,8 @@
                     <li><strong>Confirmation</strong> – You will see an order success page with order number. You can go to <strong>Account → My Orders</strong> to view the order and download the invoice.</li>
                 </ol>
                 <div class="screenshot-box">
-                    <div class="screenshot-placeholder">
+                    <img src="{{ asset('documentation/images/invoice.png') }}" alt="Invoice Download" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="screenshot-placeholder" style="display: none;">
                         <i class="fas fa-image"></i>
                         <span>Screenshot: Checkout – Shipping step with address and Proceed to Payment</span>
                     </div>
@@ -253,6 +294,7 @@
                 </ul>
                 <div class="screenshot-box">
                     <div class="screenshot-placeholder">
+                          <img src="{{ asset('documentation/images/address.png') }}" alt="Address Selection" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                         <i class="fas fa-map-marked-alt"></i>
                         <span>Screenshot: Map Interface for Address Selection</span>
                     </div>
@@ -270,6 +312,7 @@
                 </ul>
                 <div class="screenshot-box">
                     <div class="screenshot-placeholder">
+                          <img src="{{ asset('documentation/images/wallet.png') }}" alt="Customer account – Wallet balance and transactions" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                         <i class="fas fa-image"></i>
                         <span>Screenshot: Customer account – Wallet balance and transactions</span>
                     </div>
@@ -299,7 +342,8 @@
                     <li>Submit the request. The admin will review and either <strong>Approve</strong> or <strong>Reject</strong>. You may receive the refund to your <strong>Wallet</strong> or via the original payment method, depending on store policy.</li>
                 </ol>
                 <div class="screenshot-box">
-                    <div class="screenshot-placeholder">
+                    <img src="{{ asset('documentation/images/refund_request.png') }}" alt="Order Refund" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="screenshot-placeholder" style="display: none;">
                         <i class="fas fa-image"></i>
                         <span>Screenshot: Order detail page with Request Refund button</span>
                     </div>
@@ -415,7 +459,8 @@ DB_PASSWORD=your_password</code></pre>
                     <li><strong>Recent Orders:</strong> A list of the latest orders that need attention.</li>
                 </ul>
                 <div class="screenshot-box">
-                    <div class="screenshot-placeholder">
+                    <img src="{{ asset('documentation/images/dashboard.png') }}" alt="Admin Dashboard" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="screenshot-placeholder" style="display: none;">
                         <i class="fas fa-image"></i>
                         <span>Screenshot: Admin Dashboard – stats and recent orders</span>
                     </div>
@@ -437,9 +482,10 @@ DB_PASSWORD=your_password</code></pre>
                     <li>Click <strong>Save Product</strong>.</li>
                 </ol>
                 <div class="screenshot-box">
-                    <div class="screenshot-placeholder">
+                    <img src="{{ asset('documentation/images/product_create.png') }}" alt="Add New Product" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="screenshot-placeholder" style="display: none;">
                         <i class="fas fa-image"></i>
-                        <span>Screenshot: Product list and Add New Product form</span>
+                        <span>Screenshot: Product Create form</span>
                     </div>
                 </div>
             </section>
@@ -517,7 +563,15 @@ DB_PASSWORD=your_password</code></pre>
                     <li><strong>Invoices & Labels:</strong> You can download the PDF Invoice or print a Shipping Label directly from the order details page.</li>
                 </ol>
                 <div class="screenshot-box">
-                    <div class="screenshot-placeholder">
+                    <img src="{{ asset('documentation/images/order_list.png') }}" alt="Order List" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="screenshot-placeholder" style="display: none;">
+                        <i class="fas fa-image"></i>
+                        <span>Screenshot: Order List</span>
+                    </div>
+                </div>
+                <div class="screenshot-box">
+                    <img src="{{ asset('documentation/images/order_details.png') }}" alt="Order Details" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <div class="screenshot-placeholder" style="display: none;">
                         <i class="fas fa-image"></i>
                         <span>Screenshot: Order Details page with Status Update and Invoice Download</span>
                     </div>
@@ -536,6 +590,7 @@ DB_PASSWORD=your_password</code></pre>
                 </ol>
                 <div class="screenshot-box">
                     <div class="screenshot-placeholder">
+                        <img src="{{ asset('documentation/images/refund_request_list.png') }}" alt="Refund Requests list – Approve/Reject actions" class="doc-screenshot" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                         <i class="fas fa-image"></i>
                         <span>Screenshot: Refund Requests list – Approve/Reject actions</span>
                     </div>
@@ -664,13 +719,40 @@ DB_PASSWORD=your_password</code></pre>
             </section>
 
             <section id="menus">
-                <h3>How to manage Menus?</h3>
+                <h3>How to manage Menus (Header & Footer)?</h3>
                 <span class="answer-label">Answer:</span>
+                <p>The <strong>Menu Builder</strong> allows you to fully customize the navigation links on your website's header and footer without touching any code.</p>
+                
+                <h4>1. Available Menu Locations</h4>
+                <ul>
+                    <li><strong>Header:</strong> The main navigation menu at the top of the site (supports dropdowns).</li>
+                    <li><strong>Footer 1, 2, 3, 4:</strong> Four distinct columns in the footer area for links like "Quick Links", "Company", etc.</li>
+                </ul>
+
+                <h4>2. Creating/Editing a Menu</h4>
                 <ol>
-                    <li>Go to <strong>Appearance > Menus</strong>.</li>
-                    <li>Manage the Header and Footer menus.</li>
-                    <li>Drag and drop items to reorder them.</li>
+                    <li>Go to <strong>Content & Settings > Menus</strong>.</li>
+                    <li>To create a new menu, click <strong>Create Menu</strong>, enter a name (e.g., "Main Header"), and select its <strong>Position</strong> (e.g., "Header").</li>
+                    <li>To edit an existing menu, click the <strong>Builder</strong> button next to the menu name.</li>
                 </ol>
+
+                <h4>3. Using the Menu Builder</h4>
+                <p>In the Builder interface, you can add different types of items:</p>
+                <ul>
+                    <li><strong>Pages:</strong> Select from your existing dynamic pages (e.g., About Us, Contact).</li>
+                    <li><strong>Custom Links:</strong> Enter any URL and Link Text (useful for external links).</li>
+                    <li><strong>Categories:</strong> (If available) Link directly to product categories.</li>
+                </ul>
+                
+                <p><strong>Reordering & Nesting:</strong></p>
+                <ul>
+                    <li><strong>Drag and Drop</strong> items to reorder them.</li>
+                    <li><strong>Create Dropdowns:</strong> Drag an item slightly to the right under another item to make it a "child" (sub-menu) of that item. This creates a dropdown menu on the frontend.</li>
+                </ul>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Tip:</strong> Don't forget to click the "Save Menu" button after making changes to the structure!
+                </div>
             </section>
 
             <!-- Reviews -->

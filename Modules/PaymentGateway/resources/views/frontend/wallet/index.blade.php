@@ -14,10 +14,10 @@
         <div class="col-md-6 col-lg-4">
             <div class="card bg-primary text-white border-0 shadow-sm overflow-hidden h-100 position-relative">
                 <div class="card-body position-relative z-1">
-                    <h6 class="text-white-50 mb-2">{{ __('common.current_balance') }}</h6>
+                    <h6 class="text-white mb-2">{{ __('common.current_balance') }}</h6>
                     <h2 class="mb-0 fw-bold">{{ $settings->currency_symbol ?? '$' }}{{ number_format($user->wallet_balance, 2) }}</h2>
                     @if($pendingBalance > 0)
-                        <small class="text-white-50 mt-2 d-block">
+                        <small class="text-white mt-2 d-block">
                             <i class="fas fa-clock me-1"></i>
                             {{ __('common.pending_balance') }}: {{ $settings->currency_symbol ?? '$' }}{{ number_format($pendingBalance, 2) }}
                         </small>
@@ -71,9 +71,9 @@
                             </td>
                             <td>
                                 @if($transaction->type === 'credit')
-                                    <span class="badge bg-success-subtle text-success">{{ __('common.credit') }}</span>
+                                    <span class="badge bg-success bg-opacity-10 text-success">{{ __('common.credit') }}</span>
                                 @else
-                                    <span class="badge bg-danger-subtle text-danger">{{ __('common.debit') }}</span>
+                                    <span class="badge bg-danger bg-opacity-10 text-danger">{{ __('common.debit') }}</span>
                                 @endif
                             </td>
                             <td class="fw-bold {{ $transaction->type === 'credit' ? 'text-success' : 'text-danger' }}">

@@ -70,7 +70,7 @@
         const indicator = document.getElementById('attachment-indicator');
         
         if (this.files && this.files[0]) {
-            label.classList.remove('btn-light');
+            label.classList.remove('btn-secondary-soft');
             label.classList.add('btn-primary');
             icon.classList.remove('bi-paperclip');
             icon.classList.add('bi-check');
@@ -88,7 +88,7 @@
         
         if(fileInput) fileInput.value = '';
         if(label) {
-            label.classList.add('btn-light');
+            label.classList.add('btn-secondary-soft');
             label.classList.remove('btn-primary');
         }
         if(icon) {

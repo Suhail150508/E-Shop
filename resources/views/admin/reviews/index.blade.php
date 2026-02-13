@@ -53,7 +53,7 @@
                                     @if($review->is_approved)
                                         <span class="badge bg-success">{{ __('Approved') }}</span>
                                     @else
-                                        <span class="badge bg-warning text-dark">{{ __('Pending') }}</span>
+                                        <span class="badge bg-warning-subtle text-warning">{{ __('Pending') }}</span>
                                     @endif
                                 </td>
                                 <td class="text-end">
@@ -62,14 +62,14 @@
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="is_approved" value="{{ $review->is_approved ? 0 : 1 }}">
-                                            <button type="submit" class="btn btn-sm {{ $review->is_approved ? 'btn-outline-warning' : 'btn-outline-success' }}" title="{{ $review->is_approved ? __('Reject') : __('Approve') }}">
+                                            <button type="submit" class="btn btn-sm {{ $review->is_approved ? 'btn-warning-soft' : 'btn-success-soft' }}" title="{{ $review->is_approved ? __('Reject') : __('Approve') }}">
                                                 <i class="fa-solid {{ $review->is_approved ? 'fa-ban' : 'fa-check' }}"></i>
                                             </button>
                                         </form>
                                         <form action="{{ route('admin.reviews.destroy', $review->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('common.delete_confirmation') }}')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ __('Delete') }}">
+                                            <button type="submit" class="btn btn-sm btn-danger-soft" title="{{ __('Delete') }}">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>

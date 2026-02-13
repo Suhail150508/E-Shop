@@ -186,7 +186,7 @@
                                     $storyImg = $isDefault ? ($page->meta[$si] ?? null) : ($trans[$si] ?? null);
                                 @endphp
                                 <label class="form-label">{{ __('Block') }} {{ $i }} {{ __('Image') }}</label>
-                                @if(!empty($storyImg))<div class="mb-2"><img src="{{ getImageOrPlaceholder($storyImg, '300x200') }}" height="50" class="rounded"></div>@endif
+                                @if(!empty($storyImg))<div class="mb-2"><img src="{{ getImageOrPlaceholder($storyImg, '300x200') }}" height="50" class="rounded object-fit-cover"></div>@endif
                                 @if($isDefault)
                                     <input type="file" class="form-control" name="about_story_{{ $i }}_image">
                                     <input type="text" class="form-control mt-2" name="about_story_{{ $i }}_heading" value="{{ old($sh, $page->meta[$sh] ?? '') }}" placeholder="{{ __('Heading') }}">
@@ -220,7 +220,7 @@
                             <div class="col-md-6">
                                 @php $m1i = $isDefault ? ($page->meta['about_mission_1_image'] ?? null) : ($trans['about_mission_1_image'] ?? null); @endphp
                                 <label class="form-label">{{ __('Block') }} 1 {{ __('Image') }}</label>
-                                @if(!empty($m1i))<div class="mb-2"><img src="{{ getImageOrPlaceholder($m1i, '400x300') }}" height="60" class="rounded"></div>@endif
+                                @if(!empty($m1i))<div class="mb-2"><img src="{{ getImageOrPlaceholder($m1i, '400x300') }}" height="60" class="rounded object-fit-cover"></div>@endif
                                 @if($isDefault)
                                     <input type="file" class="form-control" name="about_mission_1_image">
                                     <textarea class="form-control mt-2" name="about_mission_1_text" rows="3">{{ old('about_mission_1_text', $page->meta['about_mission_1_text'] ?? '') }}</textarea>
@@ -232,7 +232,7 @@
                             <div class="col-md-6">
                                 @php $m2i = $isDefault ? ($page->meta['about_mission_2_image'] ?? null) : ($trans['about_mission_2_image'] ?? null); @endphp
                                 <label class="form-label">{{ __('Block') }} 2 {{ __('Image') }}</label>
-                                @if(!empty($m2i))<div class="mb-2"><img src="{{ getImageOrPlaceholder($m2i, '400x300') }}" height="60" class="rounded"></div>@endif
+                                @if(!empty($m2i))<div class="mb-2"><img src="{{ getImageOrPlaceholder($m2i, '400x300') }}" height="60" class="rounded object-fit-cover"></div>@endif
                                 @if($isDefault)
                                     <input type="file" class="form-control" name="about_mission_2_image">
                                     <textarea class="form-control mt-2" name="about_mission_2_text" rows="3">{{ old('about_mission_2_text', $page->meta['about_mission_2_text'] ?? '') }}</textarea>

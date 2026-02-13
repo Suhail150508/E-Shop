@@ -48,22 +48,24 @@
                             </td>
                             <td>
                                 @if($coupon->is_active)
-                                    <span class="badge bg-success">{{ __('Active') }}</span>
+                                    <span class="badge bg-success-subtle text-success">{{ __('Active') }}</span>
                                 @else
-                                    <span class="badge bg-danger">{{ __('Inactive') }}</span>
+                                    <span class="badge bg-danger-subtle text-danger">{{ __('Inactive') }}</span>
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('admin.coupons.edit', $coupon) }}" class="btn btn-sm btn-info text-white">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="if(confirm('{{ __('Are you sure?') }}')) this.closest('form').submit();">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('admin.coupons.edit', $coupon) }}" class="btn btn-sm btn-secondary-soft">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-sm btn-danger-soft" onclick="if(confirm('{{ __('Are you sure?') }}')) this.closest('form').submit();">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @empty

@@ -134,11 +134,23 @@ class CartController extends Controller
 
         // Return JSON or redirect response
         if ($request->wantsJson()) {
+            $item = $this->cart->items()->get($id);
+            $itemTotal = 0;
+            if ($item) {
+                $unitPrice = (isset($item['discount_price']) && $item['discount_price'] !== null && $item['discount_price'] > 0 && $item['discount_price'] < $item['price'])
+                    ? (float) $item['discount_price']
+                    : (float) $item['price'];
+                $itemTotal = $unitPrice * (int) $item['quantity'];
+            }
+            $subtotal = $this->cart->subtotal();
+
             return response()->json([
                 'success' => true,
                 'message' => $message,
                 'cartCount' => $this->cart->count(),
-                'subtotal' => $this->cart->subtotal(),
+                'subtotal' => format_price((float) $subtotal),
+                'total' => format_price((float) $subtotal),
+                'item_total' => format_price((float) $itemTotal),
             ]);
         }
 
@@ -154,11 +166,13 @@ class CartController extends Controller
 
         // Return JSON or redirect response
         if (request()->wantsJson()) {
+            $subtotal = $this->cart->subtotal();
             return response()->json([
                 'success' => true,
                 'message' => $message,
                 'cartCount' => $this->cart->count(),
-                'subtotal' => $this->cart->subtotal(),
+                'subtotal' => format_price((float) $subtotal),
+                'total' => format_price((float) $subtotal),
             ]);
         }
 
@@ -178,7 +192,8 @@ class CartController extends Controller
                 'success' => true,
                 'message' => $message,
                 'cartCount' => 0,
-                'subtotal' => 0,
+                'subtotal' => format_price(0),
+                'total' => format_price(0),
             ]);
         }
 

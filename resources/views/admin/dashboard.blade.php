@@ -90,7 +90,7 @@
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0 fw-bold">{{ __('Recent Orders') }}</h5>
-            <a href="{{ route('admin.orders.index') }}" class="btn btn-sm btn-light text-primary fw-medium">{{ __('View All') }}</a>
+            <a href="{{ route('admin.orders.index') }}" class="btn btn-sm btn-secondary-soft fw-medium">{{ __('View All') }}</a>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
@@ -126,7 +126,7 @@
                                 </span>
                             </td>
                             <td class="pe-4 text-end">
-                                <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-sm btn-white border shadow-sm text-primary hover-scale">
+                                <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-sm btn-primary-soft rounded-2 hover-scale">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             </td>

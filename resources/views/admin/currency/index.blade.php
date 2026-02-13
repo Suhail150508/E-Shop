@@ -49,13 +49,13 @@
                             </td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <a href="{{ route('admin.currency.edit', $currency) }}" class="btn btn-sm btn-outline-primary">
+                                    <a href="{{ route('admin.currency.edit', $currency) }}" class="btn btn-sm btn-secondary-soft">
                                         <i class="fas fa-edit"></i> {{ __('Edit') }}
                                     </a>
                                     <form action="{{ route('admin.currency.destroy', $currency) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure?') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" {{ $currency->is_default ? 'disabled' : '' }}>
+                                        <button type="submit" class="btn btn-sm btn-danger-soft" {{ $currency->is_default ? 'disabled' : '' }}>
                                             <i class="fas fa-trash"></i> {{ __('Delete') }}
                                         </button>
                                     </form>

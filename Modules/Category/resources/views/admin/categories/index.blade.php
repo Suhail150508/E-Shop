@@ -73,7 +73,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="position-relative me-3">
                                         @if($category->image_url)
-                                            <img src="{{ $category->image_url }}" alt="{{ $category->name }}" class="avatar-sm rounded-3 border">
+                                            <img src="{{ $category->image_url }}" alt="{{ $category->name }}" class="avatar-sm rounded-3 border object-fit-cover">
                                         @else
                                             <div class="avatar-sm rounded-3 border bg-light d-flex align-items-center justify-content-center text-muted">
                                                 <i class="bi bi-image fs-5"></i>
@@ -108,13 +108,13 @@
                             </td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-soft-secondary" data-bs-toggle="tooltip" title="{{ __('Edit') }}">
+                                    <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-secondary-soft" data-bs-toggle="tooltip" title="{{ __('Edit') }}">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('common.confirm_delete_category') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-soft-danger" data-bs-toggle="tooltip" title="{{ __('Delete') }}">
+                                        <button type="submit" class="btn btn-sm btn-danger-soft" data-bs-toggle="tooltip" title="{{ __('Delete') }}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>

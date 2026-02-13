@@ -101,7 +101,7 @@ class RazorpayPaymentService implements PaymentService
             }
 
             return redirect()
-                ->route('customer.orders.show', $order)
+                ->route('checkout.confirmation', $order)
                 ->with('success', __('Payment completed successfully.'));
         }
 

@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div>
-                    <a href="{{ route('admin.support-tickets.index') }}" class="btn btn-outline-secondary btn-sm">
+                    <a href="{{ route('admin.support-tickets.index') }}" class="btn btn-secondary-soft btn-sm">
                         <i class="fas fa-arrow-left me-1"></i>{{ __('Back to List') }}
                     </a>
                 </div>

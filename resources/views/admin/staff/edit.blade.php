@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="{{ route('admin.staff.index') }}" class="btn btn-light">{{ __('staff.cancel') }}</a>
+                        <a href="{{ route('admin.staff.index') }}" class="btn btn-secondary-soft">{{ __('staff.cancel') }}</a>
                         <button type="submit" class="btn btn-primary">{{ __('staff.update_btn') }}</button>
                     </div>
                 </form>

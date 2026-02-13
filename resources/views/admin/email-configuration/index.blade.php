@@ -15,7 +15,7 @@
             </nav>
         </div>
         <div>
-            <a href="{{ route('admin.email-configuration.templates') }}" class="btn btn-outline-primary">
+            <a href="{{ route('admin.email-configuration.templates') }}" class="btn btn-secondary-soft">
                 <i class="fas fa-envelope-open-text me-2"></i> {{ __('Manage Templates') }}
             </a>
         </div>

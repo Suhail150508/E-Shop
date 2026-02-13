@@ -61,13 +61,13 @@
                             </td>
                             <td>{{ $menu->items->count() }}</td>
                             <td class="text-end pe-4">
-                                <a href="{{ route('admin.menus.builder', $menu->id) }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('admin.menus.builder', $menu->id) }}" class="btn btn-sm btn-secondary-soft">
                                     <i class="fas fa-layer-group me-1"></i> {{ __('Builder') }}
                                 </a>
                                 <form action="{{ route('admin.menus.destroy', $menu->id) }}" method="POST" class="d-inline-block ms-1" onsubmit="return confirm('{{ __('Are you sure?') }}')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-light text-danger">
+                                    <button type="submit" class="btn btn-sm btn-danger-soft">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>

@@ -8,7 +8,7 @@
         <h2 class="h4 fw-bold mb-1">{{ __('Add Product') }}</h2>
         <p class="text-muted mb-0">{{ __('Create a new product in your catalog.') }}</p>
     </div>
-    <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary">
+    <a href="{{ route('admin.products.index') }}" class="btn btn-secondary-soft">
         <i class="bi bi-arrow-left me-1"></i> {{ __('Back to List') }}
     </a>
 </div>
@@ -199,7 +199,7 @@
                         <label class="form-label d-block">{{ __('Tags') }}</label>
                         <div class="input-group mb-2">
                             <input type="text" id="tags-input" class="form-control" placeholder="{{ __('Type a tag and press Enter') }}">
-                            <button type="button" id="add-tag-btn" class="btn btn-outline-secondary">{{ __('Add Tag') }}</button>
+                            <button type="button" id="add-tag-btn" class="btn btn-secondary-soft">{{ __('Add Tag') }}</button>
                         </div>
                         <div id="tags-container" class="d-flex flex-wrap gap-2"></div>
                         @error('tags')
@@ -355,7 +355,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-end gap-2 mt-3 pb-5">
-        <a href="{{ route('admin.products.index') }}" class="btn btn-light">
+        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary-soft">
             {{ __('Cancel') }}
         </a>
         <button type="submit" class="btn btn-primary px-4">

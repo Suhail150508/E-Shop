@@ -9,7 +9,7 @@
             <div class="card-header bg-white py-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 text-secondary">{{ __('Create Language') }}</h5>
-                    <a href="{{ route('admin.language.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('admin.language.index') }}" class="btn btn-secondary-soft">
                         <i class="fas fa-arrow-left me-1"></i> {{ __('Back') }}
                     </a>
                 </div>

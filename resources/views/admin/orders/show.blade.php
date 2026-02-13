@@ -15,7 +15,7 @@
         <span class="badge bg-light text-dark text-capitalize border">
             {{ __(ucfirst($order->payment_status)) }}
         </span>
-        <a href="{{ route('admin.orders.invoice', $order) }}" class="btn btn-sm btn-outline-primary">
+        <a href="{{ route('admin.orders.invoice', $order) }}" class="btn btn-sm btn-secondary-soft">
             {{ __('Download invoice') }}
         </a>
     </div>
@@ -49,7 +49,7 @@
                         <div class="mt-3">
                             <div class="text-muted small mb-1">{{ __('Delivery Location') }}</div>
                             <div id="admin-order-map" class="rounded border" style="height: 200px; width: 100%;"></div>
-                            <a href="https://www.google.com/maps/search/?api=1&query={{ $order->shipping_latitude }},{{ $order->shipping_longitude }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary mt-2 w-100">
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ $order->shipping_latitude }},{{ $order->shipping_longitude }}" target="_blank" rel="noopener" class="btn btn-sm btn-secondary-soft mt-2 w-100">
                                 <i class="fas fa-external-link-alt me-1"></i> {{ __('Open in Google Maps') }}
                             </a>
                         </div>
@@ -184,10 +184,10 @@
 
 @if($order->shipping_latitude && $order->shipping_longitude)
 @push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('global/leaflet/leaflet.css') }}">
 @endpush
 @push('scripts')
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+    <script src="{{ asset('global/leaflet/leaflet.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var el = document.getElementById('admin-order-map');

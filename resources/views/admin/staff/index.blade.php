@@ -16,7 +16,7 @@
                             <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
                             <input type="text" name="search" class="form-control border-start-0 ps-0" placeholder="{{ __('staff.search_placeholder') }}" value="{{ request('search') }}">
                         </div>
-                        <button type="submit" class="btn btn-outline-secondary">{{ __('common.search') }}</button>
+                        <button type="submit" class="btn btn-secondary-soft">{{ __('common.search') }}</button>
                     </form>
                     <a href="{{ route('admin.staff.create') }}" class="btn btn-primary text-nowrap">
                         <i class="fas fa-plus me-1"></i> {{ __('staff.add_new') }}
@@ -56,14 +56,14 @@
                             </td>
                             <td>{{ $staff->created_at->format('M d, Y') }}</td>
                             <td class="text-end pe-4">
-                                <div class="btn-group">
-                                    <a href="{{ route('admin.staff.edit', $staff->id) }}" class="btn btn-sm btn-outline-primary" title="{{ __('staff.edit') }}">
+                                <div class="btn-group gap-2">
+                                    <a href="{{ route('admin.staff.edit', $staff->id) }}" class="btn btn-sm btn-secondary-soft" title="{{ __('staff.edit') }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('admin.staff.destroy', $staff->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('common.delete_confirmation') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ __('common.delete') }}">
+                                        <button type="submit" class="btn btn-sm btn-danger-soft" title="{{ __('common.delete') }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>

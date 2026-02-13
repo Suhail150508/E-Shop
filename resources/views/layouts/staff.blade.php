@@ -7,11 +7,6 @@
     
     <link rel="icon" href="{{ getImageOrPlaceholder(setting('app_favicon'), '32x32') }}">
 
-    <!-- Fonts -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"> -->
-    
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('backend/css/all.min.css') }}">
     
@@ -22,8 +17,7 @@
     <script src="{{ asset('backend/js/apexcharts.min.js') }}"></script>
 
     <!-- Toastr CSS -->
-    <link rel="stylesheet" href="{{ asset('backend/css/toastr.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('global/toastr/toastr.main.css') }}">
+    <link rel="stylesheet" href="{{ asset('global/toastr/toastr.min.css') }}">
 
     <style>
         :root {
@@ -282,18 +276,6 @@
         }
 
         /* Bootstrap Overrides & Global Utilities */
-        .btn-white {
-            background-color: #fff;
-            border-color: #e2e8f0;
-            color: #475569;
-        }
-        
-        .btn-white:hover {
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
-            color: #1e293b;
-        }
-
         .hover-scale {
             transition: transform 0.2s;
         }
@@ -477,7 +459,7 @@
         </div>
 
         <nav class="sidebar-menu">
-            <div class="menu-header">Main</div>
+            <div class="menu-header">{{ __('Main') }}</div>
             <a href="{{ route('staff.dashboard') }}" class="nav-link {{ request()->routeIs('staff.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-th-large"></i>
                 <span>{{ __('Dashboard') }}</span>
@@ -520,7 +502,7 @@
             </div>
 
             <div class="header-right">
-                <a href="{{ route('home') }}" target="_blank" class="btn btn-light btn-sm d-none d-md-flex align-items-center gap-2">
+                <a href="{{ route('home') }}" target="_blank" class="btn btn-secondary-soft btn-sm d-none d-md-flex align-items-center gap-2">
                     <i class="fas fa-external-link-alt"></i> {{ __('Visit Site') }}
                 </a>
 
@@ -556,8 +538,26 @@
     <script src="{{ asset('backend/js/jquery.min.js') }}"></script>
     <script src="{{ asset('backend/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Toastr JS -->
-    <script src="{{ asset('global/toastr/toastr.main.js') }}"></script>
-    @include('layouts.partials.toaster')
+    <script src="{{ asset('global/toastr/toastr.min.js') }}"></script>
+    <script>
+        @if(Session::has('success'))
+            toastr.success("{{ Session::get('success') }}");
+        @endif
+        @if(Session::has('error'))
+            toastr.error("{{ Session::get('error') }}");
+        @endif
+        @if(Session::has('info'))
+            toastr.info("{{ Session::get('info') }}");
+        @endif
+        @if(Session::has('warning'))
+            toastr.warning("{{ Session::get('warning') }}");
+        @endif
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

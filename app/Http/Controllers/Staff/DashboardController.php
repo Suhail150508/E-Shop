@@ -38,12 +38,23 @@ class DashboardController extends Controller
             ->toArray();
 
         // Fill missing months
-        $allMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         $chartData = [];
-        foreach ($allMonths as $month) {
+        $localizedMonths = [];
+
+        foreach ($months as $month) {
             $chartData[] = $orderData[$month] ?? 0;
+            $localizedMonths[] = __($month);
         }
 
-        return view('staff.dashboard', compact('totalOrders', 'pendingOrders', 'processingOrders', 'completedOrders', 'recentOrders', 'chartData', 'allMonths'));
+        return view('staff.dashboard', [
+            'totalOrders' => $totalOrders,
+            'pendingOrders' => $pendingOrders,
+            'processingOrders' => $processingOrders,
+            'completedOrders' => $completedOrders,
+            'recentOrders' => $recentOrders,
+            'chartData' => $chartData,
+            'allMonths' => $localizedMonths
+        ]);
     }
 }

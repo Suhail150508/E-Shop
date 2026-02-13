@@ -29,7 +29,7 @@
                 <p class="fs-5 text-dark mb-0">{{ $tConfirm }}</p>
             </div>
             <div class="modal-footer border-0 p-4 pt-0">
-                <button type="button" class="btn btn-light px-4 py-2 fw-medium" data-bs-dismiss="modal">{{ $tCancel }}</button>
+                <button type="button" class="btn btn-secondary-soft px-4 py-2 fw-medium" data-bs-dismiss="modal">{{ $tCancel }}</button>
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-danger px-4 py-2 fw-bold shadow-sm">{{ $tLogout }}</button>

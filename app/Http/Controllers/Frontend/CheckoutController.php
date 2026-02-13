@@ -217,6 +217,8 @@ class CheckoutController extends Controller
             'shipping_latitude' => $checkoutState['shipping_latitude'] ?? null,
             'shipping_longitude' => $checkoutState['shipping_longitude'] ?? null,
             'shipping_cost' => $this->calculateShippingCost($this->cart->subtotal(), $address, $checkoutState['delivery_type'] ?? 'home_delivery'),
+            'bank_transaction_id' => $request->input('bank_transaction_id'),
+            'bank_name' => $request->input('bank_name'),
         ];
 
         // Pass control to PaymentManager which handles Order creation

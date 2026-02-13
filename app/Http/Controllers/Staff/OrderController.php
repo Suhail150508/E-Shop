@@ -23,7 +23,7 @@ class OrderController extends Controller
     {
         // Policy check: Ensure order belongs to staff
         if ($order->staff_id !== auth()->id()) {
-            abort(403, 'Unauthorized access to this order.');
+            abort(403, __('Unauthorized access to this order.'));
         }
 
         $order->load(['items.product', 'user']);
@@ -35,7 +35,7 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         if ($order->staff_id !== auth()->id()) {
-            abort(403, 'Unauthorized access to this order.');
+            abort(403, __('Unauthorized access to this order.'));
         }
 
         $request->validate([
@@ -52,6 +52,6 @@ class OrderController extends Controller
             'status' => $request->status,
         ]);
 
-        return back()->with('success', 'Order status updated successfully.');
+        return back()->with('success', __('Order status updated successfully.'));
     }
 }

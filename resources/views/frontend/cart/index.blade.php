@@ -81,7 +81,7 @@
                                                             </button>
                                                         </form>
                                                     </td>
-                                                    <td class="text-end">
+                                                    <td class="text-end" id="item-subtotal-{{ $item['row_id'] }}">
                                                         {{ format_price((float) ($item['line_total'] ?? 0)) }}
                                                     </td>
                                                     <td class="text-end">
@@ -99,7 +99,7 @@
                                     </table>
                                 </div>
                                 <div class="cart-footer-actions">
-                                    <form action="{{ route('cart.clear') }}" method="POST">
+                                    <form action="{{ route('cart.clear') }}" method="POST" class="clear-cart-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-outline-danger btn-sm">
@@ -122,11 +122,11 @@
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="order-summary-label">{{ __('common.subtotal') }}</span>
-                                <span class="fw-semibold">{{ format_price((float) ($subtotal ?? 0)) }}</span>
+                                <span class="fw-semibold" id="cart-summary-subtotal">{{ format_price((float) ($subtotal ?? 0)) }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-4">
                                 <span class="order-summary-label">{{ __('common.total') }}</span>
-                                <span class="order-summary-total">{{ format_price((float) ($subtotal ?? 0)) }}</span>
+                                <span class="order-summary-total" id="cart-summary-total">{{ format_price((float) ($subtotal ?? 0)) }}</span>
                             </div>
                             @if($codEnabled || $stripeEnabled || $walletEnabled)
                                 <a href="{{ route('checkout.shipping') }}" class="btn btn-primary w-100 py-2 fw-bold">

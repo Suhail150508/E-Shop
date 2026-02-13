@@ -7,7 +7,12 @@
     <div class="card-header bg-white py-3">
         <div class="row g-3 align-items-center">
             <div class="col-md-6">
-                <h5 class="mb-0"><i class="fas fa-users me-2"></i>{{ __('Customers') }}</h5>
+                <h5 class="mb-0">
+                    <span class="d-inline-flex align-items-center justify-content-center bg-primary-subtle rounded-circle me-2" style="width: 40px; height: 40px;">
+                        <i class="fas fa-users text-primary"></i>
+                    </span>
+                    {{ __('Customers') }}
+                </h5>
             </div>
             <div class="col-md-6 text-end">
                 <a href="{{ route('admin.customers.create') }}" class="btn btn-primary btn-sm">
@@ -47,14 +52,14 @@
                             </td>
                             <td>{{ $customer->created_at->format('M d, Y') }}</td>
                             <td class="text-end pe-4">
-                                <div class="btn-group">
-                                    <a href="{{ route('admin.customers.edit', $customer->id) }}" class="btn btn-sm btn-outline-primary" title="{{ __('Edit') }}">
+                                <div class="btn-group gap-2">
+                                    <a href="{{ route('admin.customers.edit', $customer->id) }}" class="btn btn-sm btn-secondary-soft" title="{{ __('Edit') }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this customer?') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ __('Delete') }}">
+                                        <button type="submit" class="btn btn-sm btn-danger-soft" title="{{ __('Delete') }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>

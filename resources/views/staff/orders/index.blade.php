@@ -59,7 +59,7 @@
                             </td>
                             <td class="text-muted small">{{ $order->created_at->format('M d, Y') }}</td>
                             <td class="text-end pe-4">
-                                <a href="{{ route('staff.orders.show', $order->id) }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('staff.orders.show', $order->id) }}" class="btn btn-sm btn-secondary-soft">
                                     <i class="fas fa-eye me-1"></i> {{ __('View') }}
                                 </a>
                             </td>

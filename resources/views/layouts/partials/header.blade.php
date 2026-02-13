@@ -182,8 +182,8 @@
                                                         <div class="categories-icon">
                                                         <img src="{{ $navCategory->image_url ?? 'https://placehold.co/40' }}" 
                                                              alt="{{ $navCategory->name }}" 
-                                                             class="img-fluid"
-                                                             style="width: 100%; height: 100%; object-fit: contain; {{ !$navCategory->image_url ? 'opacity: 0.6;' : '' }}"
+                                                             class="img-fluid w-100 h-100 object-fit-contain"
+                                                             style="{{ !$navCategory->image_url ? 'opacity: 0.6;' : '' }}"
                                                              onerror="this.onerror=null;this.src='https://placehold.co/40';this.style.opacity='0.6';">
                                                     </div>
                                                         <span class="categories-link-main">

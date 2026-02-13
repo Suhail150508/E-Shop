@@ -18,7 +18,7 @@
                     </select>
                     <div class="input-group input-group-sm w-auto">
                         <input type="text" name="search" class="form-control" placeholder="{{ __('Search...') }}" value="{{ request('search') }}">
-                        <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-secondary-soft" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
             </div>

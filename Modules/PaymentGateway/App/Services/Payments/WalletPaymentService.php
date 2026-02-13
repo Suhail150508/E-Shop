@@ -70,7 +70,7 @@ class WalletPaymentService implements PaymentService
             });
 
             return redirect()
-                ->route('customer.orders.show', $order)
+                ->route('checkout.confirmation', $order)
                 ->with('success', __('paymentgateway::payment.order_paid_wallet'));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Wallet payment failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
@@ -80,7 +80,7 @@ class WalletPaymentService implements PaymentService
 
     public function handleSuccess(Order $order, Request $request): RedirectResponse
     {
-        return redirect()->route('customer.orders.show', $order);
+        return redirect()->route('checkout.confirmation', $order);
     }
 
     public function handleCancel(Order $order, Request $request): RedirectResponse

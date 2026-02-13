@@ -7,7 +7,6 @@
     
     {{-- Fonts & Icons --}}
     <link rel="stylesheet" href="{{ asset('backend/css/all.min.css') }}">
-    <!-- <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"> -->
 
     {{-- Bootstrap via Vite (RTL-aware) --}}
     @if(app()->getLocale() == 'ar')

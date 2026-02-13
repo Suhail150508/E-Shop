@@ -13,7 +13,7 @@
                 <form action="{{ route('admin.contact.index') }}" method="GET" class="d-inline-block">
                     <div class="input-group input-group-sm">
                         <input type="text" name="search" class="form-control" placeholder="{{ __('Search messages...') }}" value="{{ request('search') }}">
-                        <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-secondary-soft" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
             </div>
@@ -57,8 +57,8 @@
                             </td>
                             <td>{{ $message->created_at->format('M d, Y H:i') }}</td>
                             <td class="text-end pe-4">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-primary" 
+                                <div class="btn-group gap-2">
+                                    <button type="button" class="btn btn-sm btn-secondary-soft rounded" 
                                             data-bs-toggle="modal" 
                                             data-bs-target="#replyModal{{ $message->id }}" 
                                             title="{{ __('View & Reply') }}">
@@ -67,7 +67,7 @@
                                     <form action="{{ route('admin.contact.destroy', $message->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('common.delete_confirmation_message') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ __('Delete') }}">
+                                        <button type="submit" class="btn btn-sm btn-danger-soft rounded" title="{{ __('Delete') }}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -122,7 +122,7 @@
                                                             <textarea class="form-control" name="reply" rows="5" required></textarea>
                                                         </div>
                                                         <div class="text-end">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                                                            <button type="button" class="btn btn-secondary-soft" data-bs-dismiss="modal">{{ __('Close') }}</button>
                                                             <button type="submit" class="btn btn-primary">
                                                                 <i class="fas fa-paper-plane me-1"></i> {{ __('Send Reply') }}
                                                             </button>

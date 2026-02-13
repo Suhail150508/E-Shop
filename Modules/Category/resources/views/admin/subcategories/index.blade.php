@@ -102,13 +102,13 @@
                             </td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <a href="{{ route('admin.subcategories.edit', $subcategory->id) }}" class="btn btn-sm btn-soft-secondary" data-bs-toggle="tooltip" title="{{ __('Edit') }}">
+                                    <a href="{{ route('admin.subcategories.edit', $subcategory->id) }}" class="btn btn-sm btn-secondary-soft" data-bs-toggle="tooltip" title="{{ __('Edit') }}">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="{{ route('admin.subcategories.destroy', $subcategory->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('common.delete_confirmation') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-soft-danger" data-bs-toggle="tooltip" title="{{ __('Delete') }}">
+                                        <button type="submit" class="btn btn-sm btn-danger-soft" data-bs-toggle="tooltip" title="{{ __('Delete') }}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>

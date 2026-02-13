@@ -21,8 +21,7 @@
     @endif
 
     {{-- Fonts & Icons --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=DM+Sans&family=Syne&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('backend/css/all.min.css') }}">
 
     {{-- Shared Frontend CSS --}}
     <link rel="stylesheet" href="{{ asset('frontend/css/frontend-shared.css') }}">
@@ -30,8 +29,8 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/tryon-modal.css') }}">
 
     {{-- Toastr --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link rel="stylesheet" href="{{ asset('global/toastr/toastr.main.css') }}">
+    <link rel="stylesheet" href="{{ asset('global/toastr/toastr.min.css') }}">
+
     
     @stack('style_section')
     @stack('styles')
@@ -72,8 +71,7 @@
 {{-- JS Libraries (Local) --}}
 <script src="{{ asset('backend/js/jquery.min.js') }}"></script>
 <script src="{{ asset('backend/js/popper.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="{{ asset('global/toastr/toastr.main.js') }}" defer></script>
+<script src="{{ asset('global/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('backend/js/bootstrap.min.js') }}"></script>
 
 {{-- Global Translations --}}

@@ -8,17 +8,12 @@
 
     <link rel="icon" href="{{ getImageOrPlaceholder(setting('app_favicon'), '32x32') }}" alt="">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('backend/css/all.min.css') }}" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="{{ asset('backend/css/bootstrap-icons.min.css') }}" crossorigin="anonymous">
 
     <!-- Bootstrap 5 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('backend/css/bootstrap.min.css') }}" crossorigin="anonymous">
 
     <link href="{{ asset('backend/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/loader.css') }}" rel="stylesheet">
@@ -28,7 +23,7 @@
     <script src="{{ asset('backend/js/apexcharts.min.js') }}" defer></script>
 
     <!-- Toastr: base + custom (toast above sidebar) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('global/toastr/toastr.min.css') }}" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('global/toastr/toastr.main.css') }}">
     <style>#toast-container { z-index: 99999 !important; }</style>
 
@@ -59,7 +54,7 @@
 
             <div class="header-right">
                 <!-- Visit Site Button -->
-                <a href="{{ route('home') }}" target="_blank" rel="noopener noreferrer" class="btn btn-light btn-sm d-none d-md-flex align-items-center gap-2">
+                <a href="{{ route('home') }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary-soft btn-sm d-none d-md-flex align-items-center gap-2">
                     <i class="fas fa-external-link-alt" aria-hidden="true"></i> {{ __('common.visit_site') }}
                 </a>
 
@@ -112,15 +107,15 @@
         </div>
     </main>
 
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('backend/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('global/toastr/toastr.min.js') }}"></script>
     <script>
         window.toastr = window.toastr || (typeof toastr !== 'undefined' ? toastr : null);
         if (window.toastr) {
             window.toastr.options = { closeButton: true, progressBar: true, positionClass: 'toast-top-right', timeOut: 5000, preventDuplicates: false };
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('backend/js/bootstrap.bundle.min.js') }}"></script>
     <script>
         window.AdminLayoutConfig = {
             csrfToken: @json(csrf_token()),

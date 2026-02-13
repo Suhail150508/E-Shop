@@ -6,12 +6,12 @@
 }
 @media (max-width: 991.98px) {
     .checkout-page-wrap {
-        padding-top: 140px;
+        padding-top: 90px;
     }
 }
 @media (max-width: 576px) {
     .checkout-page-wrap {
-        padding-top: 116px;
+        padding-top: 75px;
     }
 }
 
@@ -98,6 +98,7 @@
     box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2); /* Soft glow */
     position: relative;
 }
+
 /* Dashed ring for active step */
 .checkout-steps .stepper-item.active .step-counter::after {
     content: '';
@@ -338,8 +339,9 @@
     display: flex;
     justify-content: space-between;
     position: relative;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin-top: 3rem !important;
+    margin-bottom: -2rem !important;
 }
 
 .stepper-item {
@@ -451,5 +453,16 @@
     }
 }
 
-
-
+/* Payment Gateway Brand Colors */
+.icon-stripe {
+    color: #6772e5;
+}
+.icon-paypal {
+    color: #003087;
+}
+.icon-razorpay {
+    color: #3395ff;
+}
+.icon-paystack {
+    color: #0ba4db;
+}

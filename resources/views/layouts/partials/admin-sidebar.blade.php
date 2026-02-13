@@ -4,9 +4,9 @@
         <div class="brand-logo">
             <img src="{{ getImageOrPlaceholder(setting('app_logo'), '150x40') }}" alt="{{ config('app.name') }}" style="max-height: 40px; max-width: 100%;">
         </div>
-        <div class="brand-text">
+        <!-- <div class="brand-text">
             <span>{{ setting('app_name') ?: config('app.name') }}</span>
-        </div>
+        </div> -->
     </a>
 
     <div class="sidebar-search-wrapper">

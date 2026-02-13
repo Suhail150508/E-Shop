@@ -16,7 +16,7 @@
             </nav>
         </div>
         <div>
-            <a href="{{ route('admin.email-configuration.index') }}" class="btn btn-outline-secondary">
+            <a href="{{ route('admin.email-configuration.index') }}" class="btn btn-secondary-soft">
                 <i class="fas fa-arrow-left me-2"></i> {{ __('Back to Configuration') }}
             </a>
         </div>
@@ -48,7 +48,7 @@
                             <td>{{ $template->subject }}</td>
                             <td>{{ $template->updated_at->format('d M, Y h:i A') }}</td>
                             <td class="text-end">
-                                <a href="{{ route('admin.email-configuration.templates.edit', $template->id) }}" class="btn btn-sm btn-primary">
+                                <a href="{{ route('admin.email-configuration.templates.edit', $template->id) }}" class="btn btn-sm btn-secondary-soft">
                                     <i class="fas fa-edit"></i> {{ __('Edit') }}
                                 </a>
                             </td>

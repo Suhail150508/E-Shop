@@ -72,7 +72,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="position-relative me-3">
                                         @if($brand->image_url)
-                                            <img src="{{ $brand->image_url }}" alt="{{ $brand->name }}" class="avatar-sm rounded-3 border">
+                                            <img src="{{ $brand->image_url }}" alt="{{ $brand->name }}" class="avatar-sm rounded-3 border object-fit-cover">
                                         @else
                                             <div class="avatar-sm rounded-3 border bg-light d-flex align-items-center justify-content-center text-muted">
                                                 <i class="bi bi-star fs-5"></i>
@@ -98,13 +98,13 @@
                             </td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <a href="{{ route('admin.brands.edit', $brand) }}" class="btn btn-sm btn-soft-secondary" data-bs-toggle="tooltip" title="{{ __('Edit') }}">
+                                    <a href="{{ route('admin.brands.edit', $brand) }}" class="btn btn-sm btn-secondary-soft" data-bs-toggle="tooltip" title="{{ __('Edit') }}">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('{{ __('common.delete_confirmation') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-soft-danger" data-bs-toggle="tooltip" title="{{ __('Delete') }}">
+                                        <button type="submit" class="btn btn-sm btn-danger-soft" data-bs-toggle="tooltip" title="{{ __('Delete') }}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>

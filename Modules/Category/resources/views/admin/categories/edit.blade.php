@@ -8,7 +8,7 @@
         <h2 class="h4 fw-bold mb-1">{{ __('Edit Category') }}</h2>
         <p class="text-muted mb-0">{{ __('Update category details.') }}</p>
     </div>
-    <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary">
+    <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary-soft">
         <i class="bi bi-arrow-left me-1"></i> {{ __('Back to List') }}
     </a>
 </div>
@@ -82,7 +82,7 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
-                <a href="{{ route('admin.categories.index') }}" class="btn btn-light">
+                <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary-soft">
                     {{ __('Cancel') }}
                 </a>
                 <button type="submit" class="btn btn-primary px-4">

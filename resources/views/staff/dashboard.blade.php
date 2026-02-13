@@ -81,10 +81,20 @@
     </div>
 </div>
 
+<!-- Performance Chart -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3">
+        <h5 class="mb-0 fw-bold">{{ __('Monthly Performance') }}</h5>
+    </div>
+    <div class="card-body">
+        <div id="performanceChart"></div>
+    </div>
+</div>
+
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
         <h5 class="mb-0 fw-bold">{{ __('Recent Assigned Orders') }}</h5>
-        <a href="{{ route('staff.orders.index') }}" class="btn btn-sm btn-light">{{ __('View All') }}</a>
+        <a href="{{ route('staff.orders.index') }}" class="btn btn-sm btn-secondary-soft">{{ __('View All') }}</a>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -127,11 +137,11 @@
                                 </span>
                             </td>
                             <td class="text-muted small">{{ $order->created_at->format('M d, Y') }}</td>
-                            <td class="text-end pe-4">
-                                <a href="{{ route('staff.orders.show', $order->id) }}" class="btn btn-sm btn-white">
-                                    {{ __('Details') }}
-                                </a>
-                            </td>
+                            <td class="text-end">
+                                        <a href="{{ route('staff.orders.show', $order->id) }}" class="btn btn-sm btn-secondary-soft">
+                                            {{ __('Details') }}
+                                        </a>
+                                    </td>
                         </tr>
                     @empty
                         <tr>

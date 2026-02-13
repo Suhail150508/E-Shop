@@ -6,7 +6,10 @@
 <!-- Header -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="h4 fw-bold mb-0">
-        <i class="fas fa-box me-2 text-primary"></i>{{ __('Product') }}
+        <span class="d-inline-flex align-items-center justify-content-center bg-primary-subtle rounded-circle me-2" style="width: 40px; height: 40px;">
+            <i class="fas fa-box text-primary"></i>
+        </span>
+        {{ __('Product') }}
     </h2>
     <a href="{{ route('admin.products.create') }}" class="btn btn-primary rounded-3 px-4">
         <i class="fas fa-plus me-2"></i> {{ __('Add Product') }}
@@ -74,8 +77,8 @@
                     @forelse($products as $index => $product)
                         <tr class="product-row">
                             <td class="ps-4">
-                                <button class="btn btn-sm btn-light rounded-circle shadow-sm border toggle-details" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ $product->id }}" aria-expanded="false">
-                                    <i class="fas fa-plus text-primary"></i>
+                                <button class="btn btn-sm btn-secondary-soft rounded-circle toggle-details" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ $product->id }}" aria-expanded="false">
+                                    <i class="fas fa-plus"></i>
                                 </button>
                             </td>
                             <td class="text-center fw-medium text-muted" data-label="{{ __('SL') }}">
@@ -84,7 +87,7 @@
                             <td data-label="{{ __('Product Info') }}">
                                 <div class="d-flex align-items-center">
                                     <div class="position-relative me-3">
-                                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="avatar-sm rounded-3 border">
+                                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="avatar-sm rounded-3 border object-fit-cover">
                                     </div>
                                     <div>
                                         <h6 class="mb-0 fw-bold text-dark">{{ $product->name }}</h6>
@@ -110,10 +113,10 @@
                             </td>
                             <td class="text-end pe-4" data-label="{{ __('Actions') }}">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <a href="{{ route('shop.product.show', $product->slug) }}" target="_blank" class="btn btn-sm btn-info-soft rounded-2" title="{{ __('View') }}">
+                                    <a href="{{ route('shop.product.show', $product->slug) }}" target="_blank" class="btn btn-sm btn-primary-soft rounded-2" title="{{ __('View') }}">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary-soft rounded-2" title="{{ __('Edit') }}">
+                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-secondary-soft rounded-2" title="{{ __('Edit') }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline-block delete-form">
@@ -145,7 +148,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="ps-3 py-3">
-                                                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="rounded-2 border" width="40" height="40">
+                                                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="rounded-2 border object-fit-cover" width="40" height="40">
                                                         </td>
                                                         <td class="fw-medium text-dark">{{ $product->sku ?? __('N/A') }}</td>
                                                         <td class="fw-bold text-dark">{{ format_price($product->price) }}</td>

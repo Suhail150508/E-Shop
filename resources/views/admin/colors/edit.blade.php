@@ -8,7 +8,7 @@
         <h2 class="h4 fw-bold mb-1">{{ __('Edit Color') }}</h2>
         <p class="text-muted mb-0">{{ __('Update product color.') }}</p>
     </div>
-    <a href="{{ route('admin.colors.index') }}" class="btn btn-outline-secondary">
+    <a href="{{ route('admin.colors.index') }}" class="btn btn-secondary-soft">
         <i class="bi bi-arrow-left me-1"></i> {{ __('Back to List') }}
     </a>
 </div>
@@ -57,7 +57,7 @@
                 <button type="submit" class="btn btn-primary px-4">
                     <i class="bi bi-save me-1"></i> {{ __('Update Color') }}
                 </button>
-                <a href="{{ route('admin.colors.index') }}" class="btn btn-light">
+                <a href="{{ route('admin.colors.index') }}" class="btn btn-secondary-soft">
                     {{ __('Cancel') }}
                 </a>
             </div>

@@ -71,13 +71,13 @@
                             </td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <a href="{{ route('admin.units.edit', $unit->id) }}" class="btn btn-sm btn-light border" title="{{ __('Edit') }}">
+                                    <a href="{{ route('admin.units.edit', $unit->id) }}" class="btn btn-sm btn-secondary-soft" title="{{ __('Edit') }}">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="{{ route('admin.units.destroy', $unit->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure?') }}')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-light border text-danger" title="{{ __('Delete') }}">
+                                        <button type="submit" class="btn btn-sm btn-danger-soft" title="{{ __('Delete') }}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>

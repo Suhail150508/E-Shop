@@ -38,9 +38,18 @@ class BankPaymentService implements PaymentService
         // The user is expected to manually transfer and maybe upload proof later (if that feature exists)
         // or just wait for admin confirmation.
 
+        $notes = $order->notes;
+        if (!empty($data['bank_transaction_id'])) {
+            $notes .= "\n\nBank Transaction ID: " . $data['bank_transaction_id'];
+        }
+        if (!empty($data['bank_name'])) {
+            $notes .= "\nBank Name: " . $data['bank_name'];
+        }
+
         $order->update([
             'payment_method' => 'bank',
             'payment_status' => Order::PAYMENT_PENDING,
+            'notes' => trim($notes),
         ]);
 
         if ($order->type === Order::TYPE_WALLET_DEPOSIT) {

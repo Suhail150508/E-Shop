@@ -51,7 +51,7 @@
                                     <label class="form-label small">{{ __('Link Text') }}</label>
                                     <input type="text" class="form-control form-control-sm" id="custom-title" placeholder="{{ __('Menu Item') }}">
                                 </div>
-                                <button type="button" class="btn btn-sm btn-outline-primary w-100" id="add-custom-btn">
+                                <button type="button" class="btn btn-sm btn-secondary-soft w-100" id="add-custom-btn">
                                     {{ __('Add to Menu') }}
                                 </button>
                             </div>

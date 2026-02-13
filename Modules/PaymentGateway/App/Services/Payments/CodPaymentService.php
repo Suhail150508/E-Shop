@@ -35,14 +35,14 @@ class CodPaymentService implements PaymentService
         ]);
 
         return redirect()
-            ->route('customer.orders.show', $order)
+            ->route('checkout.confirmation', $order)
             ->with('success', __('paymentgateway::payment.cod_order_placed'));
     }
 
     public function handleSuccess(Order $order, Request $request): RedirectResponse
     {
         return redirect()
-            ->route('customer.orders.show', $order);
+            ->route('checkout.confirmation', $order);
     }
 
     public function handleCancel(Order $order, Request $request): RedirectResponse

@@ -6,7 +6,10 @@
 <div class="d-flex flex-column gap-4">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
         <h2 class="h4 fw-bold mb-0">
-            <i class="bi bi-list-check me-2 text-primary"></i>{{ __('Refund Reasons') }}
+            <span class="d-inline-flex align-items-center justify-content-center bg-primary-subtle rounded-circle me-2" style="width: 40px; height: 40px;">
+                <i class="bi bi-list-check text-primary"></i>
+            </span>
+            {{ __('Refund Reasons') }}
         </h2>
         <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#createReasonModal">
             <i class="bi bi-plus-lg me-1"></i> {{ __('Add New Reason') }}
@@ -43,16 +46,16 @@
                                 </td>
                                 <td class="text-end pe-4" data-label="{{ __('Actions') }}">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <button type="button" class="btn btn-sm btn-soft-primary rounded-2"
+                                        <button type="button" class="btn btn-sm btn-primary-soft rounded-2"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#editReasonModal{{ $reason->id }}"
                                                 title="{{ __('Edit') }}">
-                                            <i class="bi bi-pencil"></i>
+                                            </i><i class="fas fa-eye"></i>
                                         </button>
                                         <form action="{{ route('admin.refund-reasons.destroy', $reason->id) }}" method="POST" onsubmit="return confirm('{{ __('common.delete_confirmation') }}')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-soft-danger rounded-2" title="{{ __('Delete') }}">
+                                            <button type="submit" class="btn btn-sm btn-danger-soft rounded-2" title="{{ __('Delete') }}">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
@@ -83,7 +86,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer border-top-0">
-                                                        <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                                                        <button type="button" class="btn btn-secondary-soft rounded-pill" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                                                         <button type="submit" class="btn btn-primary rounded-pill px-4">{{ __('Update') }}</button>
                                                     </div>
                                                 </form>
@@ -140,7 +143,7 @@
                     </div>
                 </div>
                 <div class="modal-footer border-top-0">
-                    <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="button" class="btn btn-secondary-soft rounded-pill" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                     <button type="submit" class="btn btn-primary rounded-pill px-4">{{ __('Save') }}</button>
                 </div>
             </form>

@@ -7,14 +7,17 @@
     <!-- Header & Search -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
         <h2 class="h4 fw-bold mb-0">
-            <i class="bi bi-arrow-return-left me-2 text-primary"></i>{{ __('Refund Requests') }}
+            <span class="d-inline-flex align-items-center justify-content-center bg-primary-subtle rounded-circle me-2" style="width: 40px; height: 40px;">
+                <i class="bi bi-arrow-return-left text-primary"></i>
+            </span>
+            {{ __('Refund Requests') }}
         </h2>
         <div class="flex-grow-1 mx-md-4" style="max-width: 500px;">
             <form action="{{ route('admin.refund-requests.index') }}" method="GET" class="position-relative">
                 <input type="text" name="search" value="{{ request('search') }}"
                     class="form-control border-0 bg-white shadow-sm rounded-pill py-2 ps-4 pe-5"
                     placeholder="{{ __('Search by invoice no...') }}">
-                <button type="submit" class="btn position-absolute top-50 end-0 translate-middle-y me-2 text-primary">
+                <button type="submit" class="btn btn-sm btn-secondary-soft position-absolute top-50 end-0 translate-middle-y me-1">
                     <i class="bi bi-search"></i>
                 </button>
             </form>
@@ -39,7 +42,7 @@
                             </select>
                         </div>
                         <div class="col-12 col-md-3 ms-auto text-md-end">
-                            <a href="{{ route('admin.refund-requests.index') }}" class="btn btn-soft-secondary rounded-3">
+                            <a href="{{ route('admin.refund-requests.index') }}" class="btn btn-secondary-soft rounded-3">
                                 <i class="bi bi-arrow-counterclockwise me-1"></i> {{ __('Reset') }}
                             </a>
                         </div>
@@ -101,8 +104,8 @@
                                 </td>
                                 <td class="text-end pe-4" data-label="{{ __('Actions') }}">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <button type="button" class="btn btn-sm btn-soft-primary rounded-2" data-bs-toggle="modal" data-bs-target="#refundModal{{ $refund->id }}" title="{{ __('View Details') }}">
-                                            <i class="bi bi-eye"></i>
+                                        <button type="button" class="btn btn-sm btn-primary-soft rounded-2" data-bs-toggle="modal" data-bs-target="#refundModal{{ $refund->id }}" title="{{ __('View Details') }}">
+                                            <i class="fas fa-eye"></i>
                                         </button>
                                     </div>
 
@@ -132,7 +135,7 @@
                                                         <div class="d-flex gap-2 flex-wrap">
                                                             @foreach($refund->images as $image)
                                                                 <a href="{{ asset('storage/' . $image) }}" target="_blank">
-                                                                    <img src="{{ asset('storage/' . $image) }}" class="rounded border" style="width: 60px; height: 60px; object-fit: cover;">
+                                                                    <img src="{{ asset('storage/' . $image) }}" class="rounded border object-fit-cover" width="60" height="60" alt="{{ __('Attachment') }}">
                                                                 </a>
                                                             @endforeach
                                                         </div>

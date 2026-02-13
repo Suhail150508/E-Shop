@@ -58,7 +58,7 @@
             <div class="card border-0 shadow-sm rounded-3 h-100">
                 <div class="card-body p-3 d-flex align-items-center">
                     <div class="rounded-circle d-flex align-items-center justify-content-center me-3 dashboard-stat-icon-terracotta">
-                        <i class="fa-solid fa-ticket fs-5"></i>
+                        <i class="fa-solid fa-ticket-alt fs-5"></i>
                     </div>
                     <div>
                         <h4 class="fw-bold mb-0 text-terracotta">{{ $supportTicketCount ?? 0 }}</h4>
@@ -118,8 +118,8 @@
                                 <span class="badge rounded-pill bg-{{ $statusClass }} bg-opacity-10 text-{{ $statusClass }} px-3 py-2">{{ __('common.' . $order->status) }}</span>
                             </td>
                             <td class="text-end pe-4">
-                                <a href="{{ route('customer.orders.show', $order->id) }}" class="btn btn-sm btn-light rounded-circle shadow-sm" data-bs-toggle="tooltip" title="{{ __('common.view_details') }}">
-                                    <i class="fa-solid fa-eye text-primary"></i>
+                                <a href="{{ route('customer.orders.show', $order->id) }}" class="btn btn-sm btn-secondary-soft rounded-circle shadow-sm" data-bs-toggle="tooltip" title="{{ __('common.view_details') }}">
+                                    <i class="fa-solid fa-eye"></i>
                                 </a>
                             </td>
                         </tr>
